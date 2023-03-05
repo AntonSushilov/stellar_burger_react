@@ -1,0 +1,36 @@
+.content{
+    display: flex;
+    flex-direction: column;
+    width: 600px;
+}
+
+.items{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    height: calc(100vh - 260px - 88px);
+    overflow-y: scroll;
+    margin-bottom: 40px;
+}
+
+.item{
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    align-items: center;
+    gap: 4px
+
+}
+
+.order{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    margin-right: 12px;
+}
+
+.summ_price{
+    display: flex;
+    flex-direction: row;
+}

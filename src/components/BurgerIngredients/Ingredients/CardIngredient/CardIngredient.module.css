@@ -1,0 +1,18 @@
+.card{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 200px;
+    width: 272px;
+}
+
+.price{
+    display: flex;
+    flex-direction: row;
+}
+
+.name{
+    hyphens: unset;
+    text-align: center;
+}

@@ -12,11 +12,11 @@ const BurgerConstructor = props => {
     const [bunSelected, setBunSelected] = React.useState(props.data.find(el => el.type==='bun'))
     const [summPrice, setSummPrice] = React.useState(610)
 
-    const onOpenModal = (el) => {
+    const handleOpenModal = (el) => {
         setOpenModal(true)
     }
     
-    const onClickCloseModal = useCallback(() => {
+    const handleClickCloseModal = useCallback(() => {
         setOpenModal(false)
     }, [])
 
@@ -64,12 +64,12 @@ const BurgerConstructor = props => {
                     </p>
                     <CurrencyIcon type='primary' />
                 </div> 
-                <Button htmlType='button' type='primary' size='medium' onClick={() => onOpenModal()}>
+                <Button htmlType='button' type='primary' size='medium' onClick={() => handleOpenModal()}>
                     Оформить заказ
                 </Button>
             </div>
             {modal && (
-                <Modal closeModal={onClickCloseModal}>
+                <Modal closeModal={handleClickCloseModal}>
                     <ModalOrder orderId='034536'/>
                 </Modal>
             )}

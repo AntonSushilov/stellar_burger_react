@@ -11,12 +11,12 @@ const Ingredients = props => {
     const [ingredient, setIngredient] = React.useState()
 
 
-    const onOpenModal = (el) => {
+    const handleOpenModal = (el) => {
         setOpenModal(true)
         setIngredient(el)
     }
     
-    const onClickCloseModal = useCallback(() => {
+    const handleClickCloseModal = useCallback(() => {
         setOpenModal(false)
     }, [])
 
@@ -32,7 +32,7 @@ const Ingredients = props => {
                 ? (
                     <>
                     {props.data && props.data.map(el =>(
-                    <div className={styles.card} key={el._id} onClick={() => onOpenModal(el)}>
+                    <div className={styles.card} key={el._id} onClick={() => handleOpenModal(el)}>
                         <CardIngredient data={el} />
                     </div>
                     
@@ -48,7 +48,7 @@ const Ingredients = props => {
                 
             </div>
             {modal && (
-                <Modal closeModal={onClickCloseModal} title='Детали ингредиента'>
+                <Modal closeModal={handleClickCloseModal} title='Детали ингредиента'>
                    <ModalIngredient data={ingredient}/>
                 </Modal>
             )}

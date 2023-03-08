@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styles from './MyApp.module.css'
+import styles from './App.module.css'
 import AppHeader from '../AppHeader/AppHeader';
 import BurgerIngredients from '../BurgerIngredients/BurgerIngredients';
 import BurgerConstructor from '../BurgerConstructor/BurgerConstructor';
@@ -31,9 +31,5 @@ const MyApp = (props) => {
         </div>
     );
 };
-
-// NavItem.propTypes = {
-    
-// };
 
 export default MyApp;

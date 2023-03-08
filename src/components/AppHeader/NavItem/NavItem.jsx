@@ -10,8 +10,8 @@ const NavItem = (props) => {
     );
 };
 
-// NavItem.propTypes = {
-    
-// };
+NavItem.propTypes = {
+    children: PropTypes.node.isRequired
+};
 
 export default NavItem;

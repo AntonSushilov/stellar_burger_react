@@ -9,27 +9,28 @@ const Modal = props => {
     const closeModal = () => {
         props.closeModal()
     }
-
-    console.log(props)
-  return (
-    <div className={styles.modal}>
-        <div className={styles.modal_content}>
-            <div className={styles.modal_header}>
-                <p className='text text_type_main-large'>
-                    {props.title}
-                </p>
-                <img className={styles.img_cross} src={cross} alt="Крест" onClick={() => closeModal()}/>
-            </div>
-            <div className={styles.modal_body}>
-                {props.children}
+    return (
+        <div className={styles.modal}>
+            <div className={styles.modal_content}>
+                <div className={styles.modal_header}>
+                    <p className='text text_type_main-large'>
+                        {props.title}
+                    </p>
+                    <img className={styles.img_cross} src={cross} alt="Крест" onClick={() => closeModal()}/>
+                </div>
+                <div className={styles.modal_body}>
+                    {props.children}
+                </div>
+                
             </div>
             
         </div>
-        
-    </div>
-  )
+    )
 }
 
-Modal.propTypes = {}
+Modal.propTypes = {
+    title: PropTypes.string,
+    children: PropTypes.node,
+}
 
 export default Modal

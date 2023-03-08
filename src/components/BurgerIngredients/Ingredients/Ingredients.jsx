@@ -1,4 +1,5 @@
 import React from 'react'
+import { useCallback } from 'react'
 import PropTypes from 'prop-types'
 import CardIngredient from './CardIngredient/CardIngredient'
 import Modal from '../../Modal/Modal'
@@ -10,14 +11,14 @@ const Ingredients = props => {
     const [ingredient, setIngredient] = React.useState()
 
 
-    const openModal = (el) => {
+    const onOpenModal = (el) => {
         setOpenModal(true)
         setIngredient(el)
     }
     
-    const closeModal = () => {
+    const onClickCloseModal = useCallback(() => {
         setOpenModal(false)
-    }
+    }, [])
 
     return (
         <section className={styles.ingredients}>
@@ -27,22 +28,28 @@ const Ingredients = props => {
                 </p>
             </div>
             <div className={ [styles.content, 'mb-10'].join(" ")}>
-                {props.data && props.data.map(el =>(
-                    <div className={styles.card} key={el._id} onClick={() => openModal(el)}>
+                {props.data
+                ? (
+                    <>
+                    {props.data && props.data.map(el =>(
+                    <div className={styles.card} key={el._id} onClick={() => onOpenModal(el)}>
                         <CardIngredient data={el} />
                     </div>
                     
-                ))}
+                    ))}
+                    </>
+                )
+                : (
+                    <p className="text text_type_main-default">
+                        Выбранные ингредиенты отсутствуют
+                    </p>
+                )}
+                
                 
             </div>
             {modal && (
-                <Modal 
-                    closeModal={() => closeModal()}
-                    title='Детали ингредиента'
-                >
-                   <ModalIngredient 
-                        data={ingredient}
-                   />
+                <Modal closeModal={onClickCloseModal} title='Детали ингредиента'>
+                   <ModalIngredient data={ingredient}/>
                 </Modal>
             )}
         </section>
@@ -50,7 +57,8 @@ const Ingredients = props => {
 }
 
 Ingredients.propTypes = {
-
+    title: PropTypes.string.isRequired,
+    data: PropTypes.arrayOf(PropTypes.object)
 }
 
 export default Ingredients

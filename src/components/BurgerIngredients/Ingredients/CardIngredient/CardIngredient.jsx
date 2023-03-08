@@ -6,7 +6,7 @@ import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components
 
 import styles from './CardIngredient.module.css'
 
-const CardIngredient = props => {
+const CardIngredient = (props)=> {
   return (
     <div className={ styles.card }>
         <Counter count={1} size="default" extraClass="m-1" />
@@ -27,6 +27,8 @@ const CardIngredient = props => {
   )
 }
 
-// CardIngredient.propTypes = {}
+CardIngredient.propTypes = {
+  data: PropTypes.object.isRequired
+}
 
 export default CardIngredient

@@ -4,7 +4,7 @@ import { Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-dev
 import NavItem from './NavItem/NavItem'
 import styles from './AppHeader.module.css'
 
-const AppHeader = () => {
+const AppHeader = (props) => {
     return (
         <header className={ styles.header }>
             <nav className={ styles.container}>
@@ -27,7 +27,7 @@ const AppHeader = () => {
                 </section>
                 <section className={ styles.section_right }>
                     <NavItem>
-                        <ProfileIcon type="secondary"/>
+                    <ProfileIcon type="secondary"/>
                         <p className="text text_type_main-default text_color_inactive ml-2">
                             Личный кабинет
                         </p>
@@ -40,10 +40,6 @@ const AppHeader = () => {
             
         </header>
     );
-};
-
-AppHeader.propTypes = {
-    
 };
 
 export default AppHeader;

@@ -49,6 +49,8 @@ const ModalIngredient = props => {
   )
 }
 
-ModalIngredient.propTypes = {}
+ModalIngredient.propTypes = {
+    data: PropTypes.object.isRequired,
+}
 
 export default ModalIngredient

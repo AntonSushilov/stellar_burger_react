@@ -9,8 +9,15 @@
     flex-direction: column;
     gap: 10px;
     height: calc(100vh - 260px - 88px);
-    overflow-y: scroll;
     margin-bottom: 40px;
+}
+
+.item_middle{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    height: calc(100vh - 260px - 88px);
+    overflow-y: scroll;
 }
 
 .item{
@@ -18,8 +25,12 @@
     flex-direction: row;
     justify-content: end;
     align-items: center;
-    gap: 4px
+    gap: 4px;
+    margin-right: 12px;
+}
 
+.item_bun{
+    margin-right: 20px;
 }
 
 .order{

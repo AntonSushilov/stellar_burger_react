@@ -27,6 +27,8 @@ const ModalOrder = props => {
   )
 }
 
-ModalOrder.propTypes = {}
+ModalOrder.propTypes = {
+    orderId: PropTypes.string.isRequired,
+}
 
 export default ModalOrder

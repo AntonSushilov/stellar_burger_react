@@ -1,12 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import styles from './Modal.module.css'
+import styles from './ModalWindow.module.css'
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 
 
 
 
-const Modal = props => {
+const ModalWindow = props => {
     const { children, title, onClose } = props;
 
     
@@ -28,10 +28,10 @@ const Modal = props => {
     )
 }
 
-Modal.propTypes = {
+ModalWindow.propTypes = {
     children: PropTypes.node,
     title: PropTypes.string,
     onClose: PropTypes.func.isRequired
 }
 
-export default Modal
+export default ModalWindow

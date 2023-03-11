@@ -2,7 +2,7 @@ import React from 'react'
 import { useCallback } from 'react'
 import PropTypes from 'prop-types'
 import CardIngredient from './CardIngredient/CardIngredient'
-import ModalWindow from '../../ModalWindow/ModalWindow'
+import Modal from '../../Modal/Modal'
 import ModalIngredient from './IngredientDetails/IngredientDetails'
 import styles from './Ingredients.module.css'
 
@@ -48,9 +48,9 @@ const Ingredients = props => {
                 
             </div>
             {modalVisible && (
-                <ModalWindow onClose={handleClickCloseModal} title='Детали ингредиента'>
+                <Modal onClose={handleClickCloseModal} title='Детали ингредиента'>
                     <ModalIngredient data={ingredient}/>
-                </ModalWindow>
+                </Modal>
             )}
         </section>
     )
@@ -58,7 +58,20 @@ const Ingredients = props => {
 
 Ingredients.propTypes = {
     title: PropTypes.string.isRequired,
-    data: PropTypes.arrayOf(PropTypes.object)
+    data: PropTypes.arrayOf(PropTypes.shape({
+        _id: PropTypes.string,
+        name: PropTypes.string,
+        type: PropTypes.string,
+        proteins: PropTypes.number,
+        fat: PropTypes.number,
+        carbohydrates: PropTypes.number,
+        calories: PropTypes.number,
+        price: PropTypes.number,
+        image: PropTypes.string,
+        image_mobile: PropTypes.string,
+        image_large: PropTypes.string,
+        _v: PropTypes.number,
+    }))
 }
 
 export default Ingredients

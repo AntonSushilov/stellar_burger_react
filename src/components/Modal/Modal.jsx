@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react'
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types'
-import Modal from './Modal/Modal'
+import ModalWindow from './ModalWindow/ModalWindow'
 import ModalOverlay from './ModalOverlay/ModalOverlay'
-import styles from './ModalWindow.module.css'
+import styles from './Modal.module.css'
 
 const modalRoot = document.getElementById("react-modals");
 
-const ModalWindow = props => {
+const Modal = props => {
     const { children, title, onClose } = props;
 
     const handleCloseModal = (e) => {
@@ -29,9 +29,9 @@ const ModalWindow = props => {
     return ReactDOM.createPortal(
         (
             <div className={styles.modal_window}>
-            <Modal title={title} onClose={onClose}>
+            <ModalWindow title={title} onClose={onClose}>
                 {children}
-            </Modal>
+            </ModalWindow>
             <ModalOverlay onClose={onClose}/>
         
             </div>
@@ -41,10 +41,10 @@ const ModalWindow = props => {
 
 }
 
-ModalWindow.propTypes = {
+Modal.propTypes = {
     children: PropTypes.node,
     title: PropTypes.string,
     onClose: PropTypes.func.isRequired
 }
 
-export default ModalWindow
+export default Modal

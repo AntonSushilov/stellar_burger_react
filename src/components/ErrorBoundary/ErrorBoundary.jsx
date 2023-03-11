@@ -1,5 +1,7 @@
 import React from 'react'
+import PropTypes from 'prop-types';
 import styles from './ErrorBoundary.module.css'
+
 export default class ErrorBoundary extends React.Component {
     constructor(props) {
       super(props);
@@ -8,6 +10,7 @@ export default class ErrorBoundary extends React.Component {
   
     // с помощью этого метода меняем стейт компонента при возникновении ошибки:
     static getDerivedStateFromError(error) {
+      console.log(this.state)
       return { hasError: true };
     }
   
@@ -32,4 +35,8 @@ export default class ErrorBoundary extends React.Component {
       return this.props.children;
     }
   }
+
+  ErrorBoundary.propTypes = {
+    children: PropTypes.node
+  };
   

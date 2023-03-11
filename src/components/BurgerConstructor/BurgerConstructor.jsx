@@ -4,7 +4,7 @@ import { useState, useCallback } from 'react';
 import styles from './BurgerConstructor.module.css'
 import { ConstructorElement, DragIcon, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 // import Modal from '../ModalWindow/Modal/Modal'
-import ModalWindow from '../ModalWindow/ModalWindow';
+import Modal from '../Modal/Modal';
 import OrderDetails from './OrderDetails/OrderDetails';
 
 const BurgerConstructor = props => {
@@ -70,16 +70,29 @@ const BurgerConstructor = props => {
                 </Button>
             </div>
             {modalVisible && (
-                <ModalWindow onClose={handleClickCloseModal}>
+                <Modal onClose={handleClickCloseModal}>
                     <OrderDetails orderId='034536'/>
-                </ModalWindow>
+                </Modal>
             )}
         </div>
     )
 }
 
 BurgerConstructor.propTypes = {
-    data: PropTypes.arrayOf(PropTypes.object)
+    data: PropTypes.arrayOf(PropTypes.shape({
+        _id: PropTypes.string,
+        name: PropTypes.string,
+        type: PropTypes.string,
+        proteins: PropTypes.number,
+        fat: PropTypes.number,
+        carbohydrates: PropTypes.number,
+        calories: PropTypes.number,
+        price: PropTypes.number,
+        image: PropTypes.string,
+        image_mobile: PropTypes.string,
+        image_large: PropTypes.string,
+        _v: PropTypes.number,
+    }))
 }
 
 export default BurgerConstructor

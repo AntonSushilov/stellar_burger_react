@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styles from './Modal.module.css'
-import { Button } from '@ya.praktikum/react-developer-burger-ui-components'
+import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import cross from '../../images/cross.png' 
 
 const Modal = props => {
@@ -16,7 +16,8 @@ const Modal = props => {
                     <p className='text text_type_main-large'>
                         {props.title}
                     </p>
-                    <img className={styles.img_cross} src={cross} alt="Крест" onClick={() => closeModal()}/>
+                    <CloseIcon type="primary" onClick={() => closeModal()}/>
+                    {/* <img className={styles.img_cross} src={cross} alt="Крест" /> */}
                 </div>
                 <div className={styles.modal_body}>
                     {props.children}

@@ -2,10 +2,10 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import done from '../../../images/done.png'
 
-import styles from './ModalOrder.module.css'
+import styles from './OrderDetails.module.css'
 
 
-const ModalOrder = props => {
+const OrderDetails = props => {
   return (
     <div className={styles.modal_content}>
         <div className='mb-8'>
@@ -27,8 +27,8 @@ const ModalOrder = props => {
   )
 }
 
-ModalOrder.propTypes = {
+OrderDetails.propTypes = {
     orderId: PropTypes.string.isRequired,
 }
 
-export default ModalOrder
+export default OrderDetails

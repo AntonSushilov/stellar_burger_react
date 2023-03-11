@@ -2,13 +2,14 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styles from './Modal.module.css'
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components'
-import cross from '../../images/cross.png' 
+
+
+
 
 const Modal = props => {
+    const { children, title, onClose } = props;
 
-    const closeModal = () => {
-        props.closeModal()
-    }
+    
     return (
         <div className={styles.modal}>
             <div className={styles.modal_content}>
@@ -16,13 +17,11 @@ const Modal = props => {
                     <p className='text text_type_main-large'>
                         {props.title}
                     </p>
-                    <CloseIcon type="primary" onClick={() => closeModal()}/>
-                    {/* <img className={styles.img_cross} src={cross} alt="Крест" /> */}
+                    <CloseIcon type="primary" onClick={onClose}/>
                 </div>
                 <div className={styles.modal_body}>
                     {props.children}
-                </div>
-                
+                </div>  
             </div>
             
         </div>
@@ -30,8 +29,9 @@ const Modal = props => {
 }
 
 Modal.propTypes = {
-    title: PropTypes.string,
     children: PropTypes.node,
+    title: PropTypes.string,
+    onClose: PropTypes.func.isRequired
 }
 
 export default Modal

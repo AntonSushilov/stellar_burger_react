@@ -2,22 +2,22 @@ import React from 'react'
 import { useCallback } from 'react'
 import PropTypes from 'prop-types'
 import CardIngredient from './CardIngredient/CardIngredient'
-import Modal from '../../Modal/Modal'
-import ModalIngredient from './ModalIngredient/ModalIngredient'
+import ModalWindow from '../../ModalWindow/ModalWindow'
+import ModalIngredient from './IngredientDetails/IngredientDetails'
 import styles from './Ingredients.module.css'
 
 const Ingredients = props => {
-    const [modal, setOpenModal] = React.useState(false)
+    const [modalVisible, setModalVisible] = React.useState(false)
     const [ingredient, setIngredient] = React.useState()
 
 
     const handleOpenModal = (el) => {
-        setOpenModal(true)
+        setModalVisible(true)
         setIngredient(el)
     }
     
     const handleClickCloseModal = useCallback(() => {
-        setOpenModal(false)
+        setModalVisible(false)
     }, [])
 
     return (
@@ -47,10 +47,10 @@ const Ingredients = props => {
                 
                 
             </div>
-            {modal && (
-                <Modal closeModal={handleClickCloseModal} title='Детали ингредиента'>
-                   <ModalIngredient data={ingredient}/>
-                </Modal>
+            {modalVisible && (
+                <ModalWindow onClose={handleClickCloseModal} title='Детали ингредиента'>
+                    <ModalIngredient data={ingredient}/>
+                </ModalWindow>
             )}
         </section>
     )

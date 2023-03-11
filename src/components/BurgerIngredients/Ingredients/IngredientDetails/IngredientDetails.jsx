@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import styles from './ModalIngredient.module.css'
+import styles from './IngredientDetails.module.css'
 
 const ModalIngredient = props => {
   return (

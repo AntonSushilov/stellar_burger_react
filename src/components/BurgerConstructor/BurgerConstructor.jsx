@@ -3,21 +3,22 @@ import PropTypes from 'prop-types'
 import { useState, useCallback } from 'react';
 import styles from './BurgerConstructor.module.css'
 import { ConstructorElement, DragIcon, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components'
-import Modal from '../Modal/Modal'
-import ModalOrder from './ModalOrder/ModalOrder';
+// import Modal from '../ModalWindow/Modal/Modal'
+import ModalWindow from '../ModalWindow/ModalWindow';
+import OrderDetails from './OrderDetails/OrderDetails';
 
 const BurgerConstructor = props => {
-    const [modal, setOpenModal] = React.useState(false)
+    const [modalVisible, setModalVisible] = React.useState(false)
     const [data, setData] = React.useState(props.data)
     const [bunSelected, setBunSelected] = React.useState(props.data.find(el => el.type==='bun'))
     const [summPrice, setSummPrice] = React.useState(610)
 
     const handleOpenModal = (el) => {
-        setOpenModal(true)
+        setModalVisible(true)
     }
     
     const handleClickCloseModal = useCallback(() => {
-        setOpenModal(false)
+        setModalVisible(false)
     }, [])
 
     return (
@@ -68,10 +69,10 @@ const BurgerConstructor = props => {
                     Оформить заказ
                 </Button>
             </div>
-            {modal && (
-                <Modal closeModal={handleClickCloseModal}>
-                    <ModalOrder orderId='034536'/>
-                </Modal>
+            {modalVisible && (
+                <ModalWindow onClose={handleClickCloseModal}>
+                    <OrderDetails orderId='034536'/>
+                </ModalWindow>
             )}
         </div>
     )

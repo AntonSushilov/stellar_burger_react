@@ -11,7 +11,10 @@ const ModalWindow = (props) => {
       <div className={styles.modal_content}>
         <div className={styles.modal_header}>
           <p className="text text_type_main-large">{title}</p>
-          <CloseIcon type="primary" onClick={onClose} />
+          <div style={{cursor: "pointer"}}>
+            <CloseIcon type="primary" onClick={onClose} />
+          </div>
+          
         </div>
         <div className={styles.modal_body}>{children}</div>
       </div>

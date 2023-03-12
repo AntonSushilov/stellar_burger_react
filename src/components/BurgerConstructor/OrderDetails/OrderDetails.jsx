@@ -1,34 +1,29 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import done from '../../../images/done.png'
+import React from "react";
+import PropTypes from "prop-types";
+import done from "../../../images/done.png";
 
-import styles from './OrderDetails.module.css'
+import styles from "./OrderDetails.module.css";
 
-
-const OrderDetails = props => {
+const OrderDetails = (props) => {
   return (
     <div className={styles.modal_content}>
-        <div className='mb-8'>
-            <p className='text text_type_digits-large'>
-                {props.orderId}
-            </p>
-        </div>
-        <p className='text text_type_main-medium  mb-15'>
-            Идентификатор заказа
-        </p>
-        <img className='mb-15' src={done} alt='Заказ оформлен'/>
-        <p className='text text_type_main-medium  mb-2'>
-            Ваш заказ начали готовить
-        </p>
-        <p className='text text_type_main-default text_color_inactive'>
-            Дождитесь готовности на орбитальной станции
-        </p>
+      <div className="mb-8">
+        <p className="text text_type_digits-large">{props.orderId}</p>
+      </div>
+      <p className="text text_type_main-medium  mb-15">Идентификатор заказа</p>
+      <img className="mb-15" src={done} alt="Заказ оформлен" />
+      <p className="text text_type_main-medium  mb-2">
+        Ваш заказ начали готовить
+      </p>
+      <p className="text text_type_main-default text_color_inactive">
+        Дождитесь готовности на орбитальной станции
+      </p>
     </div>
-  )
-}
+  );
+};
 
 OrderDetails.propTypes = {
-    orderId: PropTypes.string.isRequired,
-}
+  orderId: PropTypes.string.isRequired,
+};
 
-export default OrderDetails
+export default OrderDetails;

@@ -1,47 +1,47 @@
-.content{
-    display: flex;
-    flex-direction: column;
-    width: 600px;
+.content {
+  display: flex;
+  flex-direction: column;
+  width: 600px;
 }
 
-.items{
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    height: calc(100vh - 260px - 88px);
-    margin-bottom: 40px;
+.items {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: calc(100vh - 260px - 88px);
+  margin-bottom: 40px;
 }
 
-.item_middle{
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    height: calc(100vh - 260px - 88px);
-    overflow-y: scroll;
+.item_middle {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: calc(100vh - 260px - 88px);
+  overflow-y: scroll;
 }
 
-.item{
-    display: flex;
-    flex-direction: row;
-    justify-content: end;
-    align-items: center;
-    gap: 4px;
-    margin-right: 12px;
+.item {
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+  align-items: center;
+  gap: 4px;
+  margin-right: 12px;
 }
 
-.item_bun{
-    margin-right: 20px;
+.item_bun {
+  margin-right: 20px;
 }
 
-.order{
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    align-items: center;
-    margin-right: 12px;
+.order {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  margin-right: 12px;
 }
 
-.summ_price{
-    display: flex;
-    flex-direction: row;
+.summ_price {
+  display: flex;
+  flex-direction: row;
 }

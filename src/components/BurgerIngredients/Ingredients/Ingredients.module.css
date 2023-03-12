@@ -1,17 +1,15 @@
-.ingredients{
-
+.ingredients {
 }
 
-.title{
-
+.title {
 }
 
-.content{
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
+.content {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
 }
 
-.card{
-    cursor: pointer;
+.card {
+  cursor: pointer;
 }

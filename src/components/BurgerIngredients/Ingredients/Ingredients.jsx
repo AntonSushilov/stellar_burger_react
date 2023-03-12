@@ -5,6 +5,7 @@ import CardIngredient from './CardIngredient/CardIngredient'
 import Modal from '../../Modal/Modal'
 import ModalIngredient from './IngredientDetails/IngredientDetails'
 import styles from './Ingredients.module.css'
+import { PropTypesDataObject } from '../../../utils/types.js'
 
 const Ingredients = props => {
     const [modalVisible, setModalVisible] = React.useState(false)
@@ -58,20 +59,7 @@ const Ingredients = props => {
 
 Ingredients.propTypes = {
     title: PropTypes.string.isRequired,
-    data: PropTypes.arrayOf(PropTypes.shape({
-        _id: PropTypes.string,
-        name: PropTypes.string,
-        type: PropTypes.string,
-        proteins: PropTypes.number,
-        fat: PropTypes.number,
-        carbohydrates: PropTypes.number,
-        calories: PropTypes.number,
-        price: PropTypes.number,
-        image: PropTypes.string,
-        image_mobile: PropTypes.string,
-        image_large: PropTypes.string,
-        _v: PropTypes.number,
-    }))
+    data: PropTypes.arrayOf(PropTypesDataObject)
 }
 
 export default Ingredients

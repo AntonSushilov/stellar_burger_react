@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { useState, useCallback } from 'react';
 import styles from './BurgerConstructor.module.css'
+import { PropTypesDataObject } from '../../utils/types.js'
 import { ConstructorElement, DragIcon, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 // import Modal from '../ModalWindow/Modal/Modal'
 import Modal from '../Modal/Modal';
@@ -79,20 +80,7 @@ const BurgerConstructor = props => {
 }
 
 BurgerConstructor.propTypes = {
-    data: PropTypes.arrayOf(PropTypes.shape({
-        _id: PropTypes.string,
-        name: PropTypes.string,
-        type: PropTypes.string,
-        proteins: PropTypes.number,
-        fat: PropTypes.number,
-        carbohydrates: PropTypes.number,
-        calories: PropTypes.number,
-        price: PropTypes.number,
-        image: PropTypes.string,
-        image_mobile: PropTypes.string,
-        image_large: PropTypes.string,
-        _v: PropTypes.number,
-    }))
+    data: PropTypes.arrayOf(PropTypesDataObject)
 }
 
 export default BurgerConstructor

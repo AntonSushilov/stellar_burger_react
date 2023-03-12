@@ -1,9 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { PropTypesDataObject } from '../../../../utils/types.js'
 import { Counter } from '@ya.praktikum/react-developer-burger-ui-components'
-
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
-
 import styles from './CardIngredient.module.css'
 
 const CardIngredient = (props)=> {
@@ -28,7 +27,7 @@ const CardIngredient = (props)=> {
 }
 
 CardIngredient.propTypes = {
-  data: PropTypes.object.isRequired
+  data: PropTypesDataObject.isRequired
 }
 
 export default CardIngredient

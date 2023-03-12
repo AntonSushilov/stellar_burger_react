@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { PropTypesDataObject } from '../../../../utils/types.js'
 import styles from './IngredientDetails.module.css'
 
 const ModalIngredient = props => {
@@ -50,20 +51,7 @@ const ModalIngredient = props => {
 }
 
 ModalIngredient.propTypes = {
-    data: PropTypes.shape({
-        _id: PropTypes.string,
-        name: PropTypes.string,
-        type: PropTypes.string,
-        proteins: PropTypes.number,
-        fat: PropTypes.number,
-        carbohydrates: PropTypes.number,
-        calories: PropTypes.number,
-        price: PropTypes.number,
-        image: PropTypes.string,
-        image_mobile: PropTypes.string,
-        image_large: PropTypes.string,
-        _v: PropTypes.number,
-    }).isRequired
+    data: PropTypesDataObject.isRequired
 }
 
 export default ModalIngredient

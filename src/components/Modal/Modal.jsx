@@ -1,37 +1,46 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import styles from './Modal.module.css'
-import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components'
-import cross from '../../images/cross.png' 
+import React, { useEffect } from "react";
+import ReactDOM from "react-dom";
+import PropTypes from "prop-types";
+import ModalWindow from "./ModalWindow/ModalWindow";
+import ModalOverlay from "./ModalOverlay/ModalOverlay";
+import styles from "./Modal.module.css";
 
-const Modal = props => {
+const modalRoot = document.getElementById("react-modals");
 
-    const closeModal = () => {
-        props.closeModal()
+const Modal = (props) => {
+  const { children, title, onClose } = props;
+
+  const handleCloseModal = (e) => {
+    if (e.key === "Escape") {
+      onClose();
     }
-    return (
-        <div className={styles.modal}>
-            <div className={styles.modal_content}>
-                <div className={styles.modal_header}>
-                    <p className='text text_type_main-large'>
-                        {props.title}
-                    </p>
-                    <CloseIcon type="primary" onClick={() => closeModal()}/>
-                    {/* <img className={styles.img_cross} src={cross} alt="Крест" /> */}
-                </div>
-                <div className={styles.modal_body}>
-                    {props.children}
-                </div>
-                
-            </div>
-            
-        </div>
-    )
-}
+  };
+
+  useEffect(() => {
+    // Устанавливаем слушатель события при монтировании
+    document.addEventListener("keydown", handleCloseModal);
+
+    // Сбрасываем слушатель события при удалении компонента из DOM
+    return () => {
+      document.removeEventListener("keydown", handleCloseModal);
+    };
+  }, []);
+
+  return ReactDOM.createPortal(
+    <div className={styles.modal_window}>
+      <ModalWindow title={title} onClose={onClose}>
+        {children}
+      </ModalWindow>
+      <ModalOverlay onClose={onClose} />
+    </div>,
+    modalRoot
+  );
+};
 
 Modal.propTypes = {
-    title: PropTypes.string,
-    children: PropTypes.node,
-}
+  children: PropTypes.node,
+  title: PropTypes.string,
+  onClose: PropTypes.func.isRequired,
+};
 
-export default Modal
+export default Modal;

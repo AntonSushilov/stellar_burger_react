@@ -1,9 +1,9 @@
-.nav_item{
-    display: flex;
-    flex-direction: row;
-    margin-right: 8px;
+.nav_item {
+  display: flex;
+  flex-direction: row;
+  margin-right: 8px;
 }
 
-.nav_item:last-child{
-    margin-right: 0; 
+.nav_item:last-child {
+  margin-right: 0;
 }

@@ -36,26 +36,24 @@ const App = (props) => {
   }, []);
 
   return (
-    <ErrorBoundary>
-      <div className={styles.app}>
-        <AppHeader />
-        <main className={styles.container}>
-          <p className="text text_type_main-large mt-10 mb-5">
-            {loading
-              ? "Идет загрузка данных..."
-              : error
-              ? "Возникла ошибка"
-              : "Соберите бургер"}
-          </p>
-          {productsData && (
-            <div className={styles.content}>
-              <BurgerIngredients data={productsData} />
-              <BurgerConstructor data={productsData} />
-            </div>
-          )}
-        </main>
-      </div>
-    </ErrorBoundary>
+    <div className={styles.app}>
+      <AppHeader />
+      <main className={styles.container}>
+        <p className="text text_type_main-large mt-10 mb-5">
+          {loading
+            ? "Идет загрузка данных..."
+            : error
+            ? "Возникла ошибка"
+            : "Соберите бургер"}
+        </p>
+        {productsData && (
+          <div className={styles.content}>
+            <BurgerIngredients data={productsData} />
+            <BurgerConstructor data={productsData} />
+          </div>
+        )}
+      </main>
+    </div>
   );
 };
 

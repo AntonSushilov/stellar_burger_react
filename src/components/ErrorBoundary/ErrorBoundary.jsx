@@ -10,7 +10,7 @@ export default class ErrorBoundary extends React.Component {
 
   // с помощью этого метода меняем стейт компонента при возникновении ошибки:
   static getDerivedStateFromError(error) {
-    console.log(this.state);
+    console.log(error);
     return { hasError: true };
   }
 

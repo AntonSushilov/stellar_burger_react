@@ -13,11 +13,11 @@ import {
 import Modal from "../Modal/Modal";
 import OrderDetails from "./OrderDetails/OrderDetails";
 
-const BurgerConstructor = (props) => {
+const BurgerConstructor = ({ingredients}) => {
   const [modalVisible, setModalVisible] = React.useState(false);
-  const [data, setData] = React.useState(props.data);
+  const [data, setData] = React.useState(ingredients);
   const [bunSelected, setBunSelected] = React.useState(
-    props.data.find((el) => el.type === "bun")
+    ingredients.find((el) => el.type === "bun")
   );
   const [summPrice, setSummPrice] = React.useState(610);
 
@@ -97,7 +97,7 @@ const BurgerConstructor = (props) => {
 };
 
 BurgerConstructor.propTypes = {
-  data: PropTypes.arrayOf(PropTypesDataObject),
+  ingredients: PropTypes.arrayOf(PropTypesDataObject.isRequired).isRequired,
 };
 
 export default BurgerConstructor;

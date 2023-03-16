@@ -7,5 +7,4 @@
   /* height: 720px; */
   height: calc(100vh - 196px - 88px);
   overflow-y: scroll;
-  margin-bottom: 50px;
 }

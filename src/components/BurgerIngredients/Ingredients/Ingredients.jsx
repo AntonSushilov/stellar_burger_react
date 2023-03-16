@@ -7,7 +7,7 @@ import ModalIngredient from "./IngredientDetails/IngredientDetails";
 import styles from "./Ingredients.module.css";
 import { PropTypesDataObject } from "../../../utils/types.js";
 
-const Ingredients = (props) => {
+const Ingredients = ({title, titleId, ingredients}) => {
   const [modalVisible, setModalVisible] = React.useState(false);
   const [ingredient, setIngredient] = React.useState();
 
@@ -22,14 +22,14 @@ const Ingredients = (props) => {
 
   return (
     <section className={styles.ingredients}>
-      <div className={styles.title}>
-        <p className="text text_type_main-medium">{props.title}</p>
+      <div className={styles.title} id={titleId}>
+        <p className="text text_type_main-medium">{title}</p>
       </div>
-      <div className={[styles.content, "mb-10"].join(" ")}>
-        {props.data ? (
+      <div className={[styles.content].join(" ")}>
+        {ingredients ? (
           <>
-            {props.data &&
-              props.data.map((el) => (
+            {ingredients &&
+              ingredients.map((el) => (
                 <div
                   className={styles.card}
                   key={el._id}
@@ -56,7 +56,8 @@ const Ingredients = (props) => {
 
 Ingredients.propTypes = {
   title: PropTypes.string.isRequired,
-  data: PropTypes.arrayOf(PropTypesDataObject),
+  titleId: PropTypes.string.isRequired,
+  ingredients: PropTypes.arrayOf(PropTypesDataObject.isRequired).isRequired,
 };
 
 export default Ingredients;

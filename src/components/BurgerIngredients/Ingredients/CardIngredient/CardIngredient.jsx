@@ -14,6 +14,7 @@ import {
 const CardIngredient = (props) => {
   const { constructorData, setConstructorData } =
   useContext(ConstructorContext);
+  const [count, setCount] = React.useState();
 
   const [modalVisible, setModalVisible] = React.useState(false);
   const [ingredient, setIngredient] = React.useState();
@@ -37,7 +38,7 @@ const CardIngredient = (props) => {
   return (
     <>
       <div className={styles.card} onClick={() => handleOpenModal(props.data)}>
-        <Counter count={1} size="default" extraClass="m-1" />
+        <Counter count={count} size="default" extraClass="m-1" />
         <img src={props.data.image} alt={props.data.name} className="mb-1" />
         <div className={[styles.price, "mb-1"].join(" ")}>
           <CurrencyIcon type="primary" />

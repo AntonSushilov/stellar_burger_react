@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useReducer } from "react";
 import PropTypes from "prop-types";
 import { useState, useCallback } from "react";
 import uuid from "react-uuid";
@@ -19,17 +19,28 @@ import {
   OrderContext,
 } from "../../services/appContext.js";
 
+const initialSummPrice = 0;
+const reducerSummPrice = (state, ingredients) => {
+  let score = ingredients.items.reduce(function (a, b) {
+    return a + (b ? b.price : 0);
+  }, 0);
+  return score;
+};
+
 const BurgerConstructor = () => {
   const [modalVisible, setModalVisible] = React.useState(false);
-
   const { constructorData, setConstructorData } =
     useContext(ConstructorContext);
-
-  const { order, setOrder } =
-    useContext(OrderContext);
+  const { order, setOrder } = useContext(OrderContext);
   const [bunSelected, setBunSelected] = React.useState(null);
   const [ingredientsSelected, setIngredientsSelected] = React.useState([]);
-  const [summPrice, setSummPrice] = React.useState(0);
+  // const [summPrice, setSummPrice] = React.useState(0);
+
+  const [summPrice, setSummPrice] = useReducer(
+    reducerSummPrice,
+    initialSummPrice
+  );
+
   const [loadingOrder, setLoadingOrder] = React.useState(false);
 
   useEffect(() => {
@@ -38,25 +49,16 @@ const BurgerConstructor = () => {
   }, [constructorData]);
 
   useEffect(() => {
-    let score;
-
-    setSummPrice(
-      ingredientsSelected.length > 0
-        ? ingredientsSelected.reduce(function (a, b) {
-            return a + b.price;
-          }, 0)
-        : 0 + bunSelected
-        ? bunSelected.price * 2
-        : 0
-    );
-  }, [bunSelected, ingredientsSelected]);
+    let ingr = ingredientsSelected.map((el) => el);
+    ingr.push(bunSelected,bunSelected);
+    setSummPrice({ items: ingr });
+  }, [ingredientsSelected, bunSelected]);
 
   const postOrder = async () => {
     const url = "https://norma.nomoreparties.space/api/orders";
     let ids = ingredientsSelected.map((el) => el._id);
     if (bunSelected) {
-      ids.push(bunSelected._id);
-      ids.push(bunSelected._id);
+      ids.push(bunSelected._id, bunSelected._id);
     }
 
     const requestOptions = {

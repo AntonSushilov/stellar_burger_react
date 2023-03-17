@@ -6,10 +6,18 @@ import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
 import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
 import PreLoader from "../PreLoader/PreLoader";
 import Error from "../Error/Error";
+import {
+  IngredientsContext,
+  ConstructorContext,
+  OrderContext,
+} from "../../services/appContext.js";
 
 const API_URL = "https://norma.nomoreparties.space/api";
 const App = (props) => {
-  const [productsData, setProductData] = useState(null);
+  const [ingredientsData, setIngredientsData] = useState([]);
+  const [constructorData, setConstructorData] = useState([]);
+  const [order, setOrder] = React.useState(null);
+
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -24,11 +32,11 @@ const App = (props) => {
           );
         }
         const actualData = await response.json();
-        setProductData(actualData.data);
+        setIngredientsData(actualData.data);
         setError(false);
       } catch {
         setError(true);
-        setProductData(null);
+        setIngredientsData(null);
       } finally {
         setLoading(false);
       }
@@ -37,29 +45,38 @@ const App = (props) => {
   }, []);
 
   return (
-    <div className={styles.app}>
-      <AppHeader />
-
-      <main className={styles.container}>
-        {loading ? (
-          <PreLoader />
-        ) : error ? (
-          <Error />
-        ) : (
-          <>
-            <p className="text text_type_main-large mt-10 mb-5">
-              Соберите бургер
-            </p>
-            {productsData && (
-              <div className={styles.content}>
-                <BurgerIngredients ingredients={productsData} />
-                <BurgerConstructor ingredients={productsData} />
-              </div>
-            )}
-          </>
-        )}
-      </main>
-    </div>
+    <IngredientsContext.Provider
+      value={{ ingredientsData, setIngredientsData }}
+    >
+      <ConstructorContext.Provider
+        value={{ constructorData, setConstructorData }}
+      >
+        <OrderContext.Provider value={{ order, setOrder }}>
+          <div className={styles.app}>
+            <AppHeader />
+            <main className={styles.container}>
+              {loading ? (
+                <PreLoader />
+              ) : error ? (
+                <Error />
+              ) : (
+                <>
+                  <p className="text text_type_main-large mt-10 mb-5">
+                    Соберите бургер
+                  </p>
+                  {ingredientsData && (
+                    <div className={styles.content}>
+                      <BurgerIngredients />
+                      <BurgerConstructor />
+                    </div>
+                  )}
+                </>
+              )}
+            </main>
+          </div>
+        </OrderContext.Provider>
+      </ConstructorContext.Provider>
+    </IngredientsContext.Provider>
   );
 };
 

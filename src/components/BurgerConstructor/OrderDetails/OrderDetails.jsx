@@ -8,7 +8,10 @@ const OrderDetails = (props) => {
   return (
     <div className={styles.modal_content}>
       <div className="mb-8">
-        <p className="text text_type_digits-large">{props.orderId}</p>
+      <p className="text text_type_digits-large">
+        {props.loading ? "Загрузка.." : props.orderId}
+        
+        </p>
       </div>
       <p className="text text_type_main-medium  mb-15">Идентификатор заказа</p>
       <img className="mb-15" src={done} alt="Заказ оформлен" />
@@ -23,7 +26,8 @@ const OrderDetails = (props) => {
 };
 
 OrderDetails.propTypes = {
-  orderId: PropTypes.string.isRequired,
+  orderId: PropTypes.number,
+  loading: PropTypes.bool.isRequired
 };
 
 export default OrderDetails;

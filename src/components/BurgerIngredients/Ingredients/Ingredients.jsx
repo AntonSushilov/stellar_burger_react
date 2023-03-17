@@ -2,24 +2,10 @@ import React from "react";
 import { useCallback } from "react";
 import PropTypes from "prop-types";
 import CardIngredient from "./CardIngredient/CardIngredient";
-import Modal from "../../Modal/Modal";
-import ModalIngredient from "./IngredientDetails/IngredientDetails";
 import styles from "./Ingredients.module.css";
 import { PropTypesDataObject } from "../../../utils/types.js";
 
-const Ingredients = ({title, titleId, ingredients}) => {
-  const [modalVisible, setModalVisible] = React.useState(false);
-  const [ingredient, setIngredient] = React.useState();
-
-  const handleOpenModal = (el) => {
-    setModalVisible(true);
-    setIngredient(el);
-  };
-
-  const handleClickCloseModal = useCallback(() => {
-    setModalVisible(false);
-  }, []);
-
+const Ingredients = ({ title, titleId, ingredients }) => {
   return (
     <section className={styles.ingredients}>
       <div className={styles.title} id={titleId}>
@@ -27,29 +13,13 @@ const Ingredients = ({title, titleId, ingredients}) => {
       </div>
       <div className={[styles.content].join(" ")}>
         {ingredients ? (
-          <>
-            {ingredients &&
-              ingredients.map((el) => (
-                <div
-                  className={styles.card}
-                  key={el._id}
-                  onClick={() => handleOpenModal(el)}
-                >
-                  <CardIngredient data={el} />
-                </div>
-              ))}
-          </>
+          ingredients.map((el) => <CardIngredient data={el} key={el._id} />)
         ) : (
           <p className="text text_type_main-default">
             Выбранные ингредиенты отсутствуют
           </p>
         )}
       </div>
-      {modalVisible && (
-        <Modal onClose={handleClickCloseModal} title="Детали ингредиента">
-          <ModalIngredient data={ingredient} />
-        </Modal>
-      )}
     </section>
   );
 };

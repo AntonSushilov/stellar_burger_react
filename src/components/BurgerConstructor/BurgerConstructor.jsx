@@ -18,6 +18,7 @@ import {
   ConstructorContext,
   OrderContext,
 } from "../../services/appContext.js";
+import { requestApi } from "../../utils/requestApi";
 
 const initialSummPrice = 0;
 const reducerSummPrice = (state, ingredients) => {
@@ -55,22 +56,27 @@ const BurgerConstructor = () => {
   }, [ingredientsSelected, bunSelected]);
 
   const postOrder = async () => {
-    const url = "https://norma.nomoreparties.space/api/orders";
     let ids = ingredientsSelected.map((el) => el._id);
     if (bunSelected) {
       ids.push(bunSelected._id, bunSelected._id);
     }
-
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ ingredients: ids }),
     };
+
     setLoadingOrder(true);
-    let response = await fetch(url, requestOptions)
-      .then((response) => response.json())
-      .then((data) => {
-        setOrder(data.order.number);
+    requestApi("/orders", requestOptions)
+      .then((res) => {
+        setOrder(res.order.number);
+        // setError(false);
+      })
+      .catch(() => {
+        // setError(true);
+        setOrder(null);
+      })
+      .finally(() => {
         setLoadingOrder(false);
       });
   };
@@ -156,10 +162,6 @@ const BurgerConstructor = () => {
       )}
     </div>
   );
-};
-
-BurgerConstructor.propTypes = {
-  ingredients: PropTypes.arrayOf(PropTypesDataObject.isRequired),
 };
 
 export default BurgerConstructor;

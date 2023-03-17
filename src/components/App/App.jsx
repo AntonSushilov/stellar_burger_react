@@ -11,8 +11,8 @@ import {
   ConstructorContext,
   OrderContext,
 } from "../../services/appContext.js";
+import { requestApi } from "../../utils/requestApi";
 
-const API_URL = "https://norma.nomoreparties.space/api";
 const App = (props) => {
   const [ingredientsData, setIngredientsData] = useState([]);
   const [constructorData, setConstructorData] = useState([]);
@@ -22,26 +22,18 @@ const App = (props) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const getProductsData = async () => {
-      setLoading(true);
-      try {
-        const response = await fetch(`${API_URL}/ingredients`);
-        if (!response.ok) {
-          throw new Error(
-            `This is an HTTP error: The status is ${response.status}`
-          );
-        }
-        const actualData = await response.json();
-        setIngredientsData(actualData.data);
+    requestApi("/ingredients")
+      .then((res) => {
+        setIngredientsData(res.data);
         setError(false);
-      } catch {
+      })
+      .catch(() => {
         setError(true);
         setIngredientsData(null);
-      } finally {
+      })
+      .finally(() => {
         setLoading(false);
-      }
-    };
-    getProductsData();
+      });
   }, []);
 
   return (

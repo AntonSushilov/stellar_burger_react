@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useReducer } from "react";
 import PropTypes from "prop-types";
 import { useState, useCallback } from "react";
-import uuid from "react-uuid";
 import styles from "./BurgerConstructor.module.css";
 import { PropTypesDataObject } from "../../utils/types.js";
 import {
@@ -112,7 +111,7 @@ const BurgerConstructor = () => {
         <div className={styles.item_middle}>
           {ingredientsSelected &&
             ingredientsSelected.map((el, index) => (
-              <div key={uuid()} id={el._id} className={styles.item}>
+              <div key={el.key} id={el._id} className={styles.item}>
                 <DragIcon type="primary" />
                 <ConstructorElement
                   type=""

@@ -5,6 +5,7 @@ import { Counter } from "@ya.praktikum/react-developer-burger-ui-components";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import Modal from "../../../Modal/Modal";
 import ModalIngredient from "../IngredientDetails/IngredientDetails";
+import uuid from "react-uuid";
 import styles from "./CardIngredient.module.css";
 import {
   IngredientsContext,
@@ -21,9 +22,9 @@ const CardIngredient = (props) => {
 
   const handleOpenModal = (el) => {
     if(el.type === "bun"){
-      setConstructorData([...constructorData.filter((el)=>el.type !== "bun"), el])
+      setConstructorData([...constructorData.filter((el)=>el.type !== "bun"), {...el, key:uuid()}])
     }else{
-      setConstructorData([...constructorData, el])
+      setConstructorData([...constructorData, {...el, key:uuid()}])
     }
     setModalVisible(true);
     setIngredient(el);

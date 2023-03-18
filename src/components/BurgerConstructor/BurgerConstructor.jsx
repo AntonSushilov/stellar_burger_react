@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect, useReducer } from "react";
 import PropTypes from "prop-types";
 import { useState, useCallback } from "react";
 import styles from "./BurgerConstructor.module.css";
@@ -12,60 +12,127 @@ import {
 // import Modal from '../ModalWindow/Modal/Modal'
 import Modal from "../Modal/Modal";
 import OrderDetails from "./OrderDetails/OrderDetails";
+import {
+  IngredientsContext,
+  ConstructorContext,
+  OrderContext,
+} from "../../services/appContext.js";
+import { requestApi } from "../../utils/requestApi";
 
-const BurgerConstructor = ({ingredients}) => {
+const initialSummPrice = 0;
+const reducerSummPrice = (state, ingredients) => {
+  let score = ingredients.items.reduce(function (a, b) {
+    return a + (b ? b.price : 0);
+  }, 0);
+  return score;
+};
+
+const BurgerConstructor = () => {
   const [modalVisible, setModalVisible] = React.useState(false);
-  const [data, setData] = React.useState(ingredients);
-  const [bunSelected, setBunSelected] = React.useState(
-    ingredients.find((el) => el.type === "bun")
+  const { constructorData, setConstructorData } =
+    useContext(ConstructorContext);
+  const { order, setOrder } = useContext(OrderContext);
+  const [bunSelected, setBunSelected] = React.useState(null);
+  const [ingredientsSelected, setIngredientsSelected] = React.useState([]);
+  // const [summPrice, setSummPrice] = React.useState(0);
+
+  const [summPrice, setSummPrice] = useReducer(
+    reducerSummPrice,
+    initialSummPrice
   );
-  const [summPrice, setSummPrice] = React.useState(610);
+
+  const [loadingOrder, setLoadingOrder] = React.useState(false);
+
+  useEffect(() => {
+    setBunSelected(constructorData.find((el) => el.type === "bun"));
+    setIngredientsSelected(constructorData.filter((el) => el.type !== "bun"));
+  }, [constructorData]);
+
+  useEffect(() => {
+    let ingr = ingredientsSelected.map((el) => el);
+    ingr.push(bunSelected,bunSelected);
+    setSummPrice({ items: ingr });
+  }, [ingredientsSelected, bunSelected]);
+
+  const postOrder = async () => {
+    let ids = ingredientsSelected.map((el) => el._id);
+    if (bunSelected) {
+      ids.push(bunSelected._id, bunSelected._id);
+    }
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ingredients: ids }),
+    };
+
+    setLoadingOrder(true);
+    requestApi("/orders", requestOptions)
+      .then((res) => {
+        setOrder(res.order.number);
+        // setError(false);
+      })
+      .catch(() => {
+        // setError(true);
+        setOrder(null);
+      })
+      .finally(() => {
+        setLoadingOrder(false);
+      });
+  };
 
   const handleOpenModal = (el) => {
-    setModalVisible(true);
+    if (constructorData.length > 0) {
+      postOrder();
+      setModalVisible(true);
+    } else {
+      alert("Выберите ингредиенты.");
+    }
   };
 
   const handleClickCloseModal = useCallback(() => {
     setModalVisible(false);
+    setOrder(null);
   }, []);
 
   return (
     <div className={styles.content}>
       <div className={[styles.items, "text text_type_main-default"].join(" ")}>
         <div className={[styles.item, styles.item_bun].join(" ")}>
-          <ConstructorElement
-            type="top"
-            isLocked={true}
-            text={bunSelected.name + " (верх)"}
-            price={bunSelected.price}
-            thumbnail={bunSelected.image}
-          />
+          {bunSelected && (
+            <ConstructorElement
+              type="top"
+              isLocked={true}
+              text={bunSelected.name + " (верх)"}
+              price={bunSelected.price}
+              thumbnail={bunSelected.image}
+            />
+          )}
         </div>
         <div className={styles.item_middle}>
-          {data &&
-            data
-              .filter((el) => el.type !== "bun")
-              .map((el, index) => (
-                <div key={el._id} className={styles.item}>
-                  <DragIcon type="primary" />
-                  <ConstructorElement
-                    type=""
-                    isLocked={false}
-                    text={el.name}
-                    price={el.price}
-                    thumbnail={el.image}
-                  />
-                </div>
-              ))}
+          {ingredientsSelected &&
+            ingredientsSelected.map((el, index) => (
+              <div key={el.key} id={el._id} className={styles.item}>
+                <DragIcon type="primary" />
+                <ConstructorElement
+                  type=""
+                  isLocked={false}
+                  text={el.name}
+                  price={el.price}
+                  thumbnail={el.image}
+                />
+              </div>
+            ))}
         </div>
         <div className={[styles.item, styles.item_bun].join(" ")}>
-          <ConstructorElement
-            type="bottom"
-            isLocked={true}
-            text={bunSelected.name + " (низ)"}
-            price={bunSelected.price}
-            thumbnail={bunSelected.image}
-          />
+          {bunSelected && (
+            <ConstructorElement
+              type="bottom"
+              isLocked={true}
+              text={bunSelected.name + " (низ)"}
+              price={bunSelected.price}
+              thumbnail={bunSelected.image}
+            />
+          )}
         </div>
       </div>
       <div className={styles.order}>
@@ -89,15 +156,11 @@ const BurgerConstructor = ({ingredients}) => {
       </div>
       {modalVisible && (
         <Modal onClose={handleClickCloseModal}>
-          <OrderDetails orderId="034536" />
+          <OrderDetails loading={loadingOrder} orderId={order} />
         </Modal>
       )}
     </div>
   );
-};
-
-BurgerConstructor.propTypes = {
-  ingredients: PropTypes.arrayOf(PropTypesDataObject.isRequired).isRequired,
 };
 
 export default BurgerConstructor;

@@ -4,6 +4,7 @@
 
 .content {
   width: 600px;
+  
   /* height: 720px; */
   height: calc(100vh - 196px - 88px);
   overflow-y: scroll;

@@ -1,23 +1,19 @@
-import React, { useContext, useEffect, useReducer } from "react";
-import PropTypes from "prop-types";
-import { useState, useCallback } from "react";
+import React, {
+  useEffect,
+  useReducer,
+  useCallback,
+} from "react";
+import { useSelector, shallowEqual } from "react-redux";
+
 import styles from "./BurgerConstructor.module.css";
-import { PropTypesDataObject } from "../../utils/types.js";
 import {
   ConstructorElement,
   DragIcon,
   CurrencyIcon,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-// import Modal from '../ModalWindow/Modal/Modal'
 import Modal from "../Modal/Modal";
 import OrderDetails from "./OrderDetails/OrderDetails";
-import {
-  IngredientsContext,
-  ConstructorContext,
-  OrderContext,
-} from "../../services/appContext.js";
-import { requestApi } from "../../utils/requestApi";
 
 const initialSummPrice = 0;
 const reducerSummPrice = (state, ingredients) => {
@@ -28,89 +24,65 @@ const reducerSummPrice = (state, ingredients) => {
 };
 
 const BurgerConstructor = () => {
+  const {
+    ingredientsConstructorData,
+    bunConstructor,
+    ingredientsConstructorRequest,
+    ingredientsConstructorFailed,
+  } = useSelector(
+    (store) => ({
+      ingredientsConstructorData:
+        store.ingredientsConstructorReducer.ingredientsConstructor,
+      bunConstructor: store.ingredientsConstructorReducer.bunConstructor,
+      ingredientsConstructorRequest:
+        store.ingredientsConstructorReducer.ingredientsConstructorRequest,
+      ingredientsConstructorFailed:
+        store.ingredientsConstructorReducer.ingredientsConstructorFailed,
+    }),
+    shallowEqual
+  );
+
+  // console.log(useSelector((store) => store.ingredientsConstructorReducer));
+
   const [modalVisible, setModalVisible] = React.useState(false);
-  const { constructorData, setConstructorData } =
-    useContext(ConstructorContext);
-  const { order, setOrder } = useContext(OrderContext);
-  const [bunSelected, setBunSelected] = React.useState(null);
-  const [ingredientsSelected, setIngredientsSelected] = React.useState([]);
-  // const [summPrice, setSummPrice] = React.useState(0);
 
   const [summPrice, setSummPrice] = useReducer(
     reducerSummPrice,
     initialSummPrice
   );
 
-  const [loadingOrder, setLoadingOrder] = React.useState(false);
-
   useEffect(() => {
-    setBunSelected(constructorData.find((el) => el.type === "bun"));
-    setIngredientsSelected(constructorData.filter((el) => el.type !== "bun"));
-  }, [constructorData]);
-
-  useEffect(() => {
-    let ingr = ingredientsSelected.map((el) => el);
-    ingr.push(bunSelected,bunSelected);
+    let ingr = ingredientsConstructorData.map((el) => el);
+    ingr.push(bunConstructor, bunConstructor);
     setSummPrice({ items: ingr });
-  }, [ingredientsSelected, bunSelected]);
+  }, [ingredientsConstructorData, bunConstructor]);
 
-  const postOrder = async () => {
-    let ids = ingredientsSelected.map((el) => el._id);
-    if (bunSelected) {
-      ids.push(bunSelected._id, bunSelected._id);
-    }
-    const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ingredients: ids }),
-    };
-
-    setLoadingOrder(true);
-    requestApi("/orders", requestOptions)
-      .then((res) => {
-        setOrder(res.order.number);
-        // setError(false);
-      })
-      .catch(() => {
-        // setError(true);
-        setOrder(null);
-      })
-      .finally(() => {
-        setLoadingOrder(false);
-      });
-  };
-
-  const handleOpenModal = (el) => {
-    if (constructorData.length > 0) {
-      postOrder();
-      setModalVisible(true);
-    } else {
-      alert("Выберите ингредиенты.");
-    }
+  const handleOpenModal = (e) => {
+    e.preventDefault()
+    setModalVisible(true);
   };
 
   const handleClickCloseModal = useCallback(() => {
     setModalVisible(false);
-    setOrder(null);
   }, []);
 
   return (
     <div className={styles.content}>
       <div className={[styles.items, "text text_type_main-default"].join(" ")}>
         <div className={[styles.item, styles.item_bun].join(" ")}>
-          {bunSelected && (
+          {bunConstructor && (
             <ConstructorElement
               type="top"
               isLocked={true}
-              text={bunSelected.name + " (верх)"}
-              price={bunSelected.price}
-              thumbnail={bunSelected.image}
+              text={bunConstructor.name + " (верх)"}
+              price={bunConstructor.price}
+              thumbnail={bunConstructor.image}
             />
           )}
         </div>
         <div className={styles.item_middle}>
-          {ingredientsSelected &&
-            ingredientsSelected.map((el, index) => (
+          {ingredientsConstructorData &&
+            ingredientsConstructorData.map((el, index) => (
               <div key={el.key} id={el._id} className={styles.item}>
                 <DragIcon type="primary" />
                 <ConstructorElement
@@ -124,13 +96,13 @@ const BurgerConstructor = () => {
             ))}
         </div>
         <div className={[styles.item, styles.item_bun].join(" ")}>
-          {bunSelected && (
+          {bunConstructor && (
             <ConstructorElement
               type="bottom"
               isLocked={true}
-              text={bunSelected.name + " (низ)"}
-              price={bunSelected.price}
-              thumbnail={bunSelected.image}
+              text={bunConstructor.name + " (низ)"}
+              price={bunConstructor.price}
+              thumbnail={bunConstructor.image}
             />
           )}
         </div>
@@ -149,14 +121,14 @@ const BurgerConstructor = () => {
           htmlType="button"
           type="primary"
           size="medium"
-          onClick={() => handleOpenModal()}
+          onClick={handleOpenModal}
         >
           Оформить заказ
         </Button>
       </div>
       {modalVisible && (
         <Modal onClose={handleClickCloseModal}>
-          <OrderDetails loading={loadingOrder} orderId={order} />
+          <OrderDetails />
         </Modal>
       )}
     </div>

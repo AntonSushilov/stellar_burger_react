@@ -1,19 +1,29 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { createStore, applyMiddleware  } from "redux";
+import thunk from 'redux-thunk';
+import { Provider } from "react-redux";
 import "./index.css";
 import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary";
 import App from "./components/App/App";
 
 import reportWebVitals from "./reportWebVitals";
+import {rootReducer} from './services/reducers'
+
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
+
+const store = createStore(rootReducer, applyMiddleware(thunk)); 
+
 root.render(
   <React.StrictMode>
-    <ErrorBoundary>
-      <App />
-    </ErrorBoundary>
+    <Provider store={store}>
+      <ErrorBoundary>
+        <App />
+      </ErrorBoundary>
+    </Provider>
   </React.StrictMode>
 );
 

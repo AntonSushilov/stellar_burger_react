@@ -1,5 +1,7 @@
-import React, { useContext, useCallback } from "react";
+import React, { useContext, useCallback, useEffect } from "react";
 import PropTypes from "prop-types";
+import { useDispatch, useSelector, shallowEqual } from "react-redux";
+
 import { PropTypesDataObject } from "../../../../utils/types.js";
 import { Counter } from "@ya.praktikum/react-developer-burger-ui-components";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
@@ -7,34 +9,51 @@ import Modal from "../../../Modal/Modal";
 import ModalIngredient from "../IngredientDetails/IngredientDetails";
 import uuid from "react-uuid";
 import styles from "./CardIngredient.module.css";
+
 import {
-  IngredientsContext,
-  ConstructorContext,
-} from "../../../../services/appContext.js";
+  addIngredientConstructor,
+  addBunConstructor,
+} from "../../../../services/BurgerConstructor/action";
 
 const CardIngredient = (props) => {
-  const { constructorData, setConstructorData } =
-  useContext(ConstructorContext);
   const [count, setCount] = React.useState();
+  const { ingredientsConstructorData, bunConstructor } = useSelector(
+    (store) => ({
+      ingredientsConstructorData:
+        store.ingredientsConstructorReducer.ingredientsConstructor,
+      bunConstructor: store.ingredientsConstructorReducer.bunConstructor,
+    }),
+    shallowEqual
+  );
+
+  useEffect(() => {
+    if (props.data.type == "bun" && bunConstructor) {
+      setCount(bunConstructor._id == props.data._id ? 1 : 0);
+    } else {
+      setCount(
+        ingredientsConstructorData.filter((el) => el._id === props.data._id)
+          .length
+      );
+    }
+  }, [ingredientsConstructorData, bunConstructor]);
 
   const [modalVisible, setModalVisible] = React.useState(false);
   const [ingredient, setIngredient] = React.useState();
 
+  const dispatch = useDispatch();
   const handleOpenModal = (el) => {
-    if(el.type === "bun"){
-      setConstructorData([...constructorData.filter((el)=>el.type !== "bun"), {...el, key:uuid()}])
-    }else{
-      setConstructorData([...constructorData, {...el, key:uuid()}])
+    if (el.type === "bun") {
+      dispatch(addBunConstructor({ ...el, key: uuid() }));
+    } else {
+      dispatch(addIngredientConstructor({ ...el, key: uuid() }));
     }
     setModalVisible(true);
     setIngredient(el);
-
   };
 
   const handleClickCloseModal = useCallback(() => {
     setModalVisible(false);
   }, []);
-
 
   return (
     <>

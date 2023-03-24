@@ -1,18 +1,34 @@
 import React, { useMemo, useContext } from "react";
 import PropTypes from "prop-types";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { PropTypesDataObject } from "../../utils/types.js";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
+import PreLoader from "../PreLoader/PreLoader";
+import Error from "../Error/Error";
 import Ingredients from "./Ingredients/Ingredients";
 import styles from "./BurgerIngredients.module.css";
-import {
-  IngredientsContext,
-  ConstructorContext,
-} from "../../services/appContext.js";
-
+import { useDispatch, useSelector, shallowEqual } from "react-redux";
+import { getIngredients } from "../../services/BurgerIngredients/action";
 const BurgerIngredients = () => {
-  const { ingredientsData, setIngredientsData } =
-    useContext(IngredientsContext);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    // Отправляем экшен-функцию
+    dispatch(getIngredients());
+  }, []);
+
+  const {
+    ingredientsData,
+    ingredientsRequest,
+    ingredientsFailed,
+  } = useSelector(
+    (store) => ({
+      ingredientsData: store.ingredientsReducer.ingredients,
+      ingredientsRequest: store.ingredientsReducer.ingredientsRequest,
+      ingredientsFailed: store.ingredientsReducer.ingredientsFailed,
+    }),
+    shallowEqual
+  );
 
   const [currentTab, setCurrentTab] = React.useState("buns");
 
@@ -39,27 +55,51 @@ const BurgerIngredients = () => {
 
   return (
     <section>
-      <div className={[styles.tabs].join(" ")}>
-        <Tab value="buns" active={currentTab === "buns"} onClick={onTabClick}>
-          Булки
-        </Tab>
-        <Tab
-          value="sauces"
-          active={currentTab === "sauces"}
-          onClick={onTabClick}
-        >
-          Соусы
-        </Tab>
-        <Tab value="mains" active={currentTab === "mains"} onClick={onTabClick}>
-          Начинки
-        </Tab>
-      </div>
-      {ingredientsData && (
-        <div className={styles.content}>
-          <Ingredients title="Булки" titleId="buns" ingredients={buns} />
-          <Ingredients title="Соусы" titleId="sauces" ingredients={sauces} />
-          <Ingredients title="Начинки" titleId="mains" ingredients={mains} />
-        </div>
+      {ingredientsRequest ? (
+        <PreLoader />
+      ) : ingredientsFailed ? (
+        <Error />
+      ) : (
+        <>
+          <div className={[styles.tabs].join(" ")}>
+            <Tab
+              value="buns"
+              active={currentTab === "buns"}
+              onClick={onTabClick}
+            >
+              Булки
+            </Tab>
+            <Tab
+              value="sauces"
+              active={currentTab === "sauces"}
+              onClick={onTabClick}
+            >
+              Соусы
+            </Tab>
+            <Tab
+              value="mains"
+              active={currentTab === "mains"}
+              onClick={onTabClick}
+            >
+              Начинки
+            </Tab>
+          </div>
+          {ingredientsData && (
+            <div className={styles.content}>
+              <Ingredients title="Булки" titleId="buns" ingredients={buns} />
+              <Ingredients
+                title="Соусы"
+                titleId="sauces"
+                ingredients={sauces}
+              />
+              <Ingredients
+                title="Начинки"
+                titleId="mains"
+                ingredients={mains}
+              />
+            </div>
+          )}
+        </>
       )}
     </section>
   );

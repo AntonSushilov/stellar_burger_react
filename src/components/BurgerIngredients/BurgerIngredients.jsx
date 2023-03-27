@@ -1,7 +1,5 @@
-import React, { useMemo, useContext } from "react";
-import PropTypes from "prop-types";
-import { useState, useEffect } from "react";
-import { PropTypesDataObject } from "../../utils/types.js";
+import React, { useMemo } from "react";
+import { useEffect } from "react";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import PreLoader from "../PreLoader/PreLoader";
 import Error from "../Error/Error";
@@ -11,24 +9,20 @@ import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import { getIngredients } from "../../services/BurgerIngredients/action";
 const BurgerIngredients = () => {
   const dispatch = useDispatch();
-
   useEffect(() => {
     // Отправляем экшен-функцию
     dispatch(getIngredients());
   }, []);
 
-  const {
-    ingredientsData,
-    ingredientsRequest,
-    ingredientsFailed,
-  } = useSelector(
-    (store) => ({
-      ingredientsData: store.ingredientsReducer.ingredients,
-      ingredientsRequest: store.ingredientsReducer.ingredientsRequest,
-      ingredientsFailed: store.ingredientsReducer.ingredientsFailed,
-    }),
-    shallowEqual
-  );
+  const { ingredientsData, ingredientsRequest, ingredientsFailed } =
+    useSelector(
+      (store) => ({
+        ingredientsData: store.ingredientsReducer.ingredients,
+        ingredientsRequest: store.ingredientsReducer.ingredientsRequest,
+        ingredientsFailed: store.ingredientsReducer.ingredientsFailed,
+      }),
+      shallowEqual
+    );
 
   const [currentTab, setCurrentTab] = React.useState("buns");
 

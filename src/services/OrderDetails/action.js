@@ -1,5 +1,11 @@
 import { requestApi } from '../../utils/requestApi'
-import { GET_ORGER_DETAILS_REQUEST, GET_ORGER_DETAILS_SUCCESS, GET_ORGER_DETAILS_FAILED } from './type'
+import {
+  GET_ORGER_DETAILS_REQUEST,
+  GET_ORGER_DETAILS_SUCCESS,
+  GET_ORGER_DETAILS_FAILED,
+
+  DELETE_ORGER_DETAILS
+} from './type'
 
 
 export function getOrderDetails(ids) {
@@ -23,6 +29,17 @@ export function getOrderDetails(ids) {
           type: GET_ORGER_DETAILS_FAILED
         });
       }
+    });
+  };
+}
+
+
+export function deleteOrderDetails() {
+  return function (dispatch) {
+    dispatch({
+      type: DELETE_ORGER_DETAILS,
+      orderDetails: null
+
     });
   };
 }

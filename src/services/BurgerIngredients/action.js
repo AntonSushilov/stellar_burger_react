@@ -1,5 +1,11 @@
 import { requestApi } from '../../utils/requestApi'
-import { GET_INGREDIENTS_REQUEST, GET_INGREDIENTS_SUCCESS, GET_INGREDIENTS_FAILED } from './type'
+import {
+  GET_INGREDIENTS_REQUEST,
+  GET_INGREDIENTS_SUCCESS,
+  GET_INGREDIENTS_FAILED,
+  SET_SELECTED_INGREDIENT,
+  DELETE_SELECTED_INGREDIENT
+} from './type'
 
 
 export function getIngredients() {
@@ -22,4 +28,20 @@ export function getIngredients() {
   };
 }
 
+export function setSelectIngredient(el) {
+  return function (dispatch) {
+    dispatch({
+      type: SET_SELECTED_INGREDIENT,
+      ingredient: el
+    });
+  }
+}
+
+export function deleteSelectIngredient() {
+  return function (dispatch) {
+    dispatch({
+      type: DELETE_SELECTED_INGREDIENT
+    });
+  }
+}
 

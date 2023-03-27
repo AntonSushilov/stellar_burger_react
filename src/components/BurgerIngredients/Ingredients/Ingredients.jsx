@@ -1,5 +1,3 @@
-import React from "react";
-import { useCallback } from "react";
 import PropTypes from "prop-types";
 import CardIngredient from "./CardIngredient/CardIngredient";
 import styles from "./Ingredients.module.css";

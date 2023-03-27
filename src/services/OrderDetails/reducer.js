@@ -1,4 +1,10 @@
-import { GET_ORGER_DETAILS_REQUEST, GET_ORGER_DETAILS_SUCCESS, GET_ORGER_DETAILS_FAILED } from './type'
+import {
+  GET_ORGER_DETAILS_REQUEST,
+  GET_ORGER_DETAILS_SUCCESS,
+  GET_ORGER_DETAILS_FAILED,
+
+  DELETE_ORGER_DETAILS
+} from './type'
 
 const initialState = {
   orderDetails: null,
@@ -19,6 +25,9 @@ export const orderDetailsReducer = (state = initialState, action) => {
     }
     case GET_ORGER_DETAILS_FAILED: {
       return { ...state, orderDetailsFailed: true, orderDetailsRequest: false };
+    }
+    case DELETE_ORGER_DETAILS: {
+      return { ...state, orderDetails: null };
     }
     default: {
       return state;

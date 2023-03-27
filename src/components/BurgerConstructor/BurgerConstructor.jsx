@@ -1,19 +1,15 @@
-import React, {
-  useEffect,
-  useReducer,
-  useCallback,
-} from "react";
-import { useSelector, shallowEqual } from "react-redux";
-
-import styles from "./BurgerConstructor.module.css";
+import React, { useEffect, useReducer, useCallback } from "react";
+import { useSelector, shallowEqual, useDispatch } from "react-redux";
+import Modal from "../Modal/Modal";
+import OrderDetails from "./OrderDetails/OrderDetails";
+import { deleteOrderDetails } from "../../services/OrderDetails/action";
 import {
   ConstructorElement,
   DragIcon,
   CurrencyIcon,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import Modal from "../Modal/Modal";
-import OrderDetails from "./OrderDetails/OrderDetails";
+import styles from "./BurgerConstructor.module.css";
 
 const initialSummPrice = 0;
 const reducerSummPrice = (state, ingredients) => {
@@ -24,11 +20,14 @@ const reducerSummPrice = (state, ingredients) => {
 };
 
 const BurgerConstructor = () => {
+  const dispatch = useDispatch();
+
   const {
     ingredientsConstructorData,
     bunConstructor,
     ingredientsConstructorRequest,
     ingredientsConstructorFailed,
+    orderDetails,
   } = useSelector(
     (store) => ({
       ingredientsConstructorData:
@@ -38,11 +37,10 @@ const BurgerConstructor = () => {
         store.ingredientsConstructorReducer.ingredientsConstructorRequest,
       ingredientsConstructorFailed:
         store.ingredientsConstructorReducer.ingredientsConstructorFailed,
+      orderDetails: store.orderDetailsReducer.orderDetails,
     }),
     shallowEqual
   );
-
-  // console.log(useSelector((store) => store.ingredientsConstructorReducer));
 
   const [modalVisible, setModalVisible] = React.useState(false);
 
@@ -58,11 +56,16 @@ const BurgerConstructor = () => {
   }, [ingredientsConstructorData, bunConstructor]);
 
   const handleOpenModal = (e) => {
-    e.preventDefault()
-    setModalVisible(true);
+    e.preventDefault();
+    if (bunConstructor && ingredientsConstructorData.length) {
+      setModalVisible(true);
+    } else {
+      alert("Добавьте булку и ингредиенты");
+    }
   };
 
   const handleClickCloseModal = useCallback(() => {
+    dispatch(deleteOrderDetails());
     setModalVisible(false);
   }, []);
 

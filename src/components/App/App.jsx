@@ -1,14 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
-import PropTypes from "prop-types";
-import styles from "./App.module.css";
 import AppHeader from "../AppHeader/AppHeader";
 import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
 import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
-import PreLoader from "../PreLoader/PreLoader";
-import Error from "../Error/Error";
+import styles from "./App.module.css";
 
-const App = (props) => {
+const App = () => {
   return (
     <div className={styles.app}>
       <AppHeader />

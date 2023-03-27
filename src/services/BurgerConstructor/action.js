@@ -4,6 +4,9 @@ import {
   ADD_INGREDIENT_CONSTRUCTOR_SUCCESS,
   ADD_INGREDIENT_CONSTRUCTOR_FAILED,
 
+  SORT_INGREDIENTS_CONSTRUCTOR,
+  DELETE_INGREDIENT_CONSTRUCTOR,
+
   ADD_BUN_CONSTRUCTOR_REQUEST,
   ADD_BUN_CONSTRUCTOR_SUCCESS,
   ADD_BUN_CONSTRUCTOR_FAILED
@@ -24,6 +27,26 @@ export function addIngredientConstructor(ingredient) {
     dispatch({
       type: ADD_INGREDIENT_CONSTRUCTOR_FAILED
     });
+  };
+}
+
+export function sortIngredientConstructor(indredients) {
+  return function (dispatch) {
+    dispatch({
+      type: SORT_INGREDIENTS_CONSTRUCTOR,
+      indredients: indredients
+    });
+
+  };
+}
+
+export function deleteIngredientConstructor(key) {
+  return function (dispatch) {
+    dispatch({
+      type: DELETE_INGREDIENT_CONSTRUCTOR,
+      key: key
+    });
+
   };
 }
 

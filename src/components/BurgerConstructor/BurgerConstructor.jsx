@@ -10,7 +10,14 @@ import {
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./BurgerConstructor.module.css";
-
+import { useDrop } from "react-dnd";
+import uuid from "react-uuid";
+import {
+  addIngredientConstructor,
+  addBunConstructor,
+  sortIngredientConstructor
+} from "../../services/BurgerConstructor/action";
+import { IngredientCard } from "./IngredientCard/IngredientCard";
 const initialSummPrice = 0;
 const reducerSummPrice = (state, ingredients) => {
   let score = ingredients.items.reduce(function (a, b) {
@@ -20,6 +27,34 @@ const reducerSummPrice = (state, ingredients) => {
 };
 
 const BurgerConstructor = () => {
+  const { ingredientsData } =
+    useSelector(
+      (store) => ({
+        ingredientsData: store.ingredientsReducer.ingredients,
+      }),
+      shallowEqual
+    );
+
+  const onDropHandler = (id) => {
+    console.log("itemId", id);
+    const el = ingredientsData.find((el) => el._id === id._id)
+    console.log(ingredientsData)
+    if (el.type === "bun") {
+      dispatch(addBunConstructor({ ...el, key: uuid() }));
+    } else {
+      dispatch(addIngredientConstructor({ ...el, key: uuid() }));
+    }
+  };
+
+  const [, dropTarget] = useDrop({
+    accept: "ingredient",
+    drop(id) {
+      onDropHandler(id);
+    },
+  });
+
+ 
+
   const dispatch = useDispatch();
 
   const {
@@ -69,9 +104,20 @@ const BurgerConstructor = () => {
     setModalVisible(false);
   }, []);
 
+  const moveCard = (dragIndex, hoverIndex) => {
+    const dragIngredient = ingredientsConstructorData[dragIndex]
+    const newIngredients = [...ingredientsConstructorData];
+    newIngredients.splice(dragIndex, 1);
+    newIngredients.splice(hoverIndex, 0, dragIngredient)
+    dispatch(sortIngredientConstructor(newIngredients))
+  }
+
   return (
     <div className={styles.content}>
-      <div className={[styles.items, "text text_type_main-default"].join(" ")}>
+      <div
+        className={[styles.items, "text text_type_main-default"].join(" ")}
+        ref={dropTarget}
+      >
         <div className={[styles.item, styles.item_bun].join(" ")}>
           {bunConstructor && (
             <ConstructorElement
@@ -86,16 +132,7 @@ const BurgerConstructor = () => {
         <div className={styles.item_middle}>
           {ingredientsConstructorData &&
             ingredientsConstructorData.map((el, index) => (
-              <div key={el.key} id={el._id} className={styles.item}>
-                <DragIcon type="primary" />
-                <ConstructorElement
-                  type=""
-                  isLocked={false}
-                  text={el.name}
-                  price={el.price}
-                  thumbnail={el.image}
-                />
-              </div>
+              <IngredientCard key={el.key} data={el} moveCard={moveCard}/>
             ))}
         </div>
         <div className={[styles.item, styles.item_bun].join(" ")}>

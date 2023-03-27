@@ -18,7 +18,7 @@ const OrderDetails = (props) => {
     );
 
   useEffect(() => {
-    const ids = [bunConstructor._id, ingredientsConstructorData.map((el) => el._id),bunConstructor._id]
+    const ids = [bunConstructor._id, ...ingredientsConstructorData.map((el) => el._id), bunConstructor._id]
     dispatch(getOrderDetails(ids));
   }, []);
 

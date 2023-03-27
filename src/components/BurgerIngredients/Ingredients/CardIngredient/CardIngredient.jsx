@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect } from "react";
 import { useDispatch, useSelector, shallowEqual } from "react-redux";
+import { useDrag } from "react-dnd";
 import { PropTypesDataObject } from "../../../../utils/types.js";
 import Modal from "../../../Modal/Modal";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
@@ -12,12 +13,15 @@ import {
 } from "../../../../services/BurgerIngredients/action";
 import styles from "./CardIngredient.module.css";
 
-import {
-  addIngredientConstructor,
-  addBunConstructor,
-} from "../../../../services/BurgerConstructor/action";
-
 const CardIngredient = (props) => {
+  const {_id} = props.data;
+  const [{isDrag}, dragRef] = useDrag({
+    type: 'ingredient',
+    item: {_id},
+    collect: monitor => ({
+      isDrag: monitor.isDragging()
+  })
+  });
   const [count, setCount] = React.useState();
   const { ingredientsConstructorData, bunConstructor } = useSelector(
     (store) => ({
@@ -43,11 +47,7 @@ const CardIngredient = (props) => {
 
   const dispatch = useDispatch();
   const handleOpenModal = (el) => {
-    if (el.type === "bun") {
-      dispatch(addBunConstructor({ ...el, key: uuid() }));
-    } else {
-      dispatch(addIngredientConstructor({ ...el, key: uuid() }));
-    }
+    
     dispatch(setSelectIngredient(el));
     setModalVisible(true);
   };
@@ -60,10 +60,10 @@ const CardIngredient = (props) => {
 
   return (
     <>
-      <div className={styles.card} onClick={() => handleOpenModal(props.data)}>
+      <div className={styles.card} ref={dragRef} onClick={() => handleOpenModal(props.data)}>
         <Counter count={count} size="default" extraClass="m-1" />
-        <img src={props.data.image} alt={props.data.name} className="mb-1" />
-        <div className={[styles.price, "mb-1"].join(" ")}>
+        <img src={props.data.image} alt={props.data.name} className="mb-1"  />
+        <div className={[styles.price, "mb-1"].join(" ")} >
           <CurrencyIcon type="primary" />
           <p className="text text_type_main-default ml-2">{props.data.price}</p>
         </div>

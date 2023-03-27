@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useRef } from "react";
 import { useEffect } from "react";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import PreLoader from "../PreLoader/PreLoader";
@@ -25,6 +25,27 @@ const BurgerIngredients = () => {
     );
 
   const [currentTab, setCurrentTab] = React.useState("buns");
+
+  const ref_tabs = useRef();
+  const ref1 = useRef();
+  const ref2 = useRef();
+  const ref3 = useRef();
+  
+  const handleScroll = () => {
+    let max = [ref1, ref2, ref3].reduce((acc, curr) =>
+      Math.abs(
+        ref_tabs.current.getBoundingClientRect().bottom -
+          acc.current.getBoundingClientRect().y
+      ) <
+      Math.abs(
+        ref_tabs.current.getBoundingClientRect().bottom -
+          curr.current.getBoundingClientRect().y
+      )
+        ? acc
+        : curr
+    );
+    setCurrentTab(max.current.id)
+  };
 
   const onTabClick = (tab) => {
     setCurrentTab(tab);
@@ -55,7 +76,7 @@ const BurgerIngredients = () => {
         <Error />
       ) : (
         <>
-          <div className={[styles.tabs].join(" ")}>
+          <div className={[styles.tabs].join(" ")} ref={ref_tabs}>
             <Tab
               value="buns"
               active={currentTab === "buns"}
@@ -79,17 +100,24 @@ const BurgerIngredients = () => {
             </Tab>
           </div>
           {ingredientsData && (
-            <div className={styles.content}>
-              <Ingredients title="Булки" titleId="buns" ingredients={buns} />
+            <div className={styles.content} onScroll={handleScroll}>
+              <Ingredients
+                title="Булки"
+                titleId="buns"
+                ingredients={buns}
+                refs={ref1}
+              />
               <Ingredients
                 title="Соусы"
                 titleId="sauces"
                 ingredients={sauces}
+                refs={ref2}
               />
               <Ingredients
                 title="Начинки"
                 titleId="mains"
                 ingredients={mains}
+                refs={ref3}
               />
             </div>
           )}

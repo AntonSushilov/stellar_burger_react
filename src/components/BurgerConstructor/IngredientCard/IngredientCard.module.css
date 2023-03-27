@@ -1,0 +1,12 @@
+.dragicon{
+  cursor:grab;
+}
+
+.item {
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+  align-items: center;
+  gap: 4px;
+  margin-right: 12px;
+}

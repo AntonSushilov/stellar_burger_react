@@ -7,6 +7,9 @@ import {
   ADD_INGREDIENT_CONSTRUCTOR_SUCCESS,
   ADD_INGREDIENT_CONSTRUCTOR_FAILED,
 
+  SORT_INGREDIENTS_CONSTRUCTOR,
+  DELETE_INGREDIENT_CONSTRUCTOR,
+
   ADD_BUN_CONSTRUCTOR_REQUEST,
   ADD_BUN_CONSTRUCTOR_SUCCESS,
   ADD_BUN_CONSTRUCTOR_FAILED
@@ -62,6 +65,18 @@ export const ingredientsConstructorReducer = (state = initialState, action) => {
         ...state,
         ingredientsConstructorFailed: true,
         ingredientsConstructorRequest: false
+      };
+    }
+    case SORT_INGREDIENTS_CONSTRUCTOR: {
+      return {
+        ...state,
+        ingredientsConstructor: action.indredients,
+      };
+    }
+    case DELETE_INGREDIENT_CONSTRUCTOR: {
+      return {
+        ...state,
+        ingredientsConstructor: state.ingredientsConstructor.filter((el)=> el.key !== action.key),
       };
     }
     case ADD_BUN_CONSTRUCTOR_REQUEST: {

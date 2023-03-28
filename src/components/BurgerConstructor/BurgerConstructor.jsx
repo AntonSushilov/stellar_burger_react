@@ -5,7 +5,6 @@ import OrderDetails from "./OrderDetails/OrderDetails";
 import { deleteOrderDetails } from "../../services/OrderDetails/action";
 import {
   ConstructorElement,
-  DragIcon,
   CurrencyIcon,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
@@ -60,19 +59,11 @@ const BurgerConstructor = () => {
   const {
     ingredientsConstructorData,
     bunConstructor,
-    ingredientsConstructorRequest,
-    ingredientsConstructorFailed,
-    orderDetails,
   } = useSelector(
     (store) => ({
       ingredientsConstructorData:
         store.ingredientsConstructorReducer.ingredientsConstructor,
       bunConstructor: store.ingredientsConstructorReducer.bunConstructor,
-      ingredientsConstructorRequest:
-        store.ingredientsConstructorReducer.ingredientsConstructorRequest,
-      ingredientsConstructorFailed:
-        store.ingredientsConstructorReducer.ingredientsConstructorFailed,
-      orderDetails: store.orderDetailsReducer.orderDetails,
     }),
     shallowEqual
   );

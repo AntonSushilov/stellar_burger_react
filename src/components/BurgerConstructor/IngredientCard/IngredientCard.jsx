@@ -1,38 +1,24 @@
 import React, { useRef } from "react";
+import PropTypes from "prop-types";
 import { useSelector, shallowEqual, useDispatch } from "react-redux";
-
 import {
   ConstructorElement,
   DragIcon,
-  CurrencyIcon,
-  Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import {
-  addIngredientConstructor,
-  addBunConstructor,
   deleteIngredientConstructor,
 } from "../../../services/BurgerConstructor/action";
 import { useDrag, useDrop } from "react-dnd/dist/hooks";
-
+import {PropTypesDataObject} from "../../../utils/types"
 import styles from "./IngredientCard.module.css";
 
 export const IngredientCard = ({ data, moveCard }) => {
   const {
     ingredientsConstructorData,
-    bunConstructor,
-    ingredientsConstructorRequest,
-    ingredientsConstructorFailed,
-    orderDetails,
   } = useSelector(
     (store) => ({
       ingredientsConstructorData:
         store.ingredientsConstructorReducer.ingredientsConstructor,
-      bunConstructor: store.ingredientsConstructorReducer.bunConstructor,
-      ingredientsConstructorRequest:
-        store.ingredientsConstructorReducer.ingredientsConstructorRequest,
-      ingredientsConstructorFailed:
-        store.ingredientsConstructorReducer.ingredientsConstructorFailed,
-      orderDetails: store.orderDetailsReducer.orderDetails,
     }),
     shallowEqual
   );
@@ -42,7 +28,6 @@ export const IngredientCard = ({ data, moveCard }) => {
 
   const handleClose = (key) => {
     dispatch(deleteIngredientConstructor(key));
-    console.log("handleClose", key);
   };
 
   const [, drop] = useDrop({
@@ -115,4 +100,9 @@ export const IngredientCard = ({ data, moveCard }) => {
       />
     </div>
   );
+};
+
+IngredientCard.propTypes = {
+  data: PropTypesDataObject.isRequired,
+  moveCard: PropTypes.func.isRequired
 };

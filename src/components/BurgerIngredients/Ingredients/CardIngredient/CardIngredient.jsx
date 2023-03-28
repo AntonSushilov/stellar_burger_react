@@ -6,7 +6,6 @@ import Modal from "../../../Modal/Modal";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import { Counter } from "@ya.praktikum/react-developer-burger-ui-components";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import uuid from "react-uuid";
 import {
   setSelectIngredient,
   deleteSelectIngredient,

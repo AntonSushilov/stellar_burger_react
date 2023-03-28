@@ -35,9 +35,7 @@ const BurgerConstructor = () => {
     );
 
   const onDropHandler = (id) => {
-    console.log("itemId", id);
     const el = ingredientsData.find((el) => el._id === id._id)
-    console.log(ingredientsData)
     if (el.type === "bun") {
       dispatch(addBunConstructor({ ...el, key: uuid() }));
     } else {

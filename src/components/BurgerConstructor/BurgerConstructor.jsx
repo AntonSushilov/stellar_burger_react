@@ -14,9 +14,10 @@ import uuid from "react-uuid";
 import {
   addIngredientConstructor,
   addBunConstructor,
-  sortIngredientConstructor
+  sortIngredientConstructor,
 } from "../../services/BurgerConstructor/action";
 import { IngredientCard } from "./IngredientCard/IngredientCard";
+import PlaceHolderCard from "./PlaceHolderCard/PlaceHolderCard";
 const initialSummPrice = 0;
 const reducerSummPrice = (state, ingredients) => {
   let score = ingredients.items.reduce(function (a, b) {
@@ -26,16 +27,15 @@ const reducerSummPrice = (state, ingredients) => {
 };
 
 const BurgerConstructor = () => {
-  const { ingredientsData } =
-    useSelector(
-      (store) => ({
-        ingredientsData: store.ingredientsReducer.ingredients,
-      }),
-      shallowEqual
-    );
+  const { ingredientsData } = useSelector(
+    (store) => ({
+      ingredientsData: store.ingredientsReducer.ingredients,
+    }),
+    shallowEqual
+  );
 
   const onDropHandler = (id) => {
-    const el = ingredientsData.find((el) => el._id === id._id)
+    const el = ingredientsData.find((el) => el._id === id._id);
     if (el.type === "bun") {
       dispatch(addBunConstructor({ ...el, key: uuid() }));
     } else {
@@ -50,14 +50,9 @@ const BurgerConstructor = () => {
     },
   });
 
- 
-
   const dispatch = useDispatch();
 
-  const {
-    ingredientsConstructorData,
-    bunConstructor,
-  } = useSelector(
+  const { ingredientsConstructorData, bunConstructor } = useSelector(
     (store) => ({
       ingredientsConstructorData:
         store.ingredientsConstructorReducer.ingredientsConstructor,
@@ -94,12 +89,12 @@ const BurgerConstructor = () => {
   }, []);
 
   const moveCard = (dragIndex, hoverIndex) => {
-    const dragIngredient = ingredientsConstructorData[dragIndex]
+    const dragIngredient = ingredientsConstructorData[dragIndex];
     const newIngredients = [...ingredientsConstructorData];
     newIngredients.splice(dragIndex, 1);
-    newIngredients.splice(hoverIndex, 0, dragIngredient)
-    dispatch(sortIngredientConstructor(newIngredients))
-  }
+    newIngredients.splice(hoverIndex, 0, dragIngredient);
+    dispatch(sortIngredientConstructor(newIngredients));
+  };
 
   return (
     <div className={styles.content}>
@@ -108,7 +103,7 @@ const BurgerConstructor = () => {
         ref={dropTarget}
       >
         <div className={[styles.item, styles.item_bun].join(" ")}>
-          {bunConstructor && (
+          {bunConstructor ? (
             <ConstructorElement
               type="top"
               isLocked={true}
@@ -116,16 +111,21 @@ const BurgerConstructor = () => {
               price={bunConstructor.price}
               thumbnail={bunConstructor.image}
             />
+          ) : (
+            <PlaceHolderCard type="top" text="Перетащите булку" />
           )}
         </div>
         <div className={styles.item_middle}>
-          {ingredientsConstructorData &&
+          {ingredientsConstructorData.length ? (
             ingredientsConstructorData.map((el, index) => (
-              <IngredientCard key={el.key} data={el} moveCard={moveCard}/>
-            ))}
+              <IngredientCard key={el.key} data={el} moveCard={moveCard} />
+            ))
+          ) : (
+            <PlaceHolderCard text="Перетащите ингредиент" />
+          )}
         </div>
         <div className={[styles.item, styles.item_bun].join(" ")}>
-          {bunConstructor && (
+          {bunConstructor ? (
             <ConstructorElement
               type="bottom"
               isLocked={true}
@@ -133,6 +133,8 @@ const BurgerConstructor = () => {
               price={bunConstructor.price}
               thumbnail={bunConstructor.image}
             />
+          ) : (
+            <PlaceHolderCard type="bottom" text="Перетащите булку" />
           )}
         </div>
       </div>

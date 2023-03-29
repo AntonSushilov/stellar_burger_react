@@ -9,13 +9,21 @@ import App from "./components/App/App";
 
 import reportWebVitals from "./reportWebVitals";
 import {rootReducer} from './services/reducers'
+import { configureStore } from "@reduxjs/toolkit";
 
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
+const middlewareEnhacer = applyMiddleware(thunk);
+const store = configureStore({
+  reducer: rootReducer,
+  devTools: true,
+  middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware().concat(thunk),
+});
 
-const store = createStore(rootReducer, applyMiddleware(thunk)); 
+// const store = createStore(rootReducer, applyMiddleware(thunk)); 
 
 root.render(
   <React.StrictMode>

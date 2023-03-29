@@ -7,6 +7,8 @@ import {
   DELETE_ORGER_DETAILS
 } from './type'
 
+import { deleteAllIngredientConstructor } from '../BurgerConstructor/action';
+
 
 export function getOrderDetails(ids) {
   const requestOptions = {
@@ -24,6 +26,7 @@ export function getOrderDetails(ids) {
           type: GET_ORGER_DETAILS_SUCCESS,
           orderDetails: res.order.number
         });
+        dispatch(deleteAllIngredientConstructor())
       } else {
         dispatch({
           type: GET_ORGER_DETAILS_FAILED
@@ -33,15 +36,9 @@ export function getOrderDetails(ids) {
   };
 }
 
+export const deleteOrderDetails = () => ({
+	type: DELETE_ORGER_DETAILS,
+});
 
-export function deleteOrderDetails() {
-  return function (dispatch) {
-    dispatch({
-      type: DELETE_ORGER_DETAILS,
-      orderDetails: null
-
-    });
-  };
-}
 
 

@@ -27,9 +27,14 @@ const reducerSummPrice = (state, ingredients) => {
 };
 
 const BurgerConstructor = () => {
-  const { ingredientsData } = useSelector(
+  const dispatch = useDispatch();
+
+  const { ingredientsData, ingredientsConstructorData, bunConstructor } = useSelector(
     (store) => ({
       ingredientsData: store.ingredientsReducer.ingredients,
+      ingredientsConstructorData:
+        store.ingredientsConstructorReducer.ingredientsConstructor,
+      bunConstructor: store.ingredientsConstructorReducer.bunConstructor,
     }),
     shallowEqual
   );
@@ -50,16 +55,8 @@ const BurgerConstructor = () => {
     },
   });
 
-  const dispatch = useDispatch();
 
-  const { ingredientsConstructorData, bunConstructor } = useSelector(
-    (store) => ({
-      ingredientsConstructorData:
-        store.ingredientsConstructorReducer.ingredientsConstructor,
-      bunConstructor: store.ingredientsConstructorReducer.bunConstructor,
-    }),
-    shallowEqual
-  );
+  
 
   const [modalVisible, setModalVisible] = React.useState(false);
 

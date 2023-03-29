@@ -28,20 +28,12 @@ export function getIngredients() {
   };
 }
 
-export function setSelectIngredient(el) {
-  return function (dispatch) {
-    dispatch({
-      type: SET_SELECTED_INGREDIENT,
-      ingredient: el
-    });
-  }
-}
+export const setSelectIngredient = (el) => ({
+	type: SET_SELECTED_INGREDIENT,
+	ingredient: el
+});
 
-export function deleteSelectIngredient() {
-  return function (dispatch) {
-    dispatch({
-      type: DELETE_SELECTED_INGREDIENT
-    });
-  }
-}
+export const deleteSelectIngredient = () => ({
+	type: DELETE_SELECTED_INGREDIENT,
+});
 

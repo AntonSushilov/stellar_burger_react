@@ -1,70 +1,37 @@
 import { requestApi } from '../../utils/requestApi'
 import {
-  ADD_INGREDIENT_CONSTRUCTOR_REQUEST,
-  ADD_INGREDIENT_CONSTRUCTOR_SUCCESS,
-  ADD_INGREDIENT_CONSTRUCTOR_FAILED,
+  ADD_INGREDIENT_CONSTRUCTOR,
 
   SORT_INGREDIENTS_CONSTRUCTOR,
   DELETE_INGREDIENT_CONSTRUCTOR,
-
-  ADD_BUN_CONSTRUCTOR_REQUEST,
-  ADD_BUN_CONSTRUCTOR_SUCCESS,
-  ADD_BUN_CONSTRUCTOR_FAILED
+  DELETE_All_INGREDIENT_CONSTRUCTOR,
+  ADD_BUN_CONSTRUCTOR,
 } from './type'
 
 
-export function addIngredientConstructor(ingredient) {
-  return function (dispatch) {
-    dispatch({
-      type: ADD_INGREDIENT_CONSTRUCTOR_REQUEST
-    });
+export const addIngredientConstructor = (ingredient) => ({
+	type: ADD_INGREDIENT_CONSTRUCTOR,
+	ingredient: ingredient
+});
 
-    dispatch({
-      type: ADD_INGREDIENT_CONSTRUCTOR_SUCCESS,
-      ingredient: ingredient
-    });
+export const sortIngredientConstructor = (indredients) => ({
+	type: SORT_INGREDIENTS_CONSTRUCTOR,
+	indredients: indredients
+});
 
-    dispatch({
-      type: ADD_INGREDIENT_CONSTRUCTOR_FAILED
-    });
-  };
-}
+export const deleteIngredientConstructor = (key) => ({
+	type: DELETE_INGREDIENT_CONSTRUCTOR,
+	key: key
+});
 
-export function sortIngredientConstructor(indredients) {
-  return function (dispatch) {
-    dispatch({
-      type: SORT_INGREDIENTS_CONSTRUCTOR,
-      indredients: indredients
-    });
+export const deleteAllIngredientConstructor = () => ({
+	type: DELETE_All_INGREDIENT_CONSTRUCTOR,
+});
 
-  };
-}
+export const addBunConstructor = (bun) => ({
+	type: ADD_BUN_CONSTRUCTOR,
+	bun: bun
+});
 
-export function deleteIngredientConstructor(key) {
-  return function (dispatch) {
-    dispatch({
-      type: DELETE_INGREDIENT_CONSTRUCTOR,
-      key: key
-    });
-
-  };
-}
-
-export function addBunConstructor(bun) {
-  return function (dispatch) {
-    dispatch({
-      type: ADD_BUN_CONSTRUCTOR_REQUEST
-    });
-
-    dispatch({
-      type: ADD_BUN_CONSTRUCTOR_SUCCESS,
-      bun: bun
-    });
-
-    dispatch({
-      type: ADD_BUN_CONSTRUCTOR_FAILED
-    });
-  };
-}
 
 

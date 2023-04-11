@@ -1,0 +1,45 @@
+.item {
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+}
+
+.card {
+
+  padding: 16px 24px;
+  display: flex;
+  border-radius: var(--common-border-radius-s);
+  background: var(--background-element);
+  max-width: 536px;
+  width: 100%;
+  min-height: 80px;
+  font-family: 'Jet Brains Mono';
+  font-size: 16px;
+  line-height: 24px;
+  color: #F2F2F3;
+  flex-grow: 1;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+
+}
+
+
+.card_pos_top {
+  border-radius: var(--top-constructor-item-border-radius);
+  /* margin-right: 6px; */
+
+}
+
+.card_pos_middle{
+  margin-right: 12px;
+}
+
+.card_pos_bottom {
+  border-radius: var(--bottom-constructor-item-border-radius);
+  /* margin-right: 6px; */
+
+}

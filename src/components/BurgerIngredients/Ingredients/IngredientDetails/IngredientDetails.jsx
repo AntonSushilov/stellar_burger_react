@@ -1,25 +1,33 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { PropTypesDataObject } from "../../../../utils/types.js";
+import { useSelector, shallowEqual } from "react-redux";
+
 import styles from "./IngredientDetails.module.css";
 
-const ModalIngredient = (props) => {
+const IngredientDetails = (props) => {
+  const { selectedIngredient } = useSelector(
+    (store) => ({
+      selectedIngredient: store.ingredientsReducer.selectedIngredient,
+    }),
+    shallowEqual
+  );
+
   return (
     <div className={styles.modal_content}>
       <img
         className="mb-15"
-        src={props.data.image_large}
-        alt={props.data.name}
+        src={selectedIngredient.image_large}
+        alt={selectedIngredient.name}
       />
 
-      <p className="text text_type_main-medium  mb-15">{props.data.name}</p>
+      <p className="text text_type_main-medium  mb-15">
+        {selectedIngredient.name}
+      </p>
       <div className={styles.compose}>
         <section className={styles.compose_item}>
           <p className="text text_type_main-default text_color_inactive">
             Калории,ккал
           </p>
           <p className="text text_type_main-default text_color_inactive">
-            {props.data.calories}
+            {selectedIngredient.calories}
           </p>
         </section>
         <section className={styles.compose_item}>
@@ -27,7 +35,7 @@ const ModalIngredient = (props) => {
             Белки, г
           </p>
           <p className="text text_type_main-default text_color_inactive">
-            {props.data.proteins}
+            {selectedIngredient.proteins}
           </p>
         </section>
         <section className={styles.compose_item}>
@@ -35,7 +43,7 @@ const ModalIngredient = (props) => {
             Жиры, г
           </p>
           <p className="text text_type_main-default text_color_inactive">
-            {props.data.fat}
+            {selectedIngredient.fat}
           </p>
         </section>
         <section>
@@ -43,7 +51,7 @@ const ModalIngredient = (props) => {
             Углеводы, г
           </p>
           <p className="text text_type_main-default text_color_inactive">
-            {props.data.carbohydrates}
+            {selectedIngredient.carbohydrates}
           </p>
         </section>
       </div>
@@ -51,8 +59,8 @@ const ModalIngredient = (props) => {
   );
 };
 
-ModalIngredient.propTypes = {
-  data: PropTypesDataObject.isRequired,
+IngredientDetails.propTypes = {
+  // data: PropTypesDataObject.isRequired,
 };
 
-export default ModalIngredient;
+export default IngredientDetails;

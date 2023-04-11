@@ -1,14 +1,12 @@
-import React from "react";
-import { useCallback } from "react";
 import PropTypes from "prop-types";
 import CardIngredient from "./CardIngredient/CardIngredient";
 import styles from "./Ingredients.module.css";
 import { PropTypesDataObject } from "../../../utils/types.js";
 
-const Ingredients = ({ title, titleId, ingredients }) => {
+const Ingredients = ({ title, titleId, ingredients, refs }) => {
   return (
     <section className={styles.ingredients}>
-      <div className={styles.title} id={titleId}>
+      <div className={styles.title} id={titleId} ref={refs}>
         <p className="text text_type_main-medium">{title}</p>
       </div>
       <div className={[styles.content].join(" ")}>

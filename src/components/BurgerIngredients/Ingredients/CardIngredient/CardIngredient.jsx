@@ -1,47 +1,68 @@
-import React, { useContext, useCallback } from "react";
-import PropTypes from "prop-types";
+import React, { useCallback, useEffect } from "react";
+import { useDispatch, useSelector, shallowEqual } from "react-redux";
+import { useDrag } from "react-dnd";
 import { PropTypesDataObject } from "../../../../utils/types.js";
+import Modal from "../../../Modal/Modal";
+import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import { Counter } from "@ya.praktikum/react-developer-burger-ui-components";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import Modal from "../../../Modal/Modal";
-import ModalIngredient from "../IngredientDetails/IngredientDetails";
-import uuid from "react-uuid";
-import styles from "./CardIngredient.module.css";
 import {
-  IngredientsContext,
-  ConstructorContext,
-} from "../../../../services/appContext.js";
+  setSelectIngredient,
+  deleteSelectIngredient,
+} from "../../../../services/BurgerIngredients/action";
+import styles from "./CardIngredient.module.css";
 
 const CardIngredient = (props) => {
-  const { constructorData, setConstructorData } =
-  useContext(ConstructorContext);
+  const {_id} = props.data;
+  const [{isDrag}, dragRef] = useDrag({
+    type: 'ingredient',
+    item: {_id},
+    collect: monitor => ({
+      isDrag: monitor.isDragging()
+  })
+  });
   const [count, setCount] = React.useState();
+  const { ingredientsConstructorData, bunConstructor } = useSelector(
+    (store) => ({
+      ingredientsConstructorData:
+        store.ingredientsConstructorReducer.ingredientsConstructor,
+      bunConstructor: store.ingredientsConstructorReducer.bunConstructor,
+    }),
+    shallowEqual
+  );
+
+  useEffect(() => {
+    if (props.data.type === "bun" && bunConstructor) {
+      setCount(bunConstructor._id === props.data._id ? 1 : 0);
+    } else {
+      setCount(
+        ingredientsConstructorData.filter((el) => el._id === props.data._id)
+          .length
+      );
+    }
+  }, [ingredientsConstructorData, bunConstructor]);
 
   const [modalVisible, setModalVisible] = React.useState(false);
-  const [ingredient, setIngredient] = React.useState();
 
+  const dispatch = useDispatch();
   const handleOpenModal = (el) => {
-    if(el.type === "bun"){
-      setConstructorData([...constructorData.filter((el)=>el.type !== "bun"), {...el, key:uuid()}])
-    }else{
-      setConstructorData([...constructorData, {...el, key:uuid()}])
-    }
+    
+    dispatch(setSelectIngredient(el));
     setModalVisible(true);
-    setIngredient(el);
-
   };
 
   const handleClickCloseModal = useCallback(() => {
+    dispatch(deleteSelectIngredient());
+
     setModalVisible(false);
   }, []);
 
-
   return (
     <>
-      <div className={styles.card} onClick={() => handleOpenModal(props.data)}>
+      <div className={styles.card} ref={dragRef} onClick={() => handleOpenModal(props.data)}>
         <Counter count={count} size="default" extraClass="m-1" />
-        <img src={props.data.image} alt={props.data.name} className="mb-1" />
-        <div className={[styles.price, "mb-1"].join(" ")}>
+        <img src={props.data.image} alt={props.data.name} className="mb-1"  />
+        <div className={[styles.price, "mb-1"].join(" ")} >
           <CurrencyIcon type="primary" />
           <p className="text text_type_main-default ml-2">{props.data.price}</p>
         </div>
@@ -51,7 +72,7 @@ const CardIngredient = (props) => {
       </div>
       {modalVisible && (
         <Modal onClose={handleClickCloseModal} title="Детали ингредиента">
-          <ModalIngredient data={ingredient} />
+          <IngredientDetails />
         </Modal>
       )}
     </>

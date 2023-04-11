@@ -1,16 +1,32 @@
-import React from "react";
-import PropTypes from "prop-types";
+import { useEffect } from "react";
+import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import done from "../../../images/done.png";
-
 import styles from "./OrderDetails.module.css";
+import { getOrderDetails } from "../../../services/OrderDetails/action";
 
 const OrderDetails = (props) => {
+  const dispatch = useDispatch();
+  const { ingredientsConstructorData, bunConstructor, orderDetails } =
+    useSelector(
+      (store) => ({
+        ingredientsConstructorData:
+          store.ingredientsConstructorReducer.ingredientsConstructor,
+        bunConstructor: store.ingredientsConstructorReducer.bunConstructor,
+        orderDetails: store.orderDetailsReducer.orderDetails,
+      }),
+      shallowEqual
+    );
+
+  useEffect(() => {
+    const ids = [bunConstructor._id, ...ingredientsConstructorData.map((el) => el._id), bunConstructor._id]
+    dispatch(getOrderDetails(ids));
+  }, []);
+
   return (
     <div className={styles.modal_content}>
       <div className="mb-8">
-      <p className="text text_type_digits-large">
-        {props.loading ? "Загрузка.." : props.orderId}
-        
+        <p className="text text_type_digits-large">
+          {orderDetails ? orderDetails : <></>}
         </p>
       </div>
       <p className="text text_type_main-medium  mb-15">Идентификатор заказа</p>
@@ -23,11 +39,6 @@ const OrderDetails = (props) => {
       </p>
     </div>
   );
-};
-
-OrderDetails.propTypes = {
-  orderId: PropTypes.number,
-  loading: PropTypes.bool.isRequired
 };
 
 export default OrderDetails;

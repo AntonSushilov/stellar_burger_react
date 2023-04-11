@@ -1,15 +1,13 @@
-import React from "react";
-import PropTypes from "prop-types";
+import NavItem from "./NavItem/NavItem";
 import {
   Logo,
   BurgerIcon,
   ListIcon,
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import NavItem from "./NavItem/NavItem";
 import styles from "./AppHeader.module.css";
 
-const AppHeader = (props) => {
+const AppHeader = () => {
   return (
     <header className={styles.header}>
       <nav className={styles.container}>

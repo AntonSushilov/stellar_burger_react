@@ -3,6 +3,7 @@ import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import done from "../../../images/done.png";
 import styles from "./OrderDetails.module.css";
 import { getOrderDetails } from "../../../services/OrderDetails/action";
+import { deleteOrderDetails } from "../../../services/OrderDetails/action";
 
 const OrderDetails = (props) => {
   const dispatch = useDispatch();
@@ -20,8 +21,11 @@ const OrderDetails = (props) => {
   useEffect(() => {
     const ids = [bunConstructor._id, ...ingredientsConstructorData.map((el) => el._id), bunConstructor._id]
     dispatch(getOrderDetails(ids));
-  }, []);
+    return () => {
+      dispatch(deleteOrderDetails());
 
+    }
+  }, []);
   return (
     <div className={styles.modal_content}>
       <div className="mb-8">

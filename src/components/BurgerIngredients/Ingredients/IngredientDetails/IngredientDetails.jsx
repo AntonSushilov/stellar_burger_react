@@ -1,14 +1,22 @@
 import { useSelector, shallowEqual } from "react-redux";
-
+import { useParams } from "react-router";
 import styles from "./IngredientDetails.module.css";
 
 const IngredientDetails = (props) => {
-  const { selectedIngredient } = useSelector(
-    (store) => ({
-      selectedIngredient: store.ingredientsReducer.selectedIngredient,
-    }),
+  const { id } = useParams();
+  const selectedIngredient =
+  useSelector(
+    (store) => store.ingredientsReducer.ingredients.find((el) => el._id === id),
     shallowEqual
   );
+
+  console.log(id, selectedIngredient)
+  // const { selectedIngredient } = useSelector(
+  //   (store) => ({
+  //     selectedIngredient: store.ingredientsReducer.selectedIngredient,
+  //   }),
+  //   shallowEqual
+  // );
 
   return (
     <div className={styles.modal_content}>

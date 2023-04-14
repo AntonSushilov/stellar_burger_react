@@ -1,15 +1,12 @@
 import React from "react";
+import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import {
-  Input,
   EmailInput,
-  PasswordInput,
   Button,
-  ShowIcon,
-  HideIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-
+import { forgotPassword } from "../../services/User/action";
 import styles from "./ForgotPasswordPage.module.css";
 
 const ForgotPasswordPage = (props) => {
@@ -18,10 +15,24 @@ const ForgotPasswordPage = (props) => {
     setValueEmail(e.target.value);
   };
 
+  const dispatch = useDispatch();
+  // const forgotPasswordMessage = useSelector(
+  //   (store) => store.forgotPasswordReducer.forgotPasswordMessage,
+  //   shallowEqual
+  // );
+  const handleForgotPassword = () => {
+    if (valueEmail) {
+      dispatch(forgotPassword(valueEmail));
+      console.log(valueEmail);
+    } else {
+      console.log("Не введен емаил");
+    }
+  };
+  // console.log(forgotPasswordMessage);
   return (
     <div className={styles.container}>
       <div className={styles.content}>
-        <div className={styles.login_form}>
+        <form className={styles.login_form}>
           <p className="text text_type_main-medium">Восстановление пароля</p>
           <EmailInput
             onChange={onChangeEmail}
@@ -30,14 +41,18 @@ const ForgotPasswordPage = (props) => {
             placeholder="укажите E-mail"
             isIcon={false}
           />
-          <Button htmlType="button" type="primary" size="medium">
+          <Button
+            htmlType="button"
+            type="primary"
+            size="medium"
+            onClick={handleForgotPassword}
+          >
             Восстановить
           </Button>
-        </div>
+        </form>
         <div className={styles.links}>
           <p className="text text_type_main-default text_color_inactive">
-            Вспомнили пароль?{" "}
-            <Link to="/login">Войти</Link>
+            Вспомнили пароль? <Link to="/login">Войти</Link>
           </p>
         </div>
       </div>

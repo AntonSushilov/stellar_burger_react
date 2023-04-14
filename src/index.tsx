@@ -1,16 +1,16 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { createStore, applyMiddleware  } from "redux";
-import thunk from 'redux-thunk';
+import { BrowserRouter } from "react-router-dom";
+import { createStore, applyMiddleware } from "redux";
+import thunk from "redux-thunk";
 import { Provider } from "react-redux";
 import "./index.css";
 import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary";
 import App from "./components/App/App";
 
 import reportWebVitals from "./reportWebVitals";
-import {rootReducer} from './services/reducers'
+import { rootReducer } from "./services/reducers";
 import { configureStore } from "@reduxjs/toolkit";
-
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -19,17 +19,18 @@ const middlewareEnhacer = applyMiddleware(thunk);
 const store = configureStore({
   reducer: rootReducer,
   devTools: true,
-  middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(thunk),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunk),
 });
 
-// const store = createStore(rootReducer, applyMiddleware(thunk)); 
+// const store = createStore(rootReducer, applyMiddleware(thunk));
 
 root.render(
   <React.StrictMode>
     <Provider store={store}>
       <ErrorBoundary>
-        <App />
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
       </ErrorBoundary>
     </Provider>
   </React.StrictMode>

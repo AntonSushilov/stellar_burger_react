@@ -1,4 +1,5 @@
 import React from "react";
+import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import {
@@ -8,19 +9,29 @@ import {
   ShowIcon,
   HideIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import { loginUser } from "../../services/User/action";
 import AppHeader from "../../components/AppHeader/AppHeader";
 
 import styles from "./LoginPage.module.css";
 
 const LoginPage = (props) => {
-  const [valuePass, setValuePass] = React.useState("")
-  const onChangePass = e => {
-    setValuePass(e.target.value)
-  }
+  const [valuePass, setValuePass] = React.useState("");
+  const onChangePass = (e) => {
+    setValuePass(e.target.value);
+  };
 
   const [valueEmail, setValueEmail] = React.useState("");
   const onChangeEmail = (e) => {
     setValueEmail(e.target.value);
+  };
+
+  const dispatch = useDispatch();
+  const handleLoginUser = () => {
+    if (valueEmail && valuePass) {
+      dispatch(loginUser(valueEmail, valuePass));
+    } else {
+      console.log("Не введен емаил");
+    }
   };
 
   return (
@@ -40,7 +51,12 @@ const LoginPage = (props) => {
             value={valuePass}
             name={"Пароль"}
           />
-          <Button htmlType="button" type="primary" size="medium">
+          <Button
+            htmlType="button"
+            type="primary"
+            size="medium"
+            onClick={handleLoginUser}
+          >
             Войти
           </Button>
         </div>

@@ -1,4 +1,5 @@
 import React from "react";
+import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import {
@@ -9,13 +10,12 @@ import {
   ShowIcon,
   HideIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-
+import { registerUser } from "../../services/User/action";
 import styles from "./RegisterPage.module.css";
 
 const RegisterPage = (props) => {
-  const [valueName, setValueName] = React.useState("")
-  const inputRef = React.useRef(null)
-
+  const [valueName, setValueName] = React.useState("");
+  const inputRef = React.useRef(null);
 
   const [valuePass, setValuePass] = React.useState("");
   const onChangePass = (e) => {
@@ -26,6 +26,21 @@ const RegisterPage = (props) => {
   const onChangeEmail = (e) => {
     setValueEmail(e.target.value);
   };
+
+  const dispatch = useDispatch();
+  // const registerUserMessage = useSelector(
+  //   (store) => store.userRegisterReducer.registerUserMessage,
+  //   shallowEqual
+  // );
+  const handleRegisterUser = () => {
+    if (valueEmail && valuePass && valueName) {
+      dispatch(registerUser(valueEmail, valuePass, valueName));
+      console.log(valueEmail, valuePass, valueName);
+    } else {
+      console.log("Не введен емаил");
+    }
+  };
+  // console.log(registerUserMessage);
 
   return (
     <div className={styles.container}>
@@ -55,14 +70,18 @@ const RegisterPage = (props) => {
             value={valuePass}
             name={"Пароль"}
           />
-          <Button htmlType="button" type="primary" size="medium">
+          <Button
+            htmlType="button"
+            type="primary"
+            size="medium"
+            onClick={handleRegisterUser}
+          >
             Зарегистрироваться
           </Button>
         </div>
         <div className={styles.links}>
           <p className="text text_type_main-default text_color_inactive">
-            Уже зарегистрированы?{" "}
-            <Link to="/login">Войти</Link>
+            Уже зарегистрированы? <Link to="/login">Войти</Link>
           </p>
         </div>
       </div>

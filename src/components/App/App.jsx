@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import LoginPage from "../../pages/LoginPage/LoginPage";
 import RegisterPage from "../../pages/RegisterPage/RegisterPage";
 import ForgotPasswordPage from "../../pages/ForgotPasswordPage/ForgotPasswordPage";
@@ -23,44 +23,60 @@ import { getIngredients } from "../../services/BurgerIngredients/action";
 const App = () => {
   const dispatch = useDispatch();
   useEffect(() => {
-      dispatch(checkUserAuth());
-      dispatch(getIngredients());
+    // dispatch(checkUserAuth());
+    dispatch(getIngredients());
 
   }, []);
 
   let location = useLocation();
-  let state = location.state
+  const navigate = useNavigate();
+  const background = location.state && location.state.background;
 
+  const handleModalClose = () => {
+    // Возвращаемся к предыдущему пути при закрытии модалки
+    navigate(-1);
+  };
 
   return (
     <div className={styles.app}>
-        <AppHeader />
-        <main className={styles.container}>
-          <Routes location={state?.backgroundLocation || location}>
-            <Route path="/" element={<BurgerConstructorPage />}/>
-            <Route path="/feed" element={<FeedPage />}/>
-            <Route path="/login" element={<OnlyUnAuth component={<LoginPage/>} />} />
-            <Route path="/register" element={<RegisterPage />} />
-            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-            <Route path="/reset-password" element={<ResetPasswordPage />} />
-            <Route path="/profile" element={<OnlyAuth component={<ProfilePage />}/>}>
-              <Route index element={<UserProfile />}/>
-              <Route path="history-feed" element={<HistoryFeed />}/>
-            </Route>
-            <Route path="/ingredients/:id" element={<IngredientView />} />
-            <Route path="*" element={<NotFound404/>}/>
+      <AppHeader />
+      <main className={styles.container}>
+        <Routes location={background || location}>
+          <Route path="/" element={<BurgerConstructorPage />} />
+          <Route path="/feed" element={<FeedPage />} />
+          {/* <Route path="/login" element={<OnlyUnAuth component={<LoginPage/>} />} /> */}
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
+          {/* <Route path="/profile" element={<OnlyAuth component={<ProfilePage />}/>}> */}
+          {/* <Route index element={<UserProfile />}/> */}
+          {/* <Route path="history-feed" element={<HistoryFeed />}/> */}
+          {/* </Route> */}
+          <Route path="/ingredients/:id" element={<IngredientDetails />} />
+          <Route path="*" element={<NotFound404 />} />
+        </Routes>
+
+        {background && (
+          <Routes>
+            <Route
+              path="/ingredients/:id"
+              element={
+                <Modal title="Детали ингредиента" onClose={handleModalClose}>
+                  <IngredientDetails />
+                </Modal>
+              }
+            />
+            {/* <Route
+              path="/order-details"
+              element={
+                <Modal onClose={handleModalClose}>
+                  <OrderDetails />
+                </Modal>
+              }
+            /> */}
           </Routes>
-
-          {state?.backgroundLocation && (
-            <Routes>
-              <Route path="/ingredients/:id" element={<Modal title="Детали ингредиента"><IngredientDetails /></Modal>}/>
-              <Route path="/order-details" element={<Modal><OrderDetails /></Modal>} />
-
-            </Routes>
-          )}
-        </main>
-    
-     
+        )}
+      </main>
     </div>
   );
 };

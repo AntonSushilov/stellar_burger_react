@@ -140,27 +140,27 @@ export function resetPassword(password, token) {
   };
 }
 
-export function getUser() {
-  return function (dispatch) {
-    dispatch({
-      type: GET_USER
-    });
-  };
-}
+// export function getUser() {
+//   return function (dispatch) {
+//     dispatch({
+//       type: GET_USER
+//     });
+//   };
+// }
 
-export function setUser(user) {
-  return function (dispatch) {
-    dispatch({
-      type: SET_USER,
-      user: user
-    });
-  };
-}
+// export function setUser(user) {
+//   return function (dispatch) {
+//     dispatch({
+//       type: SET_USER,
+//       user: user
+//     });
+//   };
+// }
 
-const setAuthChecked = (check) => ({
-  type: SET_AUTH_CHECKED,
-  check: check
-})
+// const setAuthChecked = (check) => ({
+//   type: SET_AUTH_CHECKED,
+//   check: check
+// })
 
 export const checkUserAuth = () => {
   return (dispatch) => {

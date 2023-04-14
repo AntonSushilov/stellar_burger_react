@@ -9,17 +9,7 @@ import styles from "./Modal.module.css";
 
 const modalRoot = document.getElementById("react-modals");
 
-const Modal = ({ children, title }) => {
-  const dispatch = useDispatch();
-
-  const isOpen = useSelector(
-    (store) => store.modalReducer.isOpen,
-    shallowEqual
-  );
-  const onClose = () => {
-    dispatch(closeModal());
-  };
-
+const Modal = ({ children, title, onClose }) => {
   const handleCloseModal = (e) => {
     if (e.key === "Escape") {
       onClose();
@@ -36,23 +26,21 @@ const Modal = ({ children, title }) => {
     };
   }, []);
 
-  if (isOpen) {
-    return ReactDOM.createPortal(
-      <div className={styles.modal_window}>
-        <ModalWindow title={title} onClose={onClose}>
-          {children}
-        </ModalWindow>
-        <ModalOverlay onClose={onClose} />
-      </div>,
-      modalRoot
-    );
-  }
+  return ReactDOM.createPortal(
+    <div className={styles.modal_window}>
+      <ModalWindow title={title} onClose={onClose}>
+        {children}
+      </ModalWindow>
+      <ModalOverlay onClose={onClose} />
+    </div>,
+    modalRoot
+  );
 };
 
 Modal.propTypes = {
   children: PropTypes.node,
   title: PropTypes.string,
-  // onClose: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
 };
 
 export default Modal;

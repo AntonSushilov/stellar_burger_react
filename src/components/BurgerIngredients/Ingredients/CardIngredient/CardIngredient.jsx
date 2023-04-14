@@ -59,10 +59,10 @@ const CardIngredient = (props) => {
     setModalVisible(false);
   }, []);
 
-  let location = useLocation();
+  const location = useLocation();
   return (
     <>
-      <Link to={`/ingredients/${_id}`} state={{backgroundLocation: location}}>
+      <Link to={`/ingredients/${_id}`} state={{ background: location }}>
         <div
           className={styles.card}
           ref={dragRef}

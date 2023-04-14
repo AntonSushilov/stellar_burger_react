@@ -66,14 +66,14 @@ const App = () => {
                 </Modal>
               }
             />
-            {/* <Route
+            <Route
               path="/order-details"
               element={
                 <Modal onClose={handleModalClose}>
                   <OrderDetails />
                 </Modal>
               }
-            /> */}
+            />
           </Routes>
         )}
       </main>

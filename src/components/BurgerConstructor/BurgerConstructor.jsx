@@ -29,7 +29,8 @@ const reducerSummPrice = (state, ingredients) => {
 };
 
 const BurgerConstructor = () => {
-  let location = useLocation();
+  const location = useLocation();
+
 
   const dispatch = useDispatch();
 
@@ -142,7 +143,7 @@ const BurgerConstructor = () => {
           <p className="text text_type_digits-medium mr-3">{summPrice}</p>
           <CurrencyIcon type="primary" />
         </div>
-        <Link to={`/order-details`} state={{ backgroundLocation: location }}>
+        <Link to={`/order-details`} state={{ background: location }}>
           <Button
             htmlType="button"
             type="primary"

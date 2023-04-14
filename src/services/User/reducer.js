@@ -21,7 +21,6 @@ const initialState = {
   accessToken: null,
   refreshToken: null,
   user: null,
-  isAuth: false,
   isAuthChecked: false,
 
   message: null,
@@ -54,14 +53,12 @@ export const userReducer = (state = initialState, action) => {
         userRequest: true
       };
     }
-    case REGISTER_USER_SUCCESS: {
-      localStorage.setItem("refreshToken", action.refreshToken);
-      localStorage.setItem("accessToken", action.accessToken);
+    case REGISTER_USER_SUCCESS: {     
       return {
         ...state,
         userFailed: false,
         userRequest: false,
-        isAuth: true,
+        isAuthChecked: true,
         accessToken: action.accessToken,
         refreshToken: action.refreshToken,
         user: action.user,
@@ -77,13 +74,11 @@ export const userReducer = (state = initialState, action) => {
       };
     }
     case LOGIN_USER_SUCCESS: {
-      localStorage.setItem("refreshToken", action.refreshToken);
-      localStorage.setItem("accessToken", action.accessToken);
       return {
         ...state,
         userFailed: false,
         userRequest: false,
-        isAuth: true,
+        isAuthChecked: true,
         accessToken: action.accessToken,
         refreshToken: action.refreshToken,
         user: action.user,

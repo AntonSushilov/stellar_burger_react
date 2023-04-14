@@ -42,6 +42,8 @@ export function registerUser(email, password, name) {
     });
     requestApi("/auth/register", requestOptions).then(res => {
       if (res && res.success) {
+        localStorage.setItem("refreshToken", res.refreshToken);
+        localStorage.setItem("accessToken", res.accessToken);
         dispatch({
           type: REGISTER_USER_SUCCESS,
           accessToken: res.accessToken,
@@ -72,6 +74,8 @@ export function loginUser(email, password) {
     });
     requestApi("/auth/login", requestOptions).then(res => {
       if (res && res.success) {
+        localStorage.setItem("refreshToken", res.refreshToken);
+        localStorage.setItem("accessToken", res.accessToken);
         dispatch({
           type: LOGIN_USER_SUCCESS,
           accessToken: res.accessToken,
@@ -140,6 +144,19 @@ export function resetPassword(password, token) {
   };
 }
 
+
+export const getUser = () => {
+  return (dispatch) => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve()
+      }, 100)
+    }).then(() => {
+      // dispatch()
+    })
+  }
+}
+
 // export function getUser() {
 //   return function (dispatch) {
 //     dispatch({
@@ -165,15 +182,13 @@ export function resetPassword(password, token) {
 export const checkUserAuth = () => {
   return (dispatch) => {
     if (localStorage.getItem("accessToken")) {
-      dispatch({
-        type: GET_USER
-      })
-        .catch(error => {
+      dispatch(getUser())
+        .catch(() => {
           localStorage.removeItem("accessToken");
           localStorage.removeItem("refreshToken");
           dispatch({
             type: SET_USER,
-            user: {}
+            user: null
           });
         })
         .finally(() => dispatch({

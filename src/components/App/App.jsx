@@ -1,4 +1,10 @@
-import { BrowserRouter, Routes, Route, useLocation, useNavigate } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import LoginPage from "../../pages/LoginPage/LoginPage";
 import RegisterPage from "../../pages/RegisterPage/RegisterPage";
 import ForgotPasswordPage from "../../pages/ForgotPasswordPage/ForgotPasswordPage";
@@ -23,9 +29,8 @@ import { getIngredients } from "../../services/BurgerIngredients/action";
 const App = () => {
   const dispatch = useDispatch();
   useEffect(() => {
-    // dispatch(checkUserAuth());
+    dispatch(checkUserAuth());
     dispatch(getIngredients());
-
   }, []);
 
   let location = useLocation();
@@ -44,14 +49,26 @@ const App = () => {
         <Routes location={background || location}>
           <Route path="/" element={<BurgerConstructorPage />} />
           <Route path="/feed" element={<FeedPage />} />
-          {/* <Route path="/login" element={<OnlyUnAuth component={<LoginPage/>} />} /> */}
+          <Route
+            path="/login"
+            element={<OnlyUnAuth component={<LoginPage />} />}
+          />
           <Route path="/register" element={<RegisterPage />} />
-          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-          <Route path="/reset-password" element={<ResetPasswordPage />} />
-          {/* <Route path="/profile" element={<OnlyAuth component={<ProfilePage />}/>}> */}
-          {/* <Route index element={<UserProfile />}/> */}
-          {/* <Route path="history-feed" element={<HistoryFeed />}/> */}
-          {/* </Route> */}
+          <Route
+            path="/forgot-password"
+            element={<OnlyUnAuth component={<ForgotPasswordPage />} />}
+          />
+          <Route
+            path="/reset-password"
+            element={<OnlyUnAuth component={<ResetPasswordPage />} />}
+          />
+          <Route
+            path="/profile"
+            element={<OnlyAuth component={<ProfilePage />} />}
+          >
+            <Route index element={<UserProfile />} />
+            <Route path="history-feed" element={<HistoryFeed />} />
+          </Route>
           <Route path="/ingredients/:id" element={<IngredientDetails />} />
           <Route path="*" element={<NotFound404 />} />
         </Routes>

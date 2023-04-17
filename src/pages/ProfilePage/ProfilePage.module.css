@@ -38,3 +38,7 @@
   align-items: start;
   margin-top: 100px;
 }
+
+.logout{
+  cursor: pointer;
+}

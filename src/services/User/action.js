@@ -1,7 +1,9 @@
 import { requestApi } from '../../utils/requestApi'
+import { fetchWithRefresh } from '../../utils/requestApi';
 import {
   GET_USER,
   SET_USER,
+  SET_USER_FAILED,
   SET_AUTH_CHECKED,
 
   REGISTER_USER_REQUEST,
@@ -11,6 +13,14 @@ import {
   LOGIN_USER_REQUEST,
   LOGIN_USER_SUCCESS,
   LOGIN_USER_FAILED,
+
+  LOGOUT_USER_REQUEST,
+  LOGOUT_USER_SUCCESS,
+  LOGOUT_USER_FAILED,
+
+  UPDATE_USER_REQUEST,
+  UPDATE_USER_SUCCESS,
+  UPDATE_USER_FAILED,
 
   FORGOT_PASSWORD_REQUEST,
   FORGOT_PASSWORD_SUCCESS,
@@ -40,7 +50,7 @@ export function registerUser(email, password, name) {
     dispatch({
       type: REGISTER_USER_REQUEST
     });
-    requestApi("/auth/register", requestOptions).then(res => {
+    fetchWithRefresh("/auth/register", requestOptions).then(res => {
       if (res && res.success) {
         localStorage.setItem("refreshToken", res.refreshToken);
         localStorage.setItem("accessToken", res.accessToken);
@@ -72,7 +82,7 @@ export function loginUser(email, password) {
     dispatch({
       type: LOGIN_USER_REQUEST
     });
-    requestApi("/auth/login", requestOptions).then(res => {
+    fetchWithRefresh("/auth/login", requestOptions).then(res => {
       if (res && res.success) {
         localStorage.setItem("refreshToken", res.refreshToken);
         localStorage.setItem("accessToken", res.accessToken);
@@ -91,6 +101,37 @@ export function loginUser(email, password) {
   };
 }
 
+//выход
+export function logoutUser() {
+  const requestOptions = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      token: localStorage.getItem('refreshToken')
+    }),
+  };
+  return function (dispatch) {
+    dispatch({
+      type: LOGOUT_USER_REQUEST
+    });
+    fetchWithRefresh(`/auth/logout`, requestOptions).then((res) => {
+      if (res && res.success) {
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+        dispatch({
+          type: LOGOUT_USER_SUCCESS
+        });
+      }
+    })
+      .catch(err => {
+        dispatch({
+          type: LOGOUT_USER_FAILED,
+          err
+        });
+      })
+  }
+}
+
 export function forgotPassword(email) {
   const requestOptions = {
     method: "POST",
@@ -101,7 +142,7 @@ export function forgotPassword(email) {
     dispatch({
       type: FORGOT_PASSWORD_REQUEST
     });
-    requestApi("/password-reset", requestOptions).then(res => {
+    fetchWithRefresh("/password-reset", requestOptions).then(res => {
       if (res && res.success) {
         dispatch({
           type: FORGOT_PASSWORD_SUCCESS,
@@ -129,7 +170,7 @@ export function resetPassword(password, token) {
     dispatch({
       type: RESET_PASSWORD_REQUEST
     });
-    requestApi("/password-reset/reset", requestOptions).then(res => {
+    fetchWithRefresh("/password-reset/reset", requestOptions).then(res => {
       if (res && res.success) {
         dispatch({
           type: RESET_PASSWORD_SUCCESS,
@@ -145,41 +186,36 @@ export function resetPassword(password, token) {
 }
 
 
-export const getUser = () => {
-  return (dispatch) => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve()
-      }, 100)
-    }).then(() => {
-      // dispatch()
+//получения данных о пользователе
+export function getUser() {
+  return function (dispatch) {
+    dispatch({
+      type: SET_AUTH_CHECKED,
+      authChecked: false,
+    });
+    return fetchWithRefresh(`/auth/user`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("accessToken")
+      },
+    }).then(res => {
+      if (res && res.success) {
+        dispatch({
+          type: SET_USER,
+          user: res.user,
+        });
+      }
+    }).catch(err => {
+      dispatch({
+        type: SET_USER_FAILED,
+        err: err
+      });
     })
-  }
+  };
 }
 
-// export function getUser() {
-//   return function (dispatch) {
-//     dispatch({
-//       type: GET_USER
-//     });
-//   };
-// }
-
-// export function setUser(user) {
-//   return function (dispatch) {
-//     dispatch({
-//       type: SET_USER,
-//       user: user
-//     });
-//   };
-// }
-
-// const setAuthChecked = (check) => ({
-//   type: SET_AUTH_CHECKED,
-//   check: check
-// })
-
-export const checkUserAuth = () => {
+export function checkUserAuth() {
   return (dispatch) => {
     if (localStorage.getItem("accessToken")) {
       dispatch(getUser())
@@ -193,44 +229,78 @@ export const checkUserAuth = () => {
         })
         .finally(() => dispatch({
           type: SET_AUTH_CHECKED,
-          check: true
+          authChecked: true
         }));
     } else {
       dispatch({
         type: SET_AUTH_CHECKED,
-        check: true
+        authChecked: true
       });
     }
   };
 };
 
-// export function refreshToken(refreshToken) {
-//   const requestOptions = {
-//     method: "POST",
-//     headers: { "Content-Type": "application/json" },
-//     body: JSON.stringify({
-//       token: refreshToken
-//     }),
-//   };
-//   return function (dispatch) {
-//     dispatch({
-//       type: REFRESH_TOKEN_REQUEST
-//     });
-//     requestApi("/auth/token", requestOptions).then(res => {
-//       if (res && res.success) {
-//         dispatch({
-//           type: REFRESH_TOKEN_SUCCESS,
-//           accessToken: res.accessToken,
-//           refreshToken: res.refreshToken
-//         });
-//       } else {
-//         dispatch({
-//           type: REFRESH_TOKEN_FAILED
-//         });
-//       }
-//     });
-//   };
-// }
+//обновление данных о пользователе
+export function updateUser(name, email, password) {
+  const requestOptions = {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: localStorage.getItem('accessToken')
+    },
+    body: JSON.stringify({
+      name: name,
+      email: email,
+      password: password,
+    }),
+  };
+  return function (dispatch) {
+    dispatch({
+      type: UPDATE_USER_REQUEST
+    });
+    fetchWithRefresh(`/auth/user`, requestOptions).then(res => {
+      dispatch({
+        type: UPDATE_USER_SUCCESS,
+        user: res.user,
+      });
+    })
+      .catch(err => {
+        dispatch({
+          type: UPDATE_USER_FAILED,
+          err
+        });
+      })
+  };
+}
+
+
+export function refreshToken(refreshToken) {
+  const requestOptions = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      token: refreshToken
+    }),
+  };
+  return function (dispatch) {
+    dispatch({
+      type: REFRESH_TOKEN_REQUEST
+    });
+    fetchWithRefresh("/auth/token", requestOptions).then(res => {
+      if (res && res.success) {
+        dispatch({
+          type: REFRESH_TOKEN_SUCCESS,
+          accessToken: res.accessToken,
+          refreshToken: res.refreshToken
+        });
+      } else {
+        dispatch({
+          type: REFRESH_TOKEN_FAILED
+        });
+      }
+    });
+  };
+}
 
 
 

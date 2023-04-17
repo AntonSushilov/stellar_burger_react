@@ -29,8 +29,8 @@ import { getIngredients } from "../../services/BurgerIngredients/action";
 const App = () => {
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(checkUserAuth());
     dispatch(getIngredients());
+    dispatch(checkUserAuth());
   }, []);
 
   let location = useLocation();
@@ -67,7 +67,8 @@ const App = () => {
             element={<OnlyAuth component={<ProfilePage />} />}
           >
             <Route index element={<UserProfile />} />
-            <Route path="history-feed" element={<HistoryFeed />} />
+            <Route path="/profile/orders" element={<HistoryFeed />} />
+            <Route path="/profile/orders/:id" element={<HistoryFeed />} />
           </Route>
           <Route path="/ingredients/:id" element={<IngredientDetails />} />
           <Route path="*" element={<NotFound404 />} />

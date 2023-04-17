@@ -1,4 +1,4 @@
-import { requestApi } from '../../utils/requestApi'
+import { requestApi, fetchWithRefresh } from '../../utils/requestApi'
 import {
   GET_ORGER_DETAILS_REQUEST,
   GET_ORGER_DETAILS_SUCCESS,
@@ -13,14 +13,18 @@ import { deleteAllIngredientConstructor } from '../BurgerConstructor/action';
 export function getOrderDetails(ids) {
   const requestOptions = {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: localStorage.getItem('accessToken')
+    },
     body: JSON.stringify({ ingredients: ids }),
   };
   return function (dispatch) {
     dispatch({
       type: GET_ORGER_DETAILS_REQUEST
     });
-    requestApi("/orders", requestOptions).then(res => {
+    fetchWithRefresh("/orders", requestOptions).then(res => {
+      console.log(res)
       if (res && res.success) {
         dispatch({
           type: GET_ORGER_DETAILS_SUCCESS,
@@ -37,7 +41,7 @@ export function getOrderDetails(ids) {
 }
 
 export const deleteOrderDetails = () => ({
-	type: DELETE_ORGER_DETAILS,
+  type: DELETE_ORGER_DETAILS,
 });
 
 

@@ -1,5 +1,5 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React, { useEffect, useState, useRef } from "react";
+import PropTypes from "prop-types";
 import {
   Input,
   EmailInput,
@@ -9,52 +9,95 @@ import {
   HideIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./UserProfile.module.css";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { updateUser } from "../../services/User/action";
 
-const UserProfile = props => {
-  const [valueName, setValueName] = React.useState("");
-  const inputRef = React.useRef(null);
+const UserProfile = (props) => {
+  const { user } = useSelector(
+    (store) => ({
+      user: store.userReducer.user,
+    }),
+    shallowEqual
+  );
 
-  const [valuePass, setValuePass] = React.useState("");
-  const onChangePass = (e) => {
-    setValuePass(e.target.value);
+  const [valueName, setValueName] = useState(user.name);
+  const valuePassDef = "********";
+  const [valuePass, setValuePass] = useState(valuePassDef);
+
+  const [valueEmail, setValueEmail] = useState(user.email);
+
+  const [editCheck, setEditCheck] = useState(false);
+
+  useEffect(() => {
+    if (
+      valueName != user.name ||
+      valuePass != valuePassDef ||
+      valueEmail != user.email
+    ) {
+      setEditCheck(true);
+    } else {
+      setEditCheck(false);
+    }
+  }, [user, valueName, valuePass, valueEmail, editCheck]);
+
+  const resetForm = () => {
+    setValueName(user.name);
+    setValuePass(valuePassDef);
+    setValueEmail(user.email);
   };
 
-  const [valueEmail, setValueEmail] = React.useState("");
-  const onChangeEmail = (e) => {
-    setValueEmail(e.target.value);
-  };
+  const dispatch = useDispatch()
+  const handlerUpdateUser = () =>{
+    dispatch(updateUser(valueName, valueEmail, valuePass!=valuePassDef ? valuePass : null))
+    setValuePass(valuePassDef);
+    // resetForm()
+  }
+
   return (
-    <div className={styles.login_form}>
-            <Input
-              type={"text"}
-              placeholder={"Имя"}
-              onChange={(e) => setValueName(e.target.value)}
-              value={valueName}
-              name={"name"}
-              error={false}
-              ref={inputRef}
-              errorText={"Ошибка"}
-              size={"default"}
-              icon="EditIcon"
-              // disabled={true}
-            />
-            <EmailInput
-              onChange={onChangeEmail}
-              value={valueEmail}
-              name={"email"}
-              placeholder="E-mail"
-              isIcon={true}
-            />
-            <PasswordInput
-              onChange={onChangePass}
-              value={valuePass}
-              name={"Пароль"}
-              icon="EditIcon"
-            />
-          </div>
-  )
-}
+    <form className={styles.login_form}>
+      <Input
+        type={"text"}
+        placeholder={"Имя"}
+        onChange={(e) => setValueName(e.target.value)}
+        value={valueName}
+        name={"name"}
+        icon="EditIcon"
+        extraClass="text_color_inactive"
+        // isIcon={true}
+        // disabled={true}
+      />
+      <EmailInput
+        onChange={(e) => setValueEmail(e.target.value)}
+        value={valueEmail}
+        name={"email"}
+        placeholder="E-mail"
+        isIcon={true}
+      />
+      <PasswordInput
+        onChange={(e) => setValuePass(e.target.value)}
+        value={valuePass}
+        name={"Пароль"}
+        icon="EditIcon"
+      />
+      {editCheck && (
+        <div className={styles.buttons}>
+          <p className="text text_type_main-default" onClick={resetForm}>
+            Отменить
+          </p>
+          <Button
+            htmlType="button"
+            type="primary"
+            size="medium"
+            onClick={handlerUpdateUser}
+          >
+            Сохранить
+          </Button>
+        </div>
+      )}
+    </form>
+  );
+};
 
-UserProfile.propTypes = {}
+UserProfile.propTypes = {};
 
-export default UserProfile
+export default UserProfile;

@@ -26,7 +26,8 @@ const LoginPage = (props) => {
   };
 
   const dispatch = useDispatch();
-  const handleLoginUser = () => {
+  const handleLoginUser = (e) => {
+    e.preventDefault()
     if (valueEmail && valuePass) {
       dispatch(loginUser(valueEmail, valuePass));
     } else {
@@ -37,7 +38,7 @@ const LoginPage = (props) => {
   return (
     <div className={styles.container}>
       <div className={styles.content}>
-        <div className={styles.login_form}>
+        <form className={styles.login_form} onSubmit={handleLoginUser}>
           <p className="text text_type_main-medium">Вход</p>
           <EmailInput
             onChange={onChangeEmail}
@@ -52,14 +53,14 @@ const LoginPage = (props) => {
             name={"Пароль"}
           />
           <Button
-            htmlType="button"
+            htmlType="submit"
             type="primary"
             size="medium"
             onClick={handleLoginUser}
           >
             Войти
           </Button>
-        </div>
+        </form>
         <div className={styles.links}>
           <p className="text text_type_main-default text_color_inactive">
             Вы - новый пользователь?{" "}

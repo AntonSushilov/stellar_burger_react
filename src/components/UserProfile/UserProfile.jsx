@@ -12,7 +12,7 @@ import styles from "./UserProfile.module.css";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { updateUser } from "../../services/User/action";
 
-const UserProfile = (props) => {
+const UserProfile = () => {
   const { user } = useSelector(
     (store) => ({
       user: store.userReducer.user,
@@ -22,7 +22,7 @@ const UserProfile = (props) => {
 
   const [valueName, setValueName] = useState(user.name);
   const valuePassDef = "********";
-  const [valuePass, setValuePass] = useState(valuePassDef);
+  const [valuePass, setValuePass] = useState("");
 
   const [valueEmail, setValueEmail] = useState(user.email);
 
@@ -54,7 +54,7 @@ const UserProfile = (props) => {
   }
 
   return (
-    <form className={styles.login_form}>
+    <form className={styles.login_form} onSubmit={handlerUpdateUser}>
       <Input
         type={"text"}
         placeholder={"Имя"}
@@ -85,10 +85,9 @@ const UserProfile = (props) => {
             Отменить
           </p>
           <Button
-            htmlType="button"
+            htmlType="submit"
             type="primary"
             size="medium"
-            onClick={handlerUpdateUser}
           >
             Сохранить
           </Button>
@@ -97,7 +96,5 @@ const UserProfile = (props) => {
     </form>
   );
 };
-
-UserProfile.propTypes = {};
 
 export default UserProfile;

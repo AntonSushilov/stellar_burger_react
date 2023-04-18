@@ -26,13 +26,13 @@ const store = configureStore({
 
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <ErrorBoundary>
-        <BrowserRouter>
+    <BrowserRouter>
+      <Provider store={store}>
+        <ErrorBoundary>
           <App />
-        </BrowserRouter>
-      </ErrorBoundary>
-    </Provider>
+        </ErrorBoundary>
+      </Provider>
+    </BrowserRouter>
   </React.StrictMode>
 );
 

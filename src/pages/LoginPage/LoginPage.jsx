@@ -1,20 +1,15 @@
 import React from "react";
-import { useDispatch, useSelector, shallowEqual } from "react-redux";
-import PropTypes from "prop-types";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import {
   EmailInput,
   PasswordInput,
   Button,
-  ShowIcon,
-  HideIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { loginUser } from "../../services/User/action";
-import AppHeader from "../../components/AppHeader/AppHeader";
-
 import styles from "./LoginPage.module.css";
 
-const LoginPage = (props) => {
+const LoginPage = () => {
   const [valuePass, setValuePass] = React.useState("");
   const onChangePass = (e) => {
     setValuePass(e.target.value);
@@ -27,7 +22,7 @@ const LoginPage = (props) => {
 
   const dispatch = useDispatch();
   const handleLoginUser = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     if (valueEmail && valuePass) {
       dispatch(loginUser(valueEmail, valuePass));
     } else {
@@ -52,12 +47,7 @@ const LoginPage = (props) => {
             value={valuePass}
             name={"Пароль"}
           />
-          <Button
-            htmlType="submit"
-            type="primary"
-            size="medium"
-            onClick={handleLoginUser}
-          >
+          <Button htmlType="submit" type="primary" size="medium">
             Войти
           </Button>
         </form>
@@ -75,7 +65,5 @@ const LoginPage = (props) => {
     </div>
   );
 };
-
-LoginPage.propTypes = {};
 
 export default LoginPage;

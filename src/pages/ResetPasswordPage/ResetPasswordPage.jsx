@@ -4,16 +4,13 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import {
   Input,
-  EmailInput,
   PasswordInput,
   Button,
-  ShowIcon,
-  HideIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { resetPassword } from "../../services/User/action";
 import styles from "./ResetPasswordPage.module.css";
 
-const ResetPasswordPage = (props) => {
+const ResetPasswordPage = () => {
   const [valueCode, setValueCode] = React.useState("");
   const inputRef = React.useRef(null);
 
@@ -36,7 +33,7 @@ const ResetPasswordPage = (props) => {
   return (
     <div className={styles.container}>
       <div className={styles.content}>
-        <div className={styles.login_form}>
+        <form className={styles.login_form} onSubmit={handleResetPassword}>
           <p className="text text_type_main-medium">Восстановление пароля</p>
           <PasswordInput
             onChange={onChangePass}
@@ -55,14 +52,13 @@ const ResetPasswordPage = (props) => {
             size={"default"}
           />
           <Button
-            htmlType="button"
+            htmlType="submit"
             type="primary"
             size="medium"
-            onClick={handleResetPassword}
           >
             Сохранить
           </Button>
-        </div>
+        </form>
         <div className={styles.links}>
           <p className="text text_type_main-default text_color_inactive">
             Вспомнили пароль? <Link to="/login">Войти</Link>
@@ -72,7 +68,5 @@ const ResetPasswordPage = (props) => {
     </div>
   );
 };
-
-ResetPasswordPage.propTypes = {};
 
 export default ResetPasswordPage;

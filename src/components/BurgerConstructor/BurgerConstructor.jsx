@@ -1,6 +1,6 @@
 import React, { useEffect, useReducer, useCallback } from "react";
 import { useSelector, shallowEqual, useDispatch } from "react-redux";
-import { Link, Navigate, useLocation } from "react-router-dom";
+import { Link, Navigate, redirect, useLocation, useNavigate } from "react-router-dom";
 import Modal from "../Modal/Modal";
 import OrderDetails from "./OrderDetails/OrderDetails";
 import { deleteOrderDetails } from "../../services/OrderDetails/action";
@@ -17,7 +17,6 @@ import {
   addBunConstructor,
   sortIngredientConstructor,
 } from "../../services/BurgerConstructor/action";
-import { openModal } from "../../services/Modal/action";
 import { IngredientCard } from "./IngredientCard/IngredientCard";
 import PlaceHolderCard from "./PlaceHolderCard/PlaceHolderCard";
 const initialSummPrice = 0;
@@ -31,12 +30,12 @@ const reducerSummPrice = (state, ingredients) => {
 const BurgerConstructor = () => {
   const location = useLocation();
 
-
   const dispatch = useDispatch();
 
-  const { ingredientsData, ingredientsConstructorData, bunConstructor } =
+  const { user, ingredientsData, ingredientsConstructorData, bunConstructor } =
     useSelector(
       (store) => ({
+        user: store.userReducer.user,
         ingredientsData: store.ingredientsReducer.ingredients,
         ingredientsConstructorData:
           store.ingredientsConstructorReducer.ingredientsConstructor,
@@ -72,16 +71,21 @@ const BurgerConstructor = () => {
     setSummPrice({ items: ingr });
   }, [ingredientsConstructorData, bunConstructor]);
 
+  const navigate = useNavigate()
   const handleOpenModal = (e) => {
     // e.preventDefault();
     if (bunConstructor && ingredientsConstructorData.length) {
       // setModalVisible(true);
-      dispatch(openModal());
+      // dispatch(openModal());
+      console.log("tyt")
+      navigate("/order-details")
+      // return <Navigate to="/order-details"/>
     } else {
-      alert("Добавьте булку и ингредиенты");
+      if (user) {
+        alert("Добавьте булку и ингредиенты");
+      }
     }
   };
-
 
   const moveCard = (dragIndex, hoverIndex) => {
     const dragIngredient = ingredientsConstructorData[dragIndex];
@@ -143,16 +147,14 @@ const BurgerConstructor = () => {
           <p className="text text_type_digits-medium mr-3">{summPrice}</p>
           <CurrencyIcon type="primary" />
         </div>
-        <Link to={`/order-details`} state={{ background: location }}>
-          <Button
-            htmlType="button"
-            type="primary"
-            size="medium"
-            onClick={handleOpenModal}
-          >
-            Оформить заказ
-          </Button>
-        </Link>
+        <Button
+          htmlType="button"
+          type="primary"
+          size="medium"
+          onClick={handleOpenModal}
+        >
+          Оформить заказ
+        </Button>
       </div>
     </div>
   );

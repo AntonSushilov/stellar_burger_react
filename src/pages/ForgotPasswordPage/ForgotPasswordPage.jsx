@@ -1,6 +1,5 @@
 import React from "react";
 import { useDispatch, useSelector, shallowEqual } from "react-redux";
-import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import {
   EmailInput,
@@ -9,7 +8,7 @@ import {
 import { forgotPassword } from "../../services/User/action";
 import styles from "./ForgotPasswordPage.module.css";
 
-const ForgotPasswordPage = (props) => {
+const ForgotPasswordPage = () => {
   const [valueEmail, setValueEmail] = React.useState("");
   const onChangeEmail = (e) => {
     setValueEmail(e.target.value);
@@ -32,7 +31,7 @@ const ForgotPasswordPage = (props) => {
   return (
     <div className={styles.container}>
       <div className={styles.content}>
-        <form className={styles.login_form}>
+        <form className={styles.login_form} onSubmit={handleForgotPassword}>
           <p className="text text_type_main-medium">Восстановление пароля</p>
           <EmailInput
             onChange={onChangeEmail}
@@ -42,10 +41,9 @@ const ForgotPasswordPage = (props) => {
             isIcon={false}
           />
           <Button
-            htmlType="button"
+            htmlType="submit"
             type="primary"
             size="medium"
-            onClick={handleForgotPassword}
           >
             Восстановить
           </Button>
@@ -59,7 +57,5 @@ const ForgotPasswordPage = (props) => {
     </div>
   );
 };
-
-ForgotPasswordPage.propTypes = {};
 
 export default ForgotPasswordPage;

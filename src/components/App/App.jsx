@@ -63,6 +63,18 @@ const App = () => {
             element={<OnlyUnAuth component={<ResetPasswordPage />} />}
           />
           <Route
+              path="/order-details"
+              element={
+                <OnlyAuth
+                  component={
+                    <Modal onClose={handleModalClose}>
+                      <OrderDetails />
+                    </Modal>
+                  }
+                />
+              }
+            />
+          <Route
             path="/profile"
             element={<OnlyAuth component={<ProfilePage />} />}
           >
@@ -84,14 +96,7 @@ const App = () => {
                 </Modal>
               }
             />
-            <Route
-              path="/order-details"
-              element={
-                <Modal onClose={handleModalClose}>
-                  <OrderDetails />
-                </Modal>
-              }
-            />
+            
           </Routes>
         )}
       </main>

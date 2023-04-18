@@ -6,7 +6,7 @@ import UserProfile from "../../components/UserProfile/UserProfile";
 import styles from "./ProfilePage.module.css";
 import { useDispatch } from "react-redux";
 
-const ProfilePage = (props) => {
+const ProfilePage = () => {
   const dispath = useDispatch()
   const logout = () => {
     dispath(logoutUser())
@@ -47,7 +47,5 @@ const ProfilePage = (props) => {
     </div>
   );
 };
-
-ProfilePage.propTypes = {};
 
 export default ProfilePage;

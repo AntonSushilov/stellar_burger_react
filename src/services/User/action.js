@@ -50,7 +50,7 @@ export function registerUser(email, password, name) {
     dispatch({
       type: REGISTER_USER_REQUEST
     });
-    fetchWithRefresh("/auth/register", requestOptions).then(res => {
+    requestApi("/auth/register", requestOptions).then(res => {
       if (res && res.success) {
         localStorage.setItem("refreshToken", res.refreshToken);
         localStorage.setItem("accessToken", res.accessToken);
@@ -82,7 +82,7 @@ export function loginUser(email, password) {
     dispatch({
       type: LOGIN_USER_REQUEST
     });
-    fetchWithRefresh("/auth/login", requestOptions).then(res => {
+    requestApi("/auth/login", requestOptions).then(res => {
       if (res && res.success) {
         localStorage.setItem("refreshToken", res.refreshToken);
         localStorage.setItem("accessToken", res.accessToken);
@@ -114,7 +114,7 @@ export function logoutUser() {
     dispatch({
       type: LOGOUT_USER_REQUEST
     });
-    fetchWithRefresh(`/auth/logout`, requestOptions).then((res) => {
+    requestApi(`/auth/logout`, requestOptions).then((res) => {
       if (res && res.success) {
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
@@ -142,7 +142,7 @@ export function forgotPassword(email) {
     dispatch({
       type: FORGOT_PASSWORD_REQUEST
     });
-    fetchWithRefresh("/password-reset", requestOptions).then(res => {
+    requestApi("/password-reset", requestOptions).then(res => {
       if (res && res.success) {
         dispatch({
           type: FORGOT_PASSWORD_SUCCESS,
@@ -286,8 +286,10 @@ export function refreshToken(refreshToken) {
     dispatch({
       type: REFRESH_TOKEN_REQUEST
     });
-    fetchWithRefresh("/auth/token", requestOptions).then(res => {
+    requestApi("/auth/token", requestOptions).then(res => {
       if (res && res.success) {
+        localStorage.setItem("refreshToken", res.refreshToken);
+        localStorage.setItem("accessToken", res.accessToken);
         dispatch({
           type: REFRESH_TOKEN_SUCCESS,
           accessToken: res.accessToken,

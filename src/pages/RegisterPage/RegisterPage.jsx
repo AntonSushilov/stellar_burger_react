@@ -1,19 +1,16 @@
 import React from "react";
-import { useDispatch, useSelector, shallowEqual } from "react-redux";
-import PropTypes from "prop-types";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import {
   Input,
   EmailInput,
   PasswordInput,
   Button,
-  ShowIcon,
-  HideIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { registerUser } from "../../services/User/action";
 import styles from "./RegisterPage.module.css";
 
-const RegisterPage = (props) => {
+const RegisterPage = () => {
   const [valueName, setValueName] = React.useState("");
   const inputRef = React.useRef(null);
 
@@ -45,7 +42,7 @@ const RegisterPage = (props) => {
   return (
     <div className={styles.container}>
       <div className={styles.content}>
-        <div className={styles.login_form}>
+        <form className={styles.login_form} onSubmit={handleRegisterUser}>
           <p className="text text_type_main-medium">Регистрация</p>
           <Input
             type={"text"}
@@ -71,14 +68,13 @@ const RegisterPage = (props) => {
             name={"Пароль"}
           />
           <Button
-            htmlType="button"
+            htmlType="submit"
             type="primary"
             size="medium"
-            onClick={handleRegisterUser}
           >
             Зарегистрироваться
           </Button>
-        </div>
+        </form>
         <div className={styles.links}>
           <p className="text text_type_main-default text_color_inactive">
             Уже зарегистрированы? <Link to="/login">Войти</Link>
@@ -88,7 +84,5 @@ const RegisterPage = (props) => {
     </div>
   );
 };
-
-RegisterPage.propTypes = {};
 
 export default RegisterPage;

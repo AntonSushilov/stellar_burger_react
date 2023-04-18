@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector, shallowEqual } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   EmailInput,
   Button,
@@ -13,16 +13,14 @@ const ForgotPasswordPage = () => {
   const onChangeEmail = (e) => {
     setValueEmail(e.target.value);
   };
-
+  const message = useSelector((store) => store.userReducer.message);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-  // const forgotPasswordMessage = useSelector(
-  //   (store) => store.forgotPasswordReducer.forgotPasswordMessage,
-  //   shallowEqual
-  // );
-  const handleForgotPassword = () => {
+  const handleForgotPassword = (e) => {
+    e.preventDefault()
     if (valueEmail) {
       dispatch(forgotPassword(valueEmail));
-      console.log(valueEmail);
+      navigate("/reset-password");
     } else {
       console.log("Не введен емаил");
     }
@@ -40,11 +38,7 @@ const ForgotPasswordPage = () => {
             placeholder="укажите E-mail"
             isIcon={false}
           />
-          <Button
-            htmlType="submit"
-            type="primary"
-            size="medium"
-          >
+          <Button htmlType="submit" type="primary" size="medium">
             Восстановить
           </Button>
         </form>

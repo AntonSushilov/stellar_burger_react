@@ -21,7 +21,6 @@ const UserProfile = () => {
   );
 
   const [valueName, setValueName] = useState(user.name);
-  const valuePassDef = "********";
   const [valuePass, setValuePass] = useState("");
 
   const [valueEmail, setValueEmail] = useState(user.email);
@@ -31,7 +30,7 @@ const UserProfile = () => {
   useEffect(() => {
     if (
       valueName != user.name ||
-      valuePass != valuePassDef ||
+      valuePass != '' ||
       valueEmail != user.email
     ) {
       setEditCheck(true);
@@ -42,14 +41,14 @@ const UserProfile = () => {
 
   const resetForm = () => {
     setValueName(user.name);
-    setValuePass(valuePassDef);
+    setValuePass("");
     setValueEmail(user.email);
   };
 
   const dispatch = useDispatch()
   const handlerUpdateUser = () =>{
-    dispatch(updateUser(valueName, valueEmail, valuePass!=valuePassDef ? valuePass : null))
-    setValuePass(valuePassDef);
+    dispatch(updateUser(valueName, valueEmail, valuePass!="" ? valuePass : null))
+    setValuePass("");
     // resetForm()
   }
 

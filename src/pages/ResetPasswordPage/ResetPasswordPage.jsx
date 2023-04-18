@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Input,
   PasswordInput,
@@ -18,12 +18,21 @@ const ResetPasswordPage = () => {
   const onChangePass = (e) => {
     setValuePass(e.target.value);
   };
-
+  const resetPasswordSuccess = useSelector((store) => store.userReducer.resetPasswordSuccess);
+  const navigate = useNavigate()
   const dispatch = useDispatch();
+  useEffect(()=>{
+    if(resetPasswordSuccess){
+      navigate("/login")
+    }
+  }, [resetPasswordSuccess])
   // const resetPasswordMessage = useSelector((store) => store.resetPasswordReducer.resetPasswordMessage, shallowEqual)
-  const handleResetPassword = () => {
+  const handleResetPassword = (e) => {
+    e.preventDefault()
+    console.log(resetPasswordSuccess)
     if (valuePass && valueCode) {
       dispatch(resetPassword(valuePass, valueCode));
+      
       console.log(valuePass, valueCode);
     } else {
       console.log("Не введен емаил");

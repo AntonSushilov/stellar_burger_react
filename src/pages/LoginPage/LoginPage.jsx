@@ -1,6 +1,6 @@
-import React from "react";
-import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import {
   EmailInput,
   PasswordInput,
@@ -19,7 +19,17 @@ const LoginPage = () => {
   const onChangeEmail = (e) => {
     setValueEmail(e.target.value);
   };
+  const isAuthChecked = useSelector((store) => store.userReducer.isAuthChecked);
+  const userFailed = useSelector((store) => store.userReducer.userFailed);
+  const userLoginSuccess = useSelector((store) => store.userReducer.userLoginSuccess);
+  useEffect(()=>{
+    if(userLoginSuccess){
+      navigate("/")
+    }
+  }, [userLoginSuccess])
 
+
+  const navigate = useNavigate()
   const dispatch = useDispatch();
   const handleLoginUser = (e) => {
     e.preventDefault();

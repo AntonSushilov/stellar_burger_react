@@ -1,6 +1,6 @@
-import React from "react";
-import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Input,
   EmailInput,
@@ -23,6 +23,13 @@ const RegisterPage = () => {
   const onChangeEmail = (e) => {
     setValueEmail(e.target.value);
   };
+  const navigate = useNavigate()
+  const userRegisterSuccess = useSelector((store) => store.userReducer.userRegisterSuccess);
+  useEffect(()=>{
+    if(userRegisterSuccess){
+      navigate("/")
+    }
+  }, [userRegisterSuccess])
 
   const dispatch = useDispatch();
   // const registerUserMessage = useSelector(
@@ -32,7 +39,6 @@ const RegisterPage = () => {
   const handleRegisterUser = () => {
     if (valueEmail && valuePass && valueName) {
       dispatch(registerUser(valueEmail, valuePass, valueName));
-      console.log(valueEmail, valuePass, valueName);
     } else {
       console.log("Не введен емаил");
     }

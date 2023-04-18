@@ -43,6 +43,11 @@ const initialState = {
   message: null,
   userRequest: false,
   userFailed: false,
+
+  userRegisterSuccess: false,
+  userLoginSuccess: false,
+  resetPasswordSuccess: false,
+
 };
 
 export const userReducer = (state = initialState, action) => {
@@ -68,7 +73,8 @@ export const userReducer = (state = initialState, action) => {
     case REGISTER_USER_REQUEST: {
       return {
         ...state,
-        userRequest: true
+        userRequest: true,
+        userRegisterSuccess: false,
       };
     }
     case REGISTER_USER_SUCCESS: {     
@@ -77,6 +83,7 @@ export const userReducer = (state = initialState, action) => {
         userFailed: false,
         userRequest: false,
         isAuthChecked: true,
+        userRegisterSuccess: true,
         accessToken: action.accessToken,
         refreshToken: action.refreshToken,
         user: action.user,
@@ -117,6 +124,7 @@ export const userReducer = (state = initialState, action) => {
         userFailed: false,
         userRequest: false,
         isAuthChecked: true,
+        userLoginSuccess: false,
         accessToken: null,
         refreshToken: null,
         user: null,
@@ -140,6 +148,29 @@ export const userReducer = (state = initialState, action) => {
       };
     }
     case FORGOT_PASSWORD_FAILED: {
+      return {
+        ...state,
+        userFailed: true,
+        userRequest: false
+      };
+    }
+    case RESET_PASSWORD_REQUEST: {
+      return {
+        ...state,
+        userRequest: true,
+        resetPasswordSuccess: false,
+      };
+    }
+    case RESET_PASSWORD_SUCCESS: {
+      return {
+        ...state,
+        userFailed: false,
+        message: action.message,
+        userRequest: false,
+        resetPasswordSuccess: true
+      };
+    }
+    case RESET_PASSWORD_FAILED: {
       return {
         ...state,
         userFailed: true,

@@ -1,3 +1,4 @@
+import { NavLink, useMatch } from "react-router-dom";
 import NavItem from "./NavItem/NavItem";
 import {
   Logo,
@@ -6,33 +7,46 @@ import {
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./AppHeader.module.css";
+import { useSelector } from "react-redux";
 
 const AppHeader = () => {
+  const isConstructor = !!useMatch({ path: "/", exact: true})
+  const isFeed = !!useMatch("/feed")
+  const isProfile = !!useMatch("/profile/*")
+
+  // const userName = useSelector((store) => store.user.user?.name)
+
   return (
     <header className={styles.header}>
       <nav className={styles.container}>
         <section className={styles.section_left}>
-          <NavItem>
-            <BurgerIcon type="primary" />
-            <p className="text text_type_main-default ml-2">Конструктор</p>
-          </NavItem>
-          <NavItem>
-            <ListIcon type="secondary" />
-            <p className="text text_type_main-default text_color_inactive ml-2">
-              Лента заказов
-            </p>
-          </NavItem>
+          <NavLink to="/" className={({ isActive }) => isActive ? "" : "text_color_inactive"}>
+            <NavItem>
+              <BurgerIcon type={isConstructor ? "primary" : "secondary"} />
+              <p className="text text_type_main-default ml-2">Конструктор</p>
+            </NavItem>
+          </NavLink>
+          <NavLink to="/feed" className={({ isActive }) => isActive ? "" : "text_color_inactive"}>
+            <NavItem>
+              <ListIcon type={isFeed ? "primary" : "secondary"} />
+              <p className="text text_type_main-default ml-2">
+                Лента заказов
+              </p>
+            </NavItem>
+          </NavLink>
         </section>
         <section className={styles.section_center}>
           <Logo />
         </section>
         <section className={styles.section_right}>
-          <NavItem>
-            <ProfileIcon type="secondary" />
-            <p className="text text_type_main-default text_color_inactive ml-2">
-              Личный кабинет
-            </p>
-          </NavItem>
+          <NavLink to="/profile" className={({ isActive }) => isActive ? "" : "text_color_inactive"}>
+            <NavItem>
+              <ProfileIcon type={isProfile ? "primary" : "secondary"}/>
+              <p className="text text_type_main-default ml-2">
+                Личный кабинет
+              </p>
+            </NavItem>
+          </NavLink>
         </section>
       </nav>
     </header>

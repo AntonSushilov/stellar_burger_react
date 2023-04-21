@@ -11,7 +11,7 @@ const BurgerIngredients = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     // Отправляем экшен-функцию
-    dispatch(getIngredients());
+    // dispatch(getIngredients());
   }, []);
 
   const { ingredientsData, ingredientsRequest, ingredientsFailed } =

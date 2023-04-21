@@ -37,3 +37,11 @@
   composes: section;
   justify-content: center;
 }
+
+.link{
+  display: flex;
+  flex-direction: row;
+  margin-right: 8px;
+  cursor: pointer;
+  color: inherit;
+}

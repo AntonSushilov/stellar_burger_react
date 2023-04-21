@@ -21,12 +21,9 @@
 .container {
   display: flex;
   flex-direction: column;
+  /* height: 100%; */
   width: 1300px;
   margin: 0 auto 0 auto;
 }
 
-.content {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
+

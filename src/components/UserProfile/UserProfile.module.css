@@ -1,0 +1,23 @@
+.login_form{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  width: fit-content;
+
+}
+
+.buttons{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 28px;
+  /* justify-content: flex-end; */
+  align-items: center;
+}
+
+.buttons p{
+  color:#4C4CFF;
+  cursor: pointer;
+}

@@ -1,5 +1,6 @@
 import React, { useEffect, useReducer, useCallback } from "react";
 import { useSelector, shallowEqual, useDispatch } from "react-redux";
+import { Link, Navigate, redirect, useLocation, useNavigate } from "react-router-dom";
 import Modal from "../Modal/Modal";
 import OrderDetails from "./OrderDetails/OrderDetails";
 import { deleteOrderDetails } from "../../services/OrderDetails/action";
@@ -27,17 +28,21 @@ const reducerSummPrice = (state, ingredients) => {
 };
 
 const BurgerConstructor = () => {
+  const location = useLocation();
+
   const dispatch = useDispatch();
 
-  const { ingredientsData, ingredientsConstructorData, bunConstructor } = useSelector(
-    (store) => ({
-      ingredientsData: store.ingredientsReducer.ingredients,
-      ingredientsConstructorData:
-        store.ingredientsConstructorReducer.ingredientsConstructor,
-      bunConstructor: store.ingredientsConstructorReducer.bunConstructor,
-    }),
-    shallowEqual
-  );
+  const { user, ingredientsData, ingredientsConstructorData, bunConstructor } =
+    useSelector(
+      (store) => ({
+        user: store.userReducer.user,
+        ingredientsData: store.ingredientsReducer.ingredients,
+        ingredientsConstructorData:
+          store.ingredientsConstructorReducer.ingredientsConstructor,
+        bunConstructor: store.ingredientsConstructorReducer.bunConstructor,
+      }),
+      shallowEqual
+    );
 
   const onDropHandler = (id) => {
     const el = ingredientsData.find((el) => el._id === id._id);
@@ -55,11 +60,6 @@ const BurgerConstructor = () => {
     },
   });
 
-
-  
-
-  const [modalVisible, setModalVisible] = React.useState(false);
-
   const [summPrice, setSummPrice] = useReducer(
     reducerSummPrice,
     initialSummPrice
@@ -71,19 +71,21 @@ const BurgerConstructor = () => {
     setSummPrice({ items: ingr });
   }, [ingredientsConstructorData, bunConstructor]);
 
+  const navigate = useNavigate()
   const handleOpenModal = (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     if (bunConstructor && ingredientsConstructorData.length) {
-      setModalVisible(true);
+      // setModalVisible(true);
+      // dispatch(openModal());
+      console.log("tyt")
+      navigate("/order-details")
+      // return <Navigate to="/order-details"/>
     } else {
-      alert("Добавьте булку и ингредиенты");
+      if (user) {
+        alert("Добавьте булку и ингредиенты");
+      }
     }
   };
-
-  const handleClickCloseModal = useCallback(() => {
-    dispatch(deleteOrderDetails());
-    setModalVisible(false);
-  }, []);
 
   const moveCard = (dragIndex, hoverIndex) => {
     const dragIngredient = ingredientsConstructorData[dragIndex];
@@ -154,11 +156,6 @@ const BurgerConstructor = () => {
           Оформить заказ
         </Button>
       </div>
-      {modalVisible && (
-        <Modal onClose={handleClickCloseModal}>
-          <OrderDetails />
-        </Modal>
-      )}
     </div>
   );
 };

@@ -1,6 +1,8 @@
 import { useEffect } from "react";
+import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import ReactDOM from "react-dom";
 import PropTypes from "prop-types";
+import { closeModal } from "../../services/Modal/action";
 import ModalWindow from "./ModalWindow/ModalWindow";
 import ModalOverlay from "./ModalOverlay/ModalOverlay";
 import styles from "./Modal.module.css";
@@ -8,7 +10,6 @@ import styles from "./Modal.module.css";
 const modalRoot = document.getElementById("react-modals");
 
 const Modal = ({ children, title, onClose }) => {
-
   const handleCloseModal = (e) => {
     if (e.key === "Escape") {
       onClose();

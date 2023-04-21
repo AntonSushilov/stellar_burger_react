@@ -3,6 +3,8 @@ import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import done from "../../../images/done.png";
 import styles from "./OrderDetails.module.css";
 import { getOrderDetails } from "../../../services/OrderDetails/action";
+import { deleteOrderDetails } from "../../../services/OrderDetails/action";
+import { useNavigate } from "react-router";
 
 const OrderDetails = (props) => {
   const dispatch = useDispatch();
@@ -17,11 +19,20 @@ const OrderDetails = (props) => {
       shallowEqual
     );
 
+  const navigate = useNavigate()
   useEffect(() => {
-    const ids = [bunConstructor._id, ...ingredientsConstructorData.map((el) => el._id), bunConstructor._id]
-    dispatch(getOrderDetails(ids));
+    if (bunConstructor && ingredientsConstructorData){
+      const ids = [bunConstructor._id, ...ingredientsConstructorData.map((el) => el._id), bunConstructor._id]
+      dispatch(getOrderDetails(ids));
+      return () => {
+        dispatch(deleteOrderDetails());
+  
+      }
+    }
+    else{
+      navigate(-1)
+    }
   }, []);
-
   return (
     <div className={styles.modal_content}>
       <div className="mb-8">

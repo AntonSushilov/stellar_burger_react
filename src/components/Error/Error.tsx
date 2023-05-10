@@ -1,6 +1,6 @@
 import styles from "./Error.module.css";
 
-const Error = () => {
+const Error = (): JSX.Element => {
   return (
     <section className={styles.content}>
       <h1 className="text text_type_main-large mb-10">

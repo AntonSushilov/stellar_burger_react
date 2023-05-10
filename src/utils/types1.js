@@ -14,3 +14,8 @@ export const PropTypesDataObject = PropTypes.shape({
   image_large: PropTypes.string,
   _v: PropTypes.number,
 });
+
+// export type TUserData = {
+//   email: string,
+//   name: string
+// }

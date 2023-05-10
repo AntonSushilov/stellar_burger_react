@@ -22,12 +22,13 @@ import OrderDetails from "../BurgerConstructor/OrderDetails/OrderDetails";
 import { OnlyAuth, OnlyUnAuth } from "../ProtectedRoute/ProtectedRoute";
 import styles from "./App.module.css";
 import Modal from "../Modal/Modal";
-import { useDispatch } from "react-redux";
+// import { useDispatch } from "react-redux";
+import { useAppDispatch } from "../../hooks/UseAppDispatch";
 import { useEffect } from "react";
 import { checkUserAuth } from "../../services/User/action";
 import { getIngredients } from "../../services/BurgerIngredients/action";
-const App = () => {
-  const dispatch = useDispatch();
+const App = (): JSX.Element => {
+  const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(getIngredients());
     dispatch(checkUserAuth());
@@ -63,17 +64,17 @@ const App = () => {
             element={<OnlyUnAuth component={<ResetPasswordPage />} />}
           />
           <Route
-              path="/order-details"
-              element={
-                <OnlyAuth
-                  component={
-                    <Modal onClose={handleModalClose}>
-                      <OrderDetails />
-                    </Modal>
-                  }
-                />
-              }
-            />
+            path="/order-details"
+            element={
+              <OnlyAuth
+                component={
+                  <Modal onClose={handleModalClose}>
+                    <OrderDetails />
+                  </Modal>
+                }
+              />
+            }
+          />
           <Route
             path="/profile"
             element={<OnlyAuth component={<ProfilePage />} />}
@@ -96,7 +97,6 @@ const App = () => {
                 </Modal>
               }
             />
-            
           </Routes>
         )}
       </main>

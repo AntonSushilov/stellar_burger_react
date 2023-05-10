@@ -1,16 +1,7 @@
 import React from "react";
-import PropTypes from "prop-types";
-import {
-  Input,
-  EmailInput,
-  PasswordInput,
-  Button,
-  ShowIcon,
-  HideIcon,
-} from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./HistoryFeed.module.css";
 
-const HistoryFeed = (props) => {
+const HistoryFeed = (): JSX.Element => {
   return (
     <div>
       <p className="text text_type_main-large">История заказов</p>
@@ -18,7 +9,5 @@ const HistoryFeed = (props) => {
     </div>
   );
 };
-
-HistoryFeed.propTypes = {};
 
 export default HistoryFeed;

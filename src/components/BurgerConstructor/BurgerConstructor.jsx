@@ -1,9 +1,6 @@
-import React, { useEffect, useReducer, useCallback } from "react";
+import React, { useEffect, useReducer } from "react";
 import { useSelector, shallowEqual, useDispatch } from "react-redux";
-import { Link, Navigate, redirect, useLocation, useNavigate } from "react-router-dom";
-import Modal from "../Modal/Modal";
-import OrderDetails from "./OrderDetails/OrderDetails";
-import { deleteOrderDetails } from "../../services/OrderDetails/action";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   ConstructorElement,
   CurrencyIcon,
@@ -17,8 +14,9 @@ import {
   addBunConstructor,
   sortIngredientConstructor,
 } from "../../services/BurgerConstructor/action";
-import { IngredientCard } from "./IngredientCard/IngredientCard";
+import IngredientCard from "./IngredientCard/IngredientCard";
 import PlaceHolderCard from "./PlaceHolderCard/PlaceHolderCard";
+import { useRootSelector } from "../../hooks/UseRootSelector";
 const initialSummPrice = 0;
 const reducerSummPrice = (state, ingredients) => {
   let score = ingredients.items.reduce(function (a, b) {
@@ -33,7 +31,7 @@ const BurgerConstructor = () => {
   const dispatch = useDispatch();
 
   const { user, ingredientsData, ingredientsConstructorData, bunConstructor } =
-    useSelector(
+    useRootSelector(
       (store) => ({
         user: store.userReducer.user,
         ingredientsData: store.ingredientsReducer.ingredients,

@@ -1,16 +1,19 @@
 import { useEffect } from "react";
-import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import ReactDOM from "react-dom";
-import PropTypes from "prop-types";
-import { closeModal } from "../../services/Modal/action";
 import ModalWindow from "./ModalWindow/ModalWindow";
 import ModalOverlay from "./ModalOverlay/ModalOverlay";
 import styles from "./Modal.module.css";
 
+type TModal = {
+  children?: string | JSX.Element | JSX.Element[];
+  title?: string;
+  onClose: () => void;
+};
+
 const modalRoot = document.getElementById("react-modals");
 
-const Modal = ({ children, title, onClose }) => {
-  const handleCloseModal = (e) => {
+const Modal = ({ children, title, onClose }: TModal): JSX.Element => {
+  const handleCloseModal = (e: KeyboardEvent) => {
     if (e.key === "Escape") {
       onClose();
     }
@@ -33,14 +36,8 @@ const Modal = ({ children, title, onClose }) => {
       </ModalWindow>
       <ModalOverlay onClose={onClose} />
     </div>,
-    modalRoot
+    modalRoot as HTMLDivElement
   );
-};
-
-Modal.propTypes = {
-  children: PropTypes.node,
-  title: PropTypes.string,
-  onClose: PropTypes.func.isRequired,
 };
 
 export default Modal;

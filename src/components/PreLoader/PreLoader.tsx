@@ -1,12 +1,9 @@
-import React from "react";
 import PreloaderImg from "../../images/preloader.gif";
 import styles from "./PreLoader.module.css";
-const PreLoader = () => {
+const PreLoader = (): JSX.Element => {
   return (
     <img className={styles.preloader} src={PreloaderImg} alt="Загрузка..." />
   );
 };
-
-PreLoader.propTypes = {};
 
 export default PreLoader;

@@ -1,22 +1,14 @@
-import { useSelector, shallowEqual } from "react-redux";
+import { shallowEqual } from "react-redux";
 import { useParams } from "react-router";
+import { useRootSelector } from "../../../../hooks/UseRootSelector";
 import styles from "./IngredientDetails.module.css";
-
-const IngredientDetails = (props) => {
+import { TIngredient } from "../../../../utils/types";
+const IngredientDetails = () => {
   const { id } = useParams();
-  const selectedIngredient = useSelector(
-    (store) => store.ingredientsReducer.ingredients.find((el) => el._id === id),
-    shallowEqual
+  const selectedIngredient: TIngredient = useRootSelector(
+    (store) => store.ingredientsReducer.ingredients.find((el: TIngredient) => el._id === id),
+    // shallowEqual
   );
-
-  console.log(id, selectedIngredient);
-  // const { selectedIngredient } = useSelector(
-  //   (store) => ({
-  //     selectedIngredient: store.ingredientsReducer.selectedIngredient,
-  //   }),
-  //   shallowEqual
-  // );
-
   return (
     <div className={styles.modal_content}>
       {selectedIngredient && (
@@ -68,10 +60,6 @@ const IngredientDetails = (props) => {
       )}
     </div>
   );
-};
-
-IngredientDetails.propTypes = {
-  // data: PropTypesDataObject.isRequired,
 };
 
 export default IngredientDetails;

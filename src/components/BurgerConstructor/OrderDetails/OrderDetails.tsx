@@ -5,24 +5,27 @@ import styles from "./OrderDetails.module.css";
 import { getOrderDetails } from "../../../services/OrderDetails/action";
 import { deleteOrderDetails } from "../../../services/OrderDetails/action";
 import { useNavigate } from "react-router";
+import { useAppDispatch } from "../../../hooks/UseAppDispatch";
+import { useRootSelector } from "../../../hooks/UseRootSelector";
+import { TIngredientConstructor } from "../../../utils/types";
 
-const OrderDetails = (props) => {
-  const dispatch = useDispatch();
+const OrderDetails = (): JSX.Element => {
+  const dispatch = useAppDispatch();
   const { ingredientsConstructorData, bunConstructor, orderDetails } =
-    useSelector(
+    useRootSelector(
       (store) => ({
         ingredientsConstructorData:
           store.ingredientsConstructorReducer.ingredientsConstructor,
         bunConstructor: store.ingredientsConstructorReducer.bunConstructor,
         orderDetails: store.orderDetailsReducer.orderDetails,
       }),
-      shallowEqual
+      // shallowEqual
     );
 
   const navigate = useNavigate()
   useEffect(() => {
     if (bunConstructor && ingredientsConstructorData){
-      const ids = [bunConstructor._id, ...ingredientsConstructorData.map((el) => el._id), bunConstructor._id]
+      const ids = [bunConstructor._id, ...ingredientsConstructorData.map((el: TIngredientConstructor) => el._id), bunConstructor._id]
       dispatch(getOrderDetails(ids));
       return () => {
         dispatch(deleteOrderDetails());

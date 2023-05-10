@@ -11,21 +11,24 @@ import {
 import styles from "./UserProfile.module.css";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { updateUser } from "../../services/User/action";
+import { useRootSelector } from "../../hooks/UseRootSelector";
+import { useAppDispatch } from "../../hooks/UseAppDispatch";
 
 const UserProfile = () => {
-  const { user } = useSelector(
+  const { user } = useRootSelector(
     (store) => ({
       user: store.userReducer.user,
     }),
-    shallowEqual
+    // @ts-ignore
+    // shallowEqual
   );
 
-  const [valueName, setValueName] = useState(user.name);
-  const [valuePass, setValuePass] = useState("");
+  const [valueName, setValueName] = useState<string>(user.name);
+  const [valuePass, setValuePass] = useState<string>("");
 
-  const [valueEmail, setValueEmail] = useState(user.email);
+  const [valueEmail, setValueEmail] = useState<string>(user.email);
 
-  const [editCheck, setEditCheck] = useState(false);
+  const [editCheck, setEditCheck] = useState<boolean>(false);
 
   useEffect(() => {
     if (
@@ -45,7 +48,7 @@ const UserProfile = () => {
     setValueEmail(user.email);
   };
 
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const handlerUpdateUser = () =>{
     dispatch(updateUser(valueName, valueEmail, valuePass!="" ? valuePass : null))
     setValuePass("");

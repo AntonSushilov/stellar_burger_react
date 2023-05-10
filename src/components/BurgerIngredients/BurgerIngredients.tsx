@@ -1,70 +1,71 @@
 import React, { useMemo, useRef } from "react";
-import { useEffect } from "react";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import PreLoader from "../PreLoader/PreLoader";
 import Error from "../Error/Error";
 import Ingredients from "./Ingredients/Ingredients";
 import styles from "./BurgerIngredients.module.css";
-import { useDispatch, useSelector, shallowEqual } from "react-redux";
-import { getIngredients } from "../../services/BurgerIngredients/action";
-const BurgerIngredients = () => {
-  const dispatch = useDispatch();
-  useEffect(() => {
-    // Отправляем экшен-функцию
-    // dispatch(getIngredients());
-  }, []);
-
+import { shallowEqual } from "react-redux";
+import { useRootSelector } from "../../hooks/UseRootSelector";
+import { TIngredient, TIngredientsList } from "../../utils/types";
+const BurgerIngredients = (): JSX.Element => {
   const { ingredientsData, ingredientsRequest, ingredientsFailed } =
-    useSelector(
+    useRootSelector(
       (store) => ({
         ingredientsData: store.ingredientsReducer.ingredients,
         ingredientsRequest: store.ingredientsReducer.ingredientsRequest,
         ingredientsFailed: store.ingredientsReducer.ingredientsFailed,
-      }),
-      shallowEqual
+      })
+      // shallowEqual
     );
 
   const [currentTab, setCurrentTab] = React.useState("buns");
 
-  const ref_tabs = useRef();
-  const ref1 = useRef();
-  const ref2 = useRef();
-  const ref3 = useRef();
-  
+  const scrollBoxRef = useRef<HTMLDivElement | null>(null);
+  const bunsRef = useRef<HTMLDivElement | null>(null);
+  const saucesRef = useRef<HTMLDivElement | null>(null);
+  const mainsRef = useRef<HTMLDivElement | null>(null);
+
   const handleScroll = () => {
-    let max = [ref1, ref2, ref3].reduce((acc, curr) =>
-      Math.abs(
-        ref_tabs.current.getBoundingClientRect().bottom -
-          acc.current.getBoundingClientRect().y
-      ) <
-      Math.abs(
-        ref_tabs.current.getBoundingClientRect().bottom -
-          curr.current.getBoundingClientRect().y
-      )
-        ? acc
-        : curr
-    );
-    setCurrentTab(max.current.id)
+    const scrollBoxBottom =
+      scrollBoxRef.current?.getBoundingClientRect().bottom;
+    const bunsTop = bunsRef.current?.getBoundingClientRect().top;
+    const saucesTop = saucesRef.current?.getBoundingClientRect().top;
+    const mainsTop = mainsRef.current?.getBoundingClientRect().top;
+    if (scrollBoxBottom && bunsTop && saucesTop && mainsTop) {
+      const bunsActive = bunsTop - scrollBoxBottom;
+      const saucesActive = saucesTop - scrollBoxBottom;
+      const mainsActive = mainsTop - scrollBoxBottom;
+      if (bunsActive <= 0 && saucesActive > 0 && mainsActive > 0) {
+        setCurrentTab("buns");
+      }
+      if (bunsActive < 0 && saucesActive <= 0 && mainsActive > 0) {
+        setCurrentTab("sauces");
+      }
+      if (bunsActive < 0 && saucesActive < 0 && mainsActive <= 0) {
+        setCurrentTab("mains");
+      }
+    }
   };
 
-  const onTabClick = (tab) => {
+  const onTabClick = (tab: string) => {
+    console.log(tab);
     setCurrentTab(tab);
     const el = document.getElementById(tab);
     if (el) el.scrollIntoView({ behavior: "smooth" });
   };
 
-  const buns = useMemo(
-    () => ingredientsData.filter((el) => el.type === "bun"),
+  const buns: TIngredientsList = useMemo(
+    () => ingredientsData.filter((el: TIngredient) => el.type === "bun"),
     [ingredientsData]
   );
 
-  const sauces = useMemo(
-    () => ingredientsData.filter((el) => el.type === "sauce"),
+  const sauces: TIngredientsList = useMemo(
+    () => ingredientsData?.filter((el: TIngredient) => el.type === "sauce"),
     [ingredientsData]
   );
 
-  const mains = useMemo(
-    () => ingredientsData.filter((el) => el.type === "main"),
+  const mains: TIngredientsList = useMemo(
+    () => ingredientsData?.filter((el: TIngredient) => el.type === "main"),
     [ingredientsData]
   );
 
@@ -76,7 +77,7 @@ const BurgerIngredients = () => {
         <Error />
       ) : (
         <>
-          <div className={[styles.tabs].join(" ")} ref={ref_tabs}>
+          <div className={[styles.tabs].join(" ")} ref={scrollBoxRef}>
             <Tab
               value="buns"
               active={currentTab === "buns"}
@@ -105,19 +106,19 @@ const BurgerIngredients = () => {
                 title="Булки"
                 titleId="buns"
                 ingredients={buns}
-                refs={ref1}
+                ref={bunsRef}
               />
               <Ingredients
                 title="Соусы"
                 titleId="sauces"
                 ingredients={sauces}
-                refs={ref2}
+                ref={saucesRef}
               />
               <Ingredients
                 title="Начинки"
                 titleId="mains"
                 ingredients={mains}
-                refs={ref3}
+                ref={mainsRef}
               />
             </div>
           )}

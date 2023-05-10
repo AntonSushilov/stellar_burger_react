@@ -5,71 +5,89 @@ import {
   ConstructorElement,
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import {
-  deleteIngredientConstructor,
-} from "../../../services/BurgerConstructor/action";
+import { deleteIngredientConstructor } from "../../../services/BurgerConstructor/action";
 import { useDrag, useDrop } from "react-dnd/dist/hooks";
-import {PropTypesDataObject} from "../../../utils/types"
+// import {PropTypesDataObject} from "../../../utils/types"
 import styles from "./IngredientCard.module.css";
+import { TIngredientConstructor } from "../../../utils/types";
+import { useRootSelector } from "../../../hooks/UseRootSelector";
+import { useAppDispatch } from "../../../hooks/UseAppDispatch";
+import { Identifier } from "typescript";
+import { XYCoord } from "react-dnd";
 
-export const IngredientCard = ({ data, moveCard }) => {
-  const {
-    ingredientsConstructorData,
-  } = useSelector(
+type TIngredientCardProps = {
+  data: TIngredientConstructor;
+  moveCard: (from: number, to: number) => void;
+};
+
+type TDragItem = {
+  index: number;
+  id: string;
+  type: string;
+  key: number;
+}
+
+const IngredientCard = ({
+  data,
+  moveCard,
+}: TIngredientCardProps): JSX.Element => {
+  const { ingredientsConstructorData } = useRootSelector(
     (store) => ({
       ingredientsConstructorData:
         store.ingredientsConstructorReducer.ingredientsConstructor,
     }),
-    shallowEqual
+    // shallowEqual
   );
 
-  const ref = useRef(null);
-  const dispatch = useDispatch();
+  const ref = useRef<HTMLDivElement | null>(null);
+  const dispatch = useAppDispatch();
 
-  const handleClose = (key) => {
+  const handleClose = (key: number) => {
     dispatch(deleteIngredientConstructor(key));
   };
 
-  const [, drop] = useDrop({
+  const [{ handlerId }, drop] = useDrop<TDragItem, void, { handlerId: Identifier | null }>({
     accept: "ingredientCard",
-    hover: (item, monitor) => {
+    hover: (item: TDragItem, monitor) => {
       const dragIndex = ingredientsConstructorData.indexOf(
-        ingredientsConstructorData.find((el) => el.key === item.key)
+        ingredientsConstructorData.find((el: TIngredientConstructor) => el.key === item.key)
       );
       const hoverIndex = ingredientsConstructorData.indexOf(
-        ingredientsConstructorData.find((el) => el.key === data.key)
+        ingredientsConstructorData.find((el: TIngredientConstructor) => el.key === data.key)
       );
       if (dragIndex === hoverIndex) {
-        return
+        return;
       }
 
       // Determine rectangle on screen
-      const hoverBoundingRect = ref.current?.getBoundingClientRect()
+      const hoverBoundingRect = ref.current?.getBoundingClientRect();
       // Get vertical middle
+      if(hoverBoundingRect){
       const hoverMiddleY =
-        (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
+        (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
       // Determine mouse position
-      const clientOffset = monitor.getClientOffset()
+      const clientOffset = monitor.getClientOffset();
       // Get pixels to the top
-      const hoverClientY = clientOffset.y - hoverBoundingRect.top
+      const hoverClientY = (clientOffset as XYCoord).y - hoverBoundingRect.top;
       // Only perform the move when the mouse has crossed half of the items height
       // When dragging downwards, only move when the cursor is below 50%
       // When dragging upwards, only move when the cursor is above 50%
       // Dragging downwards
       if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
-        return
+        return;
       }
       // Dragging upwards
       if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
-        return
+        return;
       }
 
       moveCard(dragIndex, hoverIndex);
 
-      item.index = hoverIndex
+      item.index = hoverIndex;
+    }
     },
   });
-  const {key} = data
+  const { key } = data;
   const [{ isDragging }, drag] = useDrag({
     type: "ingredientCard",
     item: { key },
@@ -91,7 +109,7 @@ export const IngredientCard = ({ data, moveCard }) => {
         <DragIcon type="primary" />
       </div>
       <ConstructorElement
-        type=""
+        // type=""
         isLocked={false}
         text={data.name}
         price={data.price}
@@ -102,7 +120,4 @@ export const IngredientCard = ({ data, moveCard }) => {
   );
 };
 
-IngredientCard.propTypes = {
-  data: PropTypesDataObject.isRequired,
-  moveCard: PropTypes.func.isRequired
-};
+export default IngredientCard;

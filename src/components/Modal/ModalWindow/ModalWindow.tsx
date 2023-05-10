@@ -1,8 +1,17 @@
-import PropTypes from "prop-types";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./ModalWindow.module.css";
 
-const ModalWindow = ({ children, title, onClose }) => {
+type TModalWindow = {
+  children?: string | JSX.Element | JSX.Element[];
+  title?: string;
+  onClose: () => void;
+};
+
+const ModalWindow = ({
+  children,
+  title,
+  onClose,
+}: TModalWindow): JSX.Element => {
   return (
     <div className={styles.modal}>
       <div className={styles.modal_content}>
@@ -16,12 +25,6 @@ const ModalWindow = ({ children, title, onClose }) => {
       </div>
     </div>
   );
-};
-
-ModalWindow.propTypes = {
-  children: PropTypes.node,
-  title: PropTypes.string,
-  onClose: PropTypes.func.isRequired,
 };
 
 export default ModalWindow;

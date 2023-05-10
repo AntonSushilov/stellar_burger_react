@@ -1,8 +1,6 @@
 import React from 'react'
-import { useParams } from 'react-router'
-import PropTypes from 'prop-types'
 import IngredientDetails from '../IngredientDetails/IngredientDetails'
-const IngredientView = props => {
+const IngredientView = () => {
   return (
     <>
     <IngredientDetails />
@@ -10,6 +8,5 @@ const IngredientView = props => {
   )
 }
 
-IngredientView.propTypes = {}
 
 export default IngredientView

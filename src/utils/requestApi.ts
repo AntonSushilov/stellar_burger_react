@@ -1,8 +1,8 @@
 type TReq = {
   success: boolean,
-  message?: string,
-  refreshToken?: string,
-  accessToken?: string
+  // message?: string,
+  // refreshToken?: string,
+  // accessToken?: string
   
 }
 
@@ -19,11 +19,12 @@ export const requestApi = <T extends TReq>(
     .then((res) => checkResponse<T>(res))
     .then((data) => {
       if (!data.success){
-        throw new Error(`${data.message}`);
+        throw new Error(`${(data as any).message}`);
       }
       return data
       // if (data?.success) return data;
       // return Promise.reject(data);
+      // return Promise.reject(data)
     });
 };
 
@@ -49,13 +50,13 @@ export const fetchWithRefresh = async <T extends TReq>(url: string, options: Req
       if (!refreshData.success) {
         return Promise.reject(refreshData);
       }
-      localStorage.setItem("refreshToken", refreshData.refreshToken!);
-      localStorage.setItem("accessToken", refreshData.accessToken!);
+      localStorage.setItem("refreshToken", (refreshData as any).refreshToken);
+      localStorage.setItem("accessToken", (refreshData as any).accessToken);
       const optionsRefresh = {
         method: "POST",
         headers: {
           "Content-Type": "application/json;charset=utf-8",
-          authorization: refreshData.accessToken!,
+          authorization: (refreshData as any).accessToken,
         },
       };
       // options = {...options, headers: {...options.headers, authorization: refreshData.accessToken}}

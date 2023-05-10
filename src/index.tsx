@@ -22,6 +22,9 @@ const store = configureStore({
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunk),
 });
 
+export type RootState = ReturnType<typeof rootReducer>;
+export type AppDispatch = typeof store.dispatch;
+
 // const store = createStore(rootReducer, applyMiddleware(thunk));
 
 root.render(

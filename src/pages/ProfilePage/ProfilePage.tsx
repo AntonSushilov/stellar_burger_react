@@ -5,9 +5,10 @@ import { logoutUser } from "../../services/User/action";
 import UserProfile from "../../components/UserProfile/UserProfile";
 import styles from "./ProfilePage.module.css";
 import { useDispatch } from "react-redux";
+import { useAppDispatch } from "../../hooks/UseAppDispatch";
 
-const ProfilePage = () => {
-  const dispath = useDispatch()
+const ProfilePage = (): JSX.Element => {
+  const dispath = useAppDispatch()
   const logout = () => {
     dispath(logoutUser())
   }

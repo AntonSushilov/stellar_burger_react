@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { ChangeEvent, FormEvent, useEffect } from "react";
 import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import PropTypes from "prop-types";
 import { Link, useNavigate } from "react-router-dom";
@@ -9,25 +9,27 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { resetPassword } from "../../services/User/action";
 import styles from "./ResetPasswordPage.module.css";
+import { useRootSelector } from "../../hooks/UseRootSelector";
+import { useAppDispatch } from "../../hooks/UseAppDispatch";
 
-const ResetPasswordPage = () => {
+const ResetPasswordPage = (): JSX.Element => {
   const [valueCode, setValueCode] = React.useState("");
   const inputRef = React.useRef(null);
 
   const [valuePass, setValuePass] = React.useState("");
-  const onChangePass = (e) => {
+  const onChangePass = (e: ChangeEvent<HTMLInputElement>) => {
     setValuePass(e.target.value);
   };
-  const resetPasswordSuccess = useSelector((store) => store.userReducer.resetPasswordSuccess);
+  const resetPasswordSuccess = useRootSelector((store) => store.userReducer.resetPasswordSuccess);
   const navigate = useNavigate()
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   useEffect(()=>{
     if(resetPasswordSuccess){
       navigate("/login")
     }
   }, [resetPasswordSuccess])
   // const resetPasswordMessage = useSelector((store) => store.resetPasswordReducer.resetPasswordMessage, shallowEqual)
-  const handleResetPassword = (e) => {
+  const handleResetPassword = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     console.log(resetPasswordSuccess)
     if (valuePass && valueCode) {

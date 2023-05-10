@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { ChangeEvent, FormEvent, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -8,20 +8,22 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { loginUser } from "../../services/User/action";
 import styles from "./LoginPage.module.css";
+import { useRootSelector } from "../../hooks/UseRootSelector";
+import { useAppDispatch } from "../../hooks/UseAppDispatch";
 
-const LoginPage = () => {
+const LoginPage = (): JSX.Element => {
   const [valuePass, setValuePass] = React.useState("");
-  const onChangePass = (e) => {
+  const onChangePass = (e: ChangeEvent<HTMLInputElement>) => {
     setValuePass(e.target.value);
   };
 
   const [valueEmail, setValueEmail] = React.useState("");
-  const onChangeEmail = (e) => {
+  const onChangeEmail = (e: ChangeEvent<HTMLInputElement>) => {
     setValueEmail(e.target.value);
   };
-  const isAuthChecked = useSelector((store) => store.userReducer.isAuthChecked);
-  const userFailed = useSelector((store) => store.userReducer.userFailed);
-  const userLoginSuccess = useSelector((store) => store.userReducer.userLoginSuccess);
+  const isAuthChecked = useRootSelector((store) => store.userReducer.isAuthChecked);
+  const userFailed = useRootSelector((store) => store.userReducer.userFailed);
+  const userLoginSuccess = useRootSelector((store) => store.userReducer.userLoginSuccess);
   useEffect(()=>{
     if(userLoginSuccess){
       navigate("/")
@@ -30,8 +32,8 @@ const LoginPage = () => {
 
 
   const navigate = useNavigate()
-  const dispatch = useDispatch();
-  const handleLoginUser = (e) => {
+  const dispatch = useAppDispatch();
+  const handleLoginUser = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (valueEmail && valuePass) {
       dispatch(loginUser(valueEmail, valuePass));

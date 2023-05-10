@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { ChangeEvent, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -9,29 +9,31 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { registerUser } from "../../services/User/action";
 import styles from "./RegisterPage.module.css";
+import { useRootSelector } from "../../hooks/UseRootSelector";
+import { useAppDispatch } from "../../hooks/UseAppDispatch";
 
-const RegisterPage = () => {
+const RegisterPage = (): JSX.Element => {
   const [valueName, setValueName] = React.useState("");
   const inputRef = React.useRef(null);
 
   const [valuePass, setValuePass] = React.useState("");
-  const onChangePass = (e) => {
+  const onChangePass = (e: ChangeEvent<HTMLInputElement>) => {
     setValuePass(e.target.value);
   };
 
   const [valueEmail, setValueEmail] = React.useState("");
-  const onChangeEmail = (e) => {
+  const onChangeEmail = (e: ChangeEvent<HTMLInputElement>) => {
     setValueEmail(e.target.value);
   };
   const navigate = useNavigate()
-  const userRegisterSuccess = useSelector((store) => store.userReducer.userRegisterSuccess);
+  const userRegisterSuccess = useRootSelector((store) => store.userReducer.userRegisterSuccess);
   useEffect(()=>{
     if(userRegisterSuccess){
       navigate("/")
     }
   }, [userRegisterSuccess])
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   // const registerUserMessage = useSelector(
   //   (store) => store.userRegisterReducer.registerUserMessage,
   //   shallowEqual

@@ -5,7 +5,7 @@ import BurgerIngredients from "../../components/BurgerIngredients/BurgerIngredie
 import BurgerConstructor from "../../components/BurgerConstructor/BurgerConstructor";
 import styles from "./BurgerConstructorPage.module.css";
 
-export const BurgerConstructorPage = () => {
+export const BurgerConstructorPage = (): JSX.Element => {
   return (
     <>
       <p className="text text_type_main-large mt-10 mb-5">Соберите бургер</p>

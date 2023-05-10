@@ -1,14 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import styles from "./FeedPage.module.css";
+import styles from "./NotFound404.module.css";
 
-export const FeedPage = () => {
+export const NotFound404 = ():JSX.Element => {
   return (
     <div className={styles.container}>
       <div className={styles.content}>
         <p className="text text_type_main-large">
-          В разработке
+          Ошибка 404. Страница не найдена
         </p>
         <br />
 
@@ -22,4 +22,4 @@ export const FeedPage = () => {
   );
 };
 
-export default FeedPage;
+export default NotFound404;

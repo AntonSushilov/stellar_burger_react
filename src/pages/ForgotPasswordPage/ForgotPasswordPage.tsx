@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { ChangeEvent, FormEvent, useEffect } from "react";
 import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -7,16 +7,18 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { forgotPassword } from "../../services/User/action";
 import styles from "./ForgotPasswordPage.module.css";
+import { useRootSelector } from "../../hooks/UseRootSelector";
+import { useAppDispatch } from "../../hooks/UseAppDispatch";
 
-const ForgotPasswordPage = () => {
+const ForgotPasswordPage = (): JSX.Element => {
   const [valueEmail, setValueEmail] = React.useState("");
-  const onChangeEmail = (e) => {
+  const onChangeEmail = (e: ChangeEvent<HTMLInputElement>) => {
     setValueEmail(e.target.value);
   };
-  const message = useSelector((store) => store.userReducer.message);
+  const message = useRootSelector((store) => store.userReducer.message);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const handleForgotPassword = (e) => {
+  const dispatch = useAppDispatch();
+  const handleForgotPassword = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (valueEmail) {
       dispatch(forgotPassword(valueEmail));

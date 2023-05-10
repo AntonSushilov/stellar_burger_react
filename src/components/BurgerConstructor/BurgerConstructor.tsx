@@ -17,15 +17,16 @@ import {
 import IngredientCard from "./IngredientCard/IngredientCard";
 import PlaceHolderCard from "./PlaceHolderCard/PlaceHolderCard";
 import { useRootSelector } from "../../hooks/UseRootSelector";
+import { TIngredient, TIngredientConstructor, TIngredientConstructorList } from "../../utils/types";
 const initialSummPrice = 0;
-const reducerSummPrice = (state, ingredients) => {
-  let score = ingredients.items.reduce(function (a, b) {
+const reducerSummPrice = (state: number, ingredients: TIngredientConstructorList): number => {
+  let score = ingredients.reduce(function (a: number, b: TIngredientConstructor) {
     return a + (b ? b.price : 0);
   }, 0);
   return score;
 };
 
-const BurgerConstructor = () => {
+const BurgerConstructor = (): JSX.Element => {
   const location = useLocation();
 
   const dispatch = useDispatch();
@@ -39,11 +40,11 @@ const BurgerConstructor = () => {
           store.ingredientsConstructorReducer.ingredientsConstructor,
         bunConstructor: store.ingredientsConstructorReducer.bunConstructor,
       }),
-      shallowEqual
+      // shallowEqual
     );
 
-  const onDropHandler = (id) => {
-    const el = ingredientsData.find((el) => el._id === id._id);
+  const onDropHandler = (ingr: TIngredient) => {
+    const el = ingredientsData.find((el: TIngredient) => el._id === ingr._id);
     if (el.type === "bun") {
       dispatch(addBunConstructor({ ...el, key: uuid() }));
     } else {
@@ -53,7 +54,7 @@ const BurgerConstructor = () => {
 
   const [, dropTarget] = useDrop({
     accept: "ingredient",
-    drop(id) {
+    drop(id: TIngredient) {
       onDropHandler(id);
     },
   });
@@ -64,13 +65,13 @@ const BurgerConstructor = () => {
   );
 
   useEffect(() => {
-    let ingr = ingredientsConstructorData.map((el) => el);
+    let ingr = ingredientsConstructorData.map((el: TIngredientConstructor) => el);
     ingr.push(bunConstructor, bunConstructor);
-    setSummPrice({ items: ingr });
+    setSummPrice(ingr);
   }, [ingredientsConstructorData, bunConstructor]);
 
   const navigate = useNavigate()
-  const handleOpenModal = (e) => {
+  const handleOpenModal = () => {
     // e.preventDefault();
     if (bunConstructor && ingredientsConstructorData.length) {
       // setModalVisible(true);
@@ -85,7 +86,7 @@ const BurgerConstructor = () => {
     }
   };
 
-  const moveCard = (dragIndex, hoverIndex) => {
+  const moveCard = (dragIndex: number, hoverIndex: number) => {
     const dragIngredient = ingredientsConstructorData[dragIndex];
     const newIngredients = [...ingredientsConstructorData];
     newIngredients.splice(dragIndex, 1);
@@ -114,7 +115,7 @@ const BurgerConstructor = () => {
         </div>
         <div className={styles.item_middle}>
           {ingredientsConstructorData.length ? (
-            ingredientsConstructorData.map((el, index) => (
+            ingredientsConstructorData.map((el: TIngredientConstructor) => (
               <IngredientCard key={el.key} data={el} moveCard={moveCard} />
             ))
           ) : (

@@ -1,3 +1,15 @@
+export interface IResponse {
+  success: boolean;
+  message?: string;
+}
+
+export interface ICredentials {
+  accessToken: string;
+  refreshToken: string;
+}
+
+export interface IAuthResponse extends IResponse, ICredentials {}
+
 export type TIngredient = {
   _id: string;
   name: string;

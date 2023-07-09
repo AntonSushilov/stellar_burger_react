@@ -67,7 +67,8 @@ export const userReducer = (state = initialState, action) => {
     case SET_USER_FAILED: {
       return {
         ...state,
-        err: action.err
+        user: null,
+        // err: action.err
       };
     }
     case REGISTER_USER_REQUEST: {
@@ -110,7 +111,9 @@ export const userReducer = (state = initialState, action) => {
       };
     }
     case LOGOUT_USER_FAILED: {
-      return { ...state, userFailed: true, userRequest: false };
+      return { ...state, 
+        userFailed: true, 
+        userRequest: false };
     }
     case LOGOUT_USER_REQUEST: {
       return {

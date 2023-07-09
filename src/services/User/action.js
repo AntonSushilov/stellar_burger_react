@@ -86,6 +86,7 @@ export function loginUser(email, password) {
       if (res && res.success) {
         localStorage.setItem("refreshToken", res.refreshToken);
         localStorage.setItem("accessToken", res.accessToken);
+        console.log("LOGIN_USER_SUCCESS", res)
         dispatch({
           type: LOGIN_USER_SUCCESS,
           accessToken: res.accessToken,
@@ -126,7 +127,7 @@ export function logoutUser() {
       .catch(err => {
         dispatch({
           type: LOGOUT_USER_FAILED,
-          err
+          // err
         });
       })
   }
@@ -209,7 +210,7 @@ export function getUser() {
     }).catch(err => {
       dispatch({
         type: SET_USER_FAILED,
-        err: err
+        // err: err
       });
     })
   };
@@ -267,7 +268,7 @@ export function updateUser(name, email, password) {
       .catch(err => {
         dispatch({
           type: UPDATE_USER_FAILED,
-          err
+          // err
         });
       })
   };

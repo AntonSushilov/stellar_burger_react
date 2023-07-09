@@ -5,7 +5,7 @@ import styles from "./IngredientDetails.module.css";
 import { TIngredient } from "../../../../utils/types";
 const IngredientDetails = () => {
   const { id } = useParams();
-  const selectedIngredient: TIngredient = useRootSelector(
+  const selectedIngredient = useRootSelector(
     (store) => store.ingredientsReducer.ingredients.find((el: TIngredient) => el._id === id),
     // shallowEqual
   );

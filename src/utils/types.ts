@@ -1,6 +1,7 @@
 export interface IResponse {
   success: boolean;
   message?: string;
+  data?: any
 }
 
 export interface ICredentials {
@@ -26,7 +27,7 @@ export type TIngredient = {
 };
 export type TIngredientsList = TIngredient[];
 
-export type TIngredientConstructor = TIngredient & { key: number };
+export type TIngredientConstructor = TIngredient & { key: string };
 export type TIngredientConstructorList = TIngredientConstructor[];
 
 export type TConstructor = {

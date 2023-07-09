@@ -19,12 +19,15 @@ export function getOrderDetails(ids) {
     },
     body: JSON.stringify({ ingredients: ids }),
   };
+  console.log(requestOptions)
+
   return function (dispatch) {
     dispatch({
       type: GET_ORGER_DETAILS_REQUEST
     });
     fetchWithRefresh("/orders", requestOptions).then(res => {
-      console.log(res)
+  console.log("res",res)
+      
       if (res && res.success) {
         dispatch({
           type: GET_ORGER_DETAILS_SUCCESS,

@@ -49,7 +49,9 @@ const App = (): JSX.Element => {
       <main className={styles.container}>
         <Routes location={background || location}>
           <Route path="/" element={<BurgerConstructorPage />} />
-          <Route path="/feed" element={<FeedPage />} />
+          <Route path="/feed" element={<FeedPage />}>
+            <Route path="/feed/:id" element={<FeedPage />} />
+          </Route>
           <Route
             path="/login"
             element={<OnlyUnAuth component={<LoginPage />} />}

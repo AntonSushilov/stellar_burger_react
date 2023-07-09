@@ -45,11 +45,14 @@ const BurgerConstructor = (): JSX.Element => {
 
   const onDropHandler = (ingr: TIngredient) => {
     const el = ingredientsData.find((el: TIngredient) => el._id === ingr._id);
-    if (el.type === "bun") {
-      dispatch(addBunConstructor({ ...el, key: uuid() }));
-    } else {
-      dispatch(addIngredientConstructor({ ...el, key: uuid() }));
+    if (el){
+      if (el.type === "bun") {
+        dispatch(addBunConstructor({ ...el, key: uuid() }));
+      } else {
+        dispatch(addIngredientConstructor({ ...el, key: uuid() } ));
+      }
     }
+    
   };
 
   const [, dropTarget] = useDrop({
@@ -66,7 +69,9 @@ const BurgerConstructor = (): JSX.Element => {
 
   useEffect(() => {
     let ingr = ingredientsConstructorData.map((el: TIngredientConstructor) => el);
-    ingr.push(bunConstructor, bunConstructor);
+    if(bunConstructor){
+      ingr.push(bunConstructor, bunConstructor);
+    }
     setSummPrice(ingr);
   }, [ingredientsConstructorData, bunConstructor]);
 
@@ -76,7 +81,6 @@ const BurgerConstructor = (): JSX.Element => {
     if (bunConstructor && ingredientsConstructorData.length) {
       // setModalVisible(true);
       // dispatch(openModal());
-      console.log("tyt")
       navigate("/order-details")
       // return <Navigate to="/order-details"/>
     } else {
@@ -115,8 +119,8 @@ const BurgerConstructor = (): JSX.Element => {
         </div>
         <div className={styles.item_middle}>
           {ingredientsConstructorData.length ? (
-            ingredientsConstructorData.map((el: TIngredientConstructor) => (
-              <IngredientCard key={el.key} data={el} moveCard={moveCard} />
+            ingredientsConstructorData.map((el: TIngredientConstructor, index: number) => (
+              <IngredientCard key={el.key} data={el} index={index} moveCard={moveCard} />
             ))
           ) : (
             <PlaceHolderCard text="Перетащите ингредиент" />

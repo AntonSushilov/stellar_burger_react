@@ -1,8 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
-import { createStore, applyMiddleware } from "redux";
-import thunk from "redux-thunk";
+import { createStore, applyMiddleware, ActionCreator, Action } from "redux";
+import thunk, { ThunkAction } from "redux-thunk";
 import { Provider } from "react-redux";
 import "./index.css";
 import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary";
@@ -11,6 +11,8 @@ import App from "./components/App/App";
 import reportWebVitals from "./reportWebVitals";
 import { rootReducer } from "./services/reducers";
 import { configureStore } from "@reduxjs/toolkit";
+import { TBurgerIngredientsActions } from "./services/BurgerIngredients/action";
+import { TBurgerConstructorActions } from "./services/BurgerConstructor/action";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -22,7 +24,14 @@ const store = configureStore({
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunk),
 });
 
-export type RootState = ReturnType<typeof rootReducer>;
+export type RootState = ReturnType<typeof store.getState>;
+type TApplicationActions =
+  | TBurgerIngredientsActions
+  | TBurgerConstructorActions;
+export type AppThunk<TReturn = void> = ActionCreator<
+  ThunkAction<TReturn, Action, RootState, TApplicationActions>
+>;
+
 export type AppDispatch = typeof store.dispatch;
 
 // const store = createStore(rootReducer, applyMiddleware(thunk));

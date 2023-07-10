@@ -11,37 +11,48 @@ import { TIngredientConstructor } from "../../../utils/types";
 
 const OrderDetails = (): JSX.Element => {
   const dispatch = useAppDispatch();
-  const { ingredientsConstructorData, bunConstructor, orderDetails } =
-    useRootSelector(
-      (store) => ({
-        ingredientsConstructorData:
-          store.ingredientsConstructorReducer.ingredientsConstructor,
-        bunConstructor: store.ingredientsConstructorReducer.bunConstructor,
-        orderDetails: store.orderDetailsReducer.orderDetails,
-      }),
-      // shallowEqual
-    );
+  const {
+    ingredientsConstructorData,
+    bunConstructor,
+    orderDetails,
+    orderDetailsRequest,
+  } = useRootSelector(
+    (store) => ({
+      ingredientsConstructorData:
+        store.ingredientsConstructorReducer.ingredientsConstructor,
+      bunConstructor: store.ingredientsConstructorReducer.bunConstructor,
+      orderDetails: store.orderDetailsReducer.orderDetails,
+      orderDetailsRequest: store.orderDetailsReducer.orderDetailsRequest,
+    })
+    // shallowEqual
+  );
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   useEffect(() => {
-    if (bunConstructor && ingredientsConstructorData){
-      const ids = [bunConstructor._id, ...ingredientsConstructorData.map((el: TIngredientConstructor) => el._id), bunConstructor._id]
+    if (bunConstructor && ingredientsConstructorData) {
+      const ids = [
+        bunConstructor._id,
+        ...ingredientsConstructorData.map(
+          (el: TIngredientConstructor) => el._id
+        ),
+        bunConstructor._id,
+      ];
       dispatch(getOrderDetails(ids));
       return () => {
         dispatch(deleteOrderDetails());
-  
-      }
-    }
-    else{
-      navigate(-1)
+      };
+    } else {
+      navigate(-1);
     }
   }, []);
   return (
     <div className={styles.modal_content}>
       <div className="mb-8">
-        <p className="text text_type_digits-large">
-          {orderDetails ? orderDetails : <></>}
-        </p>
+        {orderDetailsRequest ? (
+          <p className="text text_type_main-medium">Создание заказа...</p>
+        ) : (
+          <p className="text text_type_digits-large">{orderDetails}</p>
+        )}
       </div>
       <p className="text text_type_main-medium  mb-15">Идентификатор заказа</p>
       <img className="mb-15" src={done} alt="Заказ оформлен" />

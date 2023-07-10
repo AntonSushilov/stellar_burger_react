@@ -49,7 +49,7 @@ export const deleteSelectIngredient = (): IDeleteIngredientAction => ({
   type: DELETE_SELECTED_INGREDIENT,
 });
 
-export function getIngredients() {
+export const getIngredients = () => {
   return function (dispatch: AppDispatch) {
     dispatch({
       type: GET_INGREDIENTS_REQUEST

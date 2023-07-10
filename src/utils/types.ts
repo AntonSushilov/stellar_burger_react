@@ -7,6 +7,7 @@ export interface IResponse {
 export interface ICredentials {
   accessToken: string;
   refreshToken: string;
+  user: any;
 }
 
 export interface IAuthResponse extends IResponse, ICredentials {}

@@ -35,10 +35,10 @@ export const refreshToken = (): Promise<IAuthResponse> => {
       token: localStorage.getItem("refreshToken"),
     }),
   };
-  return requestApi<IAuthResponse>(`${API_URL}/auth/token`, options);
+  return requestApi<IAuthResponse>(`/auth/token`, options);
 };
 
-export const fetchWithRefresh = async <T extends IResponse>(
+export const fetchWithRefresh = async <T extends IAuthResponse>(
   url: string,
   options: RequestInit
 ): Promise<T> => {

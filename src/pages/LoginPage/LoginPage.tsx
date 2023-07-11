@@ -1,6 +1,6 @@
 import React, { ChangeEvent, FormEvent, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   EmailInput,
   PasswordInput,
@@ -21,17 +21,22 @@ const LoginPage = (): JSX.Element => {
   const onChangeEmail = (e: ChangeEvent<HTMLInputElement>) => {
     setValueEmail(e.target.value);
   };
-  const isAuthChecked = useRootSelector((store) => store.userReducer.isAuthChecked);
+  const isAuthChecked = useRootSelector(
+    (store) => store.userReducer.isAuthChecked
+  );
   const userFailed = useRootSelector((store) => store.userReducer.userFailed);
-  const userLoginSuccess = useRootSelector((store) => store.userReducer.userLoginSuccess);
-  useEffect(()=>{
-    if(userLoginSuccess){
-      navigate("/")
+  const userLoginSuccess = useRootSelector(
+    (store) => store.userReducer.userLoginSuccess
+  );
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { from } = location.state || { from: { pathname: "/" } };
+  useEffect(() => {
+    if (userLoginSuccess) {
+      navigate(from);
     }
-  }, [userLoginSuccess])
+  }, [from, navigate, userLoginSuccess]);
 
-
-  const navigate = useNavigate()
   const dispatch = useAppDispatch();
   const handleLoginUser = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

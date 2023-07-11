@@ -13,19 +13,23 @@ import { rootReducer } from "./services/reducers";
 import { configureStore } from "@reduxjs/toolkit";
 import { TBurgerIngredientsActions } from "./services/BurgerIngredients/action";
 import { TBurgerConstructorActions } from "./services/BurgerConstructor/action";
-
+import { socketMiddleware } from "./middleware/socketMiddleware";
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 const middlewareEnhacer = applyMiddleware(thunk);
+
 const store = configureStore({
   reducer: rootReducer,
   devTools: true,
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunk),
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }).concat(thunk, socketMiddleware()),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
-type TApplicationActions =
+export type TApplicationActions =
   | TBurgerIngredientsActions
   | TBurgerConstructorActions;
 export type AppThunk<TReturn = void> = ActionCreator<

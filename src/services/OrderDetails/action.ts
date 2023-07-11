@@ -47,6 +47,7 @@ export function getOrderDetails(ids: Array<string>) {
     });
     fetchWithRefresh("/orders", requestOptions).then((res) => {
       if (res && res.success) {
+        console.log("orders",res)
         dispatch({
           type: GET_ORGER_DETAILS_SUCCESS,
           orderDetails: res.order.number,

@@ -9,10 +9,26 @@ export interface ICredentials {
   refreshToken: string;
   user: any;
 }
-export interface IOrderDetails {
-  order: any
+
+
+export interface IOrderSuccess {
+  name: string;
+  order: {
+    number: number;
+  }
 }
-export interface IAuthResponse extends IResponse, ICredentials, IOrderDetails {}
+
+export interface IOrderDetails {
+  ingredients: string[];
+  _id: string;
+  status: string;
+  number: number;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface IAuthResponse extends IResponse, ICredentials, IOrderSuccess {}
 
 export type TIngredient = {
   _id: string;
@@ -37,3 +53,8 @@ export type TConstructor = {
   bun: TIngredient;
   ingr: TIngredientConstructorList;
 };
+export interface IWSMessage {
+  orders: IOrderDetails[];
+  total: number;
+  totalToday: number;
+}

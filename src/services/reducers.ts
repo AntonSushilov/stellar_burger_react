@@ -1,3 +1,4 @@
+import { wsOrdersReducer } from './ws/reducer';
 import { combineReducers } from 'redux';
 import { ingredientsReducer } from './BurgerIngredients/reducer';
 import { ingredientsConstructorReducer } from './BurgerConstructor/reducer';
@@ -9,5 +10,6 @@ export const rootReducer = combineReducers({
   ingredientsConstructorReducer,
   orderDetailsReducer,
   userReducer,
-  modalReducer
+  modalReducer,
+  wsOrdersReducer
 });

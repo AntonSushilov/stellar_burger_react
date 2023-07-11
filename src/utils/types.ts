@@ -9,8 +9,10 @@ export interface ICredentials {
   refreshToken: string;
   user: any;
 }
-
-export interface IAuthResponse extends IResponse, ICredentials {}
+export interface IOrderDetails {
+  order: any
+}
+export interface IAuthResponse extends IResponse, ICredentials, IOrderDetails {}
 
 export type TIngredient = {
   _id: string;

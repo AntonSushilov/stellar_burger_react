@@ -1,3 +1,4 @@
+import { TOrderDetailsActions } from './action';
 import {
   GET_ORGER_DETAILS_REQUEST,
   GET_ORGER_DETAILS_SUCCESS,
@@ -6,13 +7,19 @@ import {
   DELETE_ORGER_DETAILS
 } from './type'
 
+type TOrderDetailsState = {
+  orderDetails: any | null;
+  orderDetailsRequest: boolean;
+  orderDetailsFailed: boolean;
+};
+
 const initialState = {
   orderDetails: null,
   orderDetailsRequest: false,
   orderDetailsFailed: false,
 };
 
-export const orderDetailsReducer = (state = initialState, action) => {
+export const orderDetailsReducer = (state = initialState, action: TOrderDetailsActions): TOrderDetailsState => {
   switch (action.type) {
     case GET_ORGER_DETAILS_REQUEST: {
       return {

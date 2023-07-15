@@ -41,7 +41,7 @@ export type AppDispatch = typeof store.dispatch;
 // const store = createStore(rootReducer, applyMiddleware(thunk));
 
 root.render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <BrowserRouter>
       <Provider store={store}>
         <ErrorBoundary>
@@ -49,7 +49,7 @@ root.render(
         </ErrorBoundary>
       </Provider>
     </BrowserRouter>
-  </React.StrictMode>
+  // </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

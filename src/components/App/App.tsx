@@ -27,6 +27,10 @@ import { useAppDispatch } from "../../hooks/UseAppDispatch";
 import { useEffect } from "react";
 import { checkUserAuth } from "../../services/User/action";
 import { getIngredients } from "../../services/BurgerIngredients/action";
+import OrderFeedDetails from "../OrderFeedDetails/OrderFeedDetails";
+import OrdersHistory from "../OrdersHistory/OrdersHistory";
+import OrdersInfo from "../OrdersInfo/OrdersInfo";
+import OrdersDetails from "../OrdersDetails/OrdersDetails";
 const App = (): JSX.Element => {
   const dispatch = useAppDispatch();
   useEffect(() => {
@@ -50,7 +54,15 @@ const App = (): JSX.Element => {
         <Routes location={background || location}>
           <Route path="/" element={<BurgerConstructorPage />} />
           <Route path="/feed" element={<FeedPage />}>
-            <Route path="/feed/:id" element={<FeedPage />} />
+            <Route index element={<OrdersDetails />} />
+            <Route
+              path="/feed/:id"
+              element={
+                <div className="mt-15">
+                  <OrderFeedDetails />
+                </div>
+              }
+            />
           </Route>
           <Route
             path="/login"
@@ -82,8 +94,16 @@ const App = (): JSX.Element => {
             element={<OnlyAuth component={<ProfilePage />} />}
           >
             <Route index element={<UserProfile />} />
-            <Route path="/profile/orders" element={<HistoryFeed />} />
-            <Route path="/profile/orders/:id" element={<HistoryFeed />} />
+            <Route path="/profile/orders" element={<HistoryFeed />}>
+              <Route
+                path="/profile/orders/:id"
+                element={
+                  <div className="mt-15">
+                    <OrderFeedDetails />
+                  </div>
+                }
+              />
+            </Route>
           </Route>
           <Route path="/ingredients/:id" element={<IngredientDetails />} />
           <Route path="*" element={<NotFound404 />} />
@@ -96,6 +116,22 @@ const App = (): JSX.Element => {
               element={
                 <Modal title="Детали ингредиента" onClose={handleModalClose}>
                   <IngredientDetails />
+                </Modal>
+              }
+            />
+            <Route
+              path="/feed/:id"
+              element={
+                <Modal title="Детали заказа" onClose={handleModalClose}>
+                  <OrderFeedDetails />
+                </Modal>
+              }
+            />
+            <Route
+              path="/profile/orders/:id"
+              element={
+                <Modal title="Детали заказа" onClose={handleModalClose}>
+                  <OrderFeedDetails />
                 </Modal>
               }
             />

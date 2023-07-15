@@ -13,14 +13,14 @@ import { TWSOrdersActions } from "./action";
 export interface IOrdersState {
   selectedOrder: IOrderDetails | null;
   wsConnected: boolean;
-  messages: IWSMessage[];
+  messages: IWSMessage | null;
   error?: boolean;
 }
 
 const initialState: IOrdersState = {
   selectedOrder: null,
   wsConnected: false,
-  messages: [],
+  messages: null,
 };
 
 export const wsOrdersReducer = (state = initialState, action: TWSOrdersActions) => {
@@ -56,14 +56,14 @@ export const wsOrdersReducer = (state = initialState, action: TWSOrdersActions) 
         ...state,
         error: undefined,
         wsConnected: false,
-        messages: []
+        messages: null
       };
     }
     case WS_GET_MESSAGE: {
       return {
         ...state,
         error: undefined,
-        messages: [...state.messages, action.payload]
+        messages: action.payload
       };
     }
     default: {

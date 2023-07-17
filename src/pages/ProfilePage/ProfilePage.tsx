@@ -1,73 +1,32 @@
-import React from "react";
+import { useEffect } from "react";
 import PropTypes from "prop-types";
 import { useMatch, Route, NavLink, Outlet } from "react-router-dom";
 import { logoutUser } from "../../services/User/action";
-import UserProfile from "../../components/UserProfile/UserProfile";
+import UserProfile from "../../components/ProfileUser/ProfileUser";
 import styles from "./ProfilePage.module.css";
 import { useDispatch } from "react-redux";
 import { useAppDispatch } from "../../hooks/UseAppDispatch";
 import { useLocation } from "react-router";
+import ProfileNav from "../../components/ProfileNav/ProfileNav";
+import { wsClose, wsStart } from "../../services/ws/action";
 
 const ProfilePage = (): JSX.Element => {
-  const dispath = useAppDispatch();
-  const logout = () => {
-    dispath(logoutUser());
-  };
-  const location = useLocation();
-  console.log();
+  const accessToken = localStorage.getItem("accessToken")?.split(" ")[1];
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(
+      wsStart(`wss://norma.nomoreparties.space/orders?token=${accessToken}`)
+    );
+    return () => {
+      dispatch(wsClose());
+    };
+  }, [dispatch, accessToken]);
   return (
-    <div>
-      <div className={styles.container}>
-        <div className={styles.nav_menu}>
-          <NavLink
-            to="/profile"
-            className={
-              location.pathname === "/profile"
-                ? ""
-                : "text_color_inactive"
-            }
-          >
-            <p className="text text_type_main-medium">Профиль</p>
-          </NavLink>
-          <NavLink
-            to="/profile/orders"
-            className={ location.pathname === "/profile/orders"
-            ? ""
-            : "text_color_inactive"
-            }
-          >
-            <p className="text text_type_main-medium">История заказов</p>
-          </NavLink>
+    <div className={styles.container}>
+      <ProfileNav />
 
-          <p
-            className={`${"text text_type_main-medium text_color_inactive"} ${
-              styles.logout
-            }`}
-            onClick={logout}
-          >
-            Выход
-          </p>
-          <div className={styles.info}>
-            <p className="text text_type_main-default text_color_inactive">
-              {location.pathname === "/profile" ? (
-                <>
-                  В этом разделе вы можете<br></br>изменить свои персональные
-                  данные
-                </>
-              ) : location.pathname === "/profile/orders" ? (
-                <>
-                  В этом разделе вы можете<br></br>посмотреть свою историю
-                  заказов
-                </>
-              ) : (
-                <></>
-              )}
-            </p>
-          </div>
-        </div>
-        <div className={styles.content}>
-          <Outlet />
-        </div>
+      <div className={styles.content}>
+        <Outlet />
       </div>
     </div>
   );

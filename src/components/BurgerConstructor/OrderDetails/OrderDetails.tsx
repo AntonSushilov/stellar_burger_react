@@ -36,7 +36,7 @@ const OrderDetails = (): JSX.Element => {
           (el: TIngredientConstructor) => el._id
         ),
         bunConstructor._id,
-      ];
+        ];
       dispatch(getOrderDetails(ids));
       return () => {
         dispatch(deleteOrderDetails());

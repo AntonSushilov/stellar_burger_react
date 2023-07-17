@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { shallowEqual } from "react-redux";
 import { useDrag } from "react-dnd";
 import { Counter } from "@ya.praktikum/react-developer-burger-ui-components";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { openModal } from "../../../../services/Modal/action.js";
+// import { openModal } from "../../../../services/Modal/action.js";
 import styles from "./CardIngredient.module.css";
 import { TIngredient, TIngredientConstructor } from "../../../../utils/types";
 import { useRootSelector } from "../../../../hooks/UseRootSelector";
@@ -46,15 +46,18 @@ const CardIngredient = ({ data }: TCardIngredientProps): JSX.Element => {
   }, [ingredientsConstructorData, bunConstructor]);
 
   const dispatch = useAppDispatch();
-  const handleOpenModal = () => {
-    dispatch(openModal());
-  };
+  const navigate = useNavigate()
+  // const handleOpenModal = () => {
+  //   // dispatch(openModal());
+  //   navigate("/ingredients/")
+
+  // };
 
   const location = useLocation();
   return (
     <>
       <Link to={`/ingredients/${_id}`} state={{ background: location }}>
-        <div className={styles.card} ref={dragRef} onClick={handleOpenModal}>
+        <div className={styles.card} ref={dragRef}>
           <Counter count={count} size="default" extraClass="m-1" />
           <img src={data.image} alt={data.name} className="mb-1" />
           <div className={[styles.price, "mb-1"].join(" ")}>

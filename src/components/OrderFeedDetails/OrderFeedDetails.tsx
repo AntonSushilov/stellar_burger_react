@@ -55,8 +55,6 @@ const OrderFeedDetails = () => {
     setSummPrice(ingr);
     setIngr(ingr);
   }, [order, ingredientsData]);
-
-  console.log("OrderFeedDetails", messages?.orders);
   return (
     <div className={styles.container}>
       {order && (
@@ -84,8 +82,8 @@ const OrderFeedDetails = () => {
             <div className={styles.order__ingr}>
               {ingr.map((el, i) => {
                 return (
-                  <div className={styles.ingr__item}>
-                    <div className={styles.ingr__img} key={i}>
+                  <div className={styles.ingr__item} key={i}>
+                    <div className={styles.ingr__img}>
                       <img src={el.image} alt={el.name} />
                     </div>
                     <p
@@ -95,7 +93,8 @@ const OrderFeedDetails = () => {
                     </p>
                     <div className={styles.ingr__price}>
                       <p className="text text_type_main-medium">
-                        {el.type === "bun" ? "2" : "1"}&nbsp;x&nbsp;{el.price}</p>
+                        {order.ingredients.filter(el2 => el2 === el._id).length}&nbsp;x&nbsp;{el.price}
+                      </p>
                       <CurrencyIcon type="primary" />
                     </div>
                   </div>

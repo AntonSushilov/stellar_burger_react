@@ -1,4 +1,4 @@
-import {useEffect} from "react";
+import { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useAppDispatch } from "../../hooks/UseAppDispatch";
 import { useRootSelector } from "../../hooks/UseRootSelector";
@@ -9,34 +9,29 @@ import styles from "./HistoryFeed.module.css";
 
 const HistoryFeed = (): JSX.Element => {
   const dispatch = useAppDispatch();
-  const accessToken = localStorage.getItem("accessToken")?.split(" ")[1];
   const { messages } = useRootSelector(
     (store) => ({
       messages: store.wsOrdersReducer.messages,
     })
     // shallowEqual
   );
-    useEffect(() => {
-    dispatch(
-      wsStart(`wss://norma.nomoreparties.space/orders?token=${accessToken}`)
-    );
-    return () => {
-      dispatch(wsClose());
-    };
-  }, [dispatch, accessToken]);
   console.log(messages?.orders);
   const location = useLocation();
 
   return (
     <div className={styles.content}>
-       {messages?.orders ? (
+      {messages?.orders ? (
         <>
           {messages?.orders.map((order, index) => {
-           return (
-            <Link to={`/profile/orders/${order._id}`} state={{ background: location }} key={index}>
-              <OrderCard order={order} />
-            </Link>
-          );
+            return (
+              <Link
+                to={`/profile/orders/${order._id}`}
+                state={{ background: location }}
+                key={index}
+              >
+                <OrderCard order={order} />
+              </Link>
+            );
           })}
         </>
       ) : (

@@ -14,7 +14,7 @@ import NotFound404 from "../../pages/NotFound404/NotFound404";
 import AppHeader from "../AppHeader/AppHeader";
 import BurgerConstructorPage from "../../pages/BurgerConstructorPage/BurgerConstructorPage";
 import FeedPage from "../../pages/FeedPage/FeedPage";
-import UserProfile from "../UserProfile/UserProfile";
+import UserProfile from "../ProfileUser/ProfileUser";
 import HistoryFeed from "../HistoryFeed/HistoryFeed";
 import IngredientView from "../BurgerIngredients/Ingredients/IngredientView/IngredientView";
 import IngredientDetails from "../BurgerIngredients/Ingredients/IngredientDetails/IngredientDetails";
@@ -94,16 +94,15 @@ const App = (): JSX.Element => {
             element={<OnlyAuth component={<ProfilePage />} />}
           >
             <Route index element={<UserProfile />} />
-            <Route path="/profile/orders" element={<HistoryFeed />}>
-              <Route
-                path="/profile/orders/:id"
-                element={
-                  <div className="mt-15">
-                    <OrderFeedDetails />
-                  </div>
-                }
-              />
-            </Route>
+            <Route path="/profile/orders" element={<HistoryFeed />}/>
+            <Route
+              path="/profile/orders/:id"
+              element={
+                <div className="mt-15">
+                  <OrderFeedDetails />
+                </div>
+              }
+            />
           </Route>
           <Route path="/ingredients/:id" element={<IngredientDetails />} />
           <Route path="*" element={<NotFound404 />} />

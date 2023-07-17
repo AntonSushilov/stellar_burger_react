@@ -61,14 +61,15 @@ const OrderCard = ({ order }: TOrderCard): JSX.Element => {
       <div className={styles.order__content}>
         <div className={styles.order__ingr}>
           <ul className={styles.ingr__list}>
-            {ingr.map((el, i) => {
+            {order.ingredients.map((el, i) => {
+              const ingredient = ingr.find(el2 => el2._id === el)
               if (i < 5) {
                 return (
                   <li className={styles.ingr__item} key={i}>
                     <img
-                      src={el.image}
+                      src={ingredient?.image}
                       className={styles.ingr__img}
-                      alt={el.name}
+                      alt={ingredient?.name}
                     />
                   </li>
                 );
@@ -77,9 +78,9 @@ const OrderCard = ({ order }: TOrderCard): JSX.Element => {
                   <li className={styles.ingr__item} key={i}>
                     <p className={`${styles.ingr__length} text text_type_digits-default`}>{`+${ingr.length - 5}`}</p>
                     <img
-                      src={el.image}
+                      src={ingredient?.image}
                       className={`${styles.ingr__img} ${styles.ingr_img_6th}`}
-                      alt={el.name}
+                      alt={ingredient?.name}
                     />
                   </li>
                 );

@@ -9,6 +9,7 @@ import {
   WS_CONNECTION_CLOSED,
   WS_GET_MESSAGE,
 } from "../services/ws/type";
+import { refreshToken } from "../utils/requestApi";
 
 export const socketMiddleware = (): Middleware => {
   return ((store: MiddlewareAPI<AppDispatch, RootState>) => {
@@ -38,6 +39,9 @@ export const socketMiddleware = (): Middleware => {
           const { success, ...restParsedData } = parsedData;
 
           dispatch({ type: WS_GET_MESSAGE, payload: restParsedData });
+          if(restParsedData.message === "Invalid or missing token"){
+            refreshToken()
+          }
         };
 
         socket.onclose = event => {

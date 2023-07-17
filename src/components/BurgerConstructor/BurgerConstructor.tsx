@@ -18,6 +18,7 @@ import IngredientCard from "./IngredientCard/IngredientCard";
 import PlaceHolderCard from "./PlaceHolderCard/PlaceHolderCard";
 import { useRootSelector } from "../../hooks/UseRootSelector";
 import { TIngredient, TIngredientConstructor, TIngredientConstructorList } from "../../utils/types";
+import { useAppDispatch } from "../../hooks/UseAppDispatch";
 const initialSummPrice = 0;
 const reducerSummPrice = (state: number, ingredients: TIngredientConstructorList): number => {
   let score = ingredients.reduce(function (a: number, b: TIngredientConstructor) {
@@ -29,7 +30,7 @@ const reducerSummPrice = (state: number, ingredients: TIngredientConstructorList
 const BurgerConstructor = (): JSX.Element => {
   const location = useLocation();
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const { user, ingredientsData, ingredientsConstructorData, bunConstructor } =
     useRootSelector(
@@ -97,7 +98,6 @@ const BurgerConstructor = (): JSX.Element => {
     newIngredients.splice(hoverIndex, 0, dragIngredient);
     dispatch(sortIngredientConstructor(newIngredients));
   };
-
   return (
     <div className={styles.content}>
       <div

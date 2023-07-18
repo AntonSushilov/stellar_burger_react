@@ -8,17 +8,17 @@ import { useDispatch } from "react-redux";
 import { useAppDispatch } from "../../hooks/UseAppDispatch";
 import { useLocation } from "react-router";
 import ProfileNav from "../../components/ProfileNav/ProfileNav";
-import { wsClose, wsStart } from "../../services/ws/action";
+import { wsCloseAction, wsConnectAction } from "../../services/ws/action";
 
 const ProfilePage = (): JSX.Element => {
   const accessToken = localStorage.getItem("accessToken")?.split(" ")[1];
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(
-      wsStart(`wss://norma.nomoreparties.space/orders?token=${accessToken}`)
+      wsConnectAction(`wss://norma.nomoreparties.space/orders?token=${accessToken}`)
     );
     return () => {
-      dispatch(wsClose());
+      dispatch(wsCloseAction());
     };
   }, [dispatch, accessToken]);
   return (

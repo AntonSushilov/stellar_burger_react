@@ -1,69 +1,67 @@
-import { IOrderDetails, IWSMessage } from './../../utils/types';
+import { IOrderDetails, IWSMessage } from "./../../utils/types";
 import {
-  WS_CONNECTION_START,
-  WS_CONNECTION_SUCCESS,
+  WS_CONNECT,
+  WS_CONNECTING,
+  WS_CONNECTION_CLOSE,
+  WS_CONNECTION_DISCONNECT,
   WS_CONNECTION_ERROR,
-  WS_CONNECTION_CLOSED,
+  WS_CONNECTION_OPEN,
   WS_GET_MESSAGE,
-  SELECT_ORDER,
-  DELETE_SELECTED_ORDER
 } from "./type";
-import { TWSOrdersActions } from "./action";
+import { TWSActions } from "./action";
 
 export interface IOrdersState {
-  selectedOrder: IOrderDetails | null;
+  payload: IWSMessage | null,
+  orders: IOrderDetails[] | null,
   wsConnected: boolean;
-  messages: IWSMessage | null;
   error?: boolean;
 }
 
 const initialState: IOrdersState = {
-  selectedOrder: null,
+  orders: null,
   wsConnected: false,
-  messages: null,
+  payload: null,
 };
 
-export const wsOrdersReducer = (state = initialState, action: TWSOrdersActions) => {
+export const wsOrdersReducer = (state = initialState, action: TWSActions) => {
   switch (action.type) {
-    case SELECT_ORDER: {
+    case WS_CONNECT: {
       return {
         ...state,
-        selectedOrder: action.payload
+        // url: action.payload.url
       };
     }
-    case DELETE_SELECTED_ORDER: {
+    case WS_CONNECTING: {
       return {
         ...state,
-        selectedOrder: null
       };
     }
-    case WS_CONNECTION_SUCCESS: {
+    case WS_CONNECTION_CLOSE: {
       return {
         ...state,
-        error: undefined,
-        wsConnected: true
+      };
+    }
+    case WS_CONNECTION_DISCONNECT: {
+      return {
+        ...state,
       };
     }
     case WS_CONNECTION_ERROR: {
       return {
         ...state,
-        error: true,
-        wsConnected: false
+        // error: action.payload.connectionError
       };
     }
-    case WS_CONNECTION_CLOSED: {
+    case WS_CONNECTION_OPEN: {
       return {
         ...state,
-        error: undefined,
-        wsConnected: false,
-        messages: null
       };
     }
     case WS_GET_MESSAGE: {
       return {
         ...state,
-        error: undefined,
-        messages: action.payload
+        payload: action.payload,
+        orders: action.payload.orders
       };
     }
     default: {

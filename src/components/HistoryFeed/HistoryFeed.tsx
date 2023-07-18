@@ -2,27 +2,26 @@ import { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useAppDispatch } from "../../hooks/UseAppDispatch";
 import { useRootSelector } from "../../hooks/UseRootSelector";
-import { wsClose, wsStart } from "../../services/ws/action";
 import OrderCard from "../OrderCard/OrderCard";
 import PreLoader from "../PreLoader/PreLoader";
 import styles from "./HistoryFeed.module.css";
 
 const HistoryFeed = (): JSX.Element => {
   const dispatch = useAppDispatch();
-  const { messages } = useRootSelector(
+  const { orders } = useRootSelector(
     (store) => ({
-      messages: store.wsOrdersReducer.messages,
+      orders: store.wsOrdersReducer.orders,
     })
     // shallowEqual
   );
-  console.log(messages?.orders);
+  // console.log(messages?.orders);
   const location = useLocation();
 
   return (
     <div className={styles.content}>
-      {messages?.orders ? (
+      {orders ? (
         <>
-          {messages?.orders.map((order, index) => {
+          {orders.map((order, index) => {
             return (
               <Link
                 to={`/profile/orders/${order._id}`}

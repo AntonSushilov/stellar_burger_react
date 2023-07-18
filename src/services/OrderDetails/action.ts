@@ -45,6 +45,7 @@ export function getOrderDetails(ids: Array<string>) {
     dispatch({
       type: GET_ORGER_DETAILS_REQUEST,
     });
+    dispatch(deleteAllIngredientConstructor());
     fetchWithRefresh("/orders", requestOptions).then((res) => {
       if (res && res.success) {
         console.log("orders",res)
@@ -52,7 +53,6 @@ export function getOrderDetails(ids: Array<string>) {
           type: GET_ORGER_DETAILS_SUCCESS,
           orderDetails: res.order.number,
         });
-        dispatch(deleteAllIngredientConstructor());
       } else {
         dispatch({
           type: GET_ORGER_DETAILS_FAILED,

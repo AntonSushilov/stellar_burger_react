@@ -14,6 +14,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { TBurgerIngredientsActions } from "./services/BurgerIngredients/action";
 import { TBurgerConstructorActions } from "./services/BurgerConstructor/action";
 import { socketMiddleware } from "./middleware/socketMiddleware";
+import { wsActions } from "./services/ws/action";
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
@@ -25,7 +26,7 @@ const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false,
-    }).concat(thunk, socketMiddleware()),
+    }).concat(thunk, socketMiddleware(wsActions)),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

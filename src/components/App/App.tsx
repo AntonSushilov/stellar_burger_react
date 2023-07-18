@@ -46,7 +46,7 @@ const App = (): JSX.Element => {
     // Возвращаемся к предыдущему пути при закрытии модалки
     navigate(-1);
   };
-
+  console.log("background || location", background, location);
   return (
     <div className={styles.app}>
       <AppHeader />
@@ -94,7 +94,7 @@ const App = (): JSX.Element => {
             element={<OnlyAuth component={<ProfilePage />} />}
           >
             <Route index element={<UserProfile />} />
-            <Route path="/profile/orders" element={<HistoryFeed />}/>
+            <Route path="/profile/orders" element={<HistoryFeed />} />
             <Route
               path="/profile/orders/:id"
               element={
@@ -116,6 +116,18 @@ const App = (): JSX.Element => {
                 <Modal title="Детали ингредиента" onClose={handleModalClose}>
                   <IngredientDetails />
                 </Modal>
+              }
+            />
+            <Route
+              path="/order-details"
+              element={
+                <OnlyAuth
+                  component={
+                    <Modal onClose={handleModalClose}>
+                      <OrderDetails />
+                    </Modal>
+                  }
+                />
               }
             />
             <Route

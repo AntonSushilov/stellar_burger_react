@@ -54,6 +54,7 @@ export type TConstructor = {
   ingr: TIngredientConstructorList;
 };
 export interface IWSMessage {
+  success: boolean,
   orders: IOrderDetails[];
   total: number;
   totalToday: number;

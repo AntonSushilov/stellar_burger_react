@@ -4,19 +4,20 @@ import { IOrderDetails } from "../../utils/types";
 import styles from "./OrdersInfo.module.css";
 
 const OrdersInfo = (): JSX.Element => {
-  const { messages } = useRootSelector(
+  const { orders, payload } = useRootSelector(
     (store) => ({
-      messages: store.wsOrdersReducer.messages,
+      orders: store.wsOrdersReducer.orders,
+      payload: store.wsOrdersReducer.payload,
     })
     // shallowEqual
   );
   const ordersDone: IOrderDetails[] | undefined = useMemo(
-    () => messages?.orders.filter((el) => el.status === "done").slice(0, 10),
-    [messages]
+    () => orders?.filter((el) => el.status === "done").slice(0, 10),
+    [orders]
   );
   const ordersInWork: IOrderDetails[] | undefined = useMemo(
-    () => messages?.orders.filter((el) => el.status === "pending").slice(0, 10),
-    [messages]
+    () => orders?.filter((el) => el.status === "pending").slice(0, 10),
+    [orders]
   );
   return (
     <div className={styles.content}>
@@ -49,19 +50,19 @@ const OrdersInfo = (): JSX.Element => {
                   </p>
                 );
               })}
-          </div>{" "}
+          </div>  
         </div>
         <div className={styles.orders__completed}>
           <p className="text text_type_main-medium mb-4">
             Выполнено за все время:
           </p>
-          <p className="text text_type_digits-large">{messages?.total}</p>
+          <p className="text text_type_digits-large">{payload?.total}</p>
         </div>
         <div className={styles.orders__completed}>
           <p className="text text_type_main-medium mb-4">
             Выполнено за сегодня:
           </p>
-          <p className="text text_type_digits-large">{messages?.totalToday}</p>
+          <p className="text text_type_digits-large">{payload?.totalToday}</p>
         </div>
       </div>
     </div>

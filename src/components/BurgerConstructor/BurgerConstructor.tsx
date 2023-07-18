@@ -82,7 +82,8 @@ const BurgerConstructor = (): JSX.Element => {
     if (bunConstructor && ingredientsConstructorData.length) {
       // setModalVisible(true);
       // dispatch(openModal());
-      navigate("/order-details")
+      // navigate("/order-details", {state:{background: location }})
+      navigate("/order-details", {state:{ background: location}})
       // return <Navigate to="/order-details"/>
     } else {
       if (user) {

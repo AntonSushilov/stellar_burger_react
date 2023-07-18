@@ -35,18 +35,21 @@ const OrderFeedDetails = () => {
     initialSummPrice
   );
   const [ingr, setIngr] = useState<TIngredientsList>([]);
-  // const selectedIngredient = useRootSelector(
-  //   (store) => store.ingredientsReducer.ingredients.find((el: TIngredient) => el._id === id),
-  //   // shallowEqual
-  // );
-  const { messages, ingredientsData } = useRootSelector(
+  const selectedIngredient = useRootSelector(
+    (store) =>
+      store.ingredientsReducer.ingredients.find(
+        (el: TIngredient) => el._id === id
+      )
+    // shallowEqual
+  );
+  const { orders, ingredientsData } = useRootSelector(
     (store) => ({
-      messages: store.wsOrdersReducer.messages,
+      orders: store.wsOrdersReducer.orders,
       ingredientsData: store.ingredientsReducer.ingredients,
     })
     // shallowEqual
   );
-  const order = messages?.orders.find((el) => el._id === id);
+  const order = orders?.find((el) => el._id === id);
 
   useEffect(() => {
     let ingr: TIngredientsList = ingredientsData.filter((el: TIngredient) =>
@@ -93,7 +96,11 @@ const OrderFeedDetails = () => {
                     </p>
                     <div className={styles.ingr__price}>
                       <p className="text text_type_main-medium">
-                        {order.ingredients.filter(el2 => el2 === el._id).length}&nbsp;x&nbsp;{el.price}
+                        {
+                          order.ingredients.filter((el2) => el2 === el._id)
+                            .length
+                        }
+                        &nbsp;x&nbsp;{el.price}
                       </p>
                       <CurrencyIcon type="primary" />
                     </div>

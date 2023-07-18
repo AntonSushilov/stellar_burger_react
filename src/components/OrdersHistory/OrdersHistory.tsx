@@ -6,9 +6,9 @@ import { Link, useLocation } from "react-router-dom";
 import styles from "./OrdersHistory.module.css";
 
 const OrdersHistory = (): JSX.Element => {
-  const { messages } = useRootSelector(
+  const { orders } = useRootSelector(
     (store) => ({
-      messages: store.wsOrdersReducer.messages,
+      orders: store.wsOrdersReducer.orders,
     })
     // shallowEqual
   );
@@ -16,9 +16,9 @@ const OrdersHistory = (): JSX.Element => {
 
   return (
     <div className={styles.content}>
-      {messages?.orders ? (
+      {orders ? (
         <>
-          {messages?.orders.map((order, index) => {
+          {orders.map((order, index) => {
             return (
               <Link to={`/feed/${order._id}`} state={{ background: location }} key={index}>
                 <OrderCard order={order} />

@@ -1,55 +1,82 @@
 import { Middleware, MiddlewareAPI } from "redux";
-import { TWSOrdersActions } from "../services/ws/action";
+// import { TWSOrdersActions } from "../services/ws/action";
 import { AppDispatch, RootState } from "../index";
 
-import {
-  WS_CONNECTION_START,
-  WS_CONNECTION_SUCCESS,
-  WS_CONNECTION_ERROR,
-  WS_CONNECTION_CLOSED,
-  WS_GET_MESSAGE,
-} from "../services/ws/type";
-import { refreshToken } from "../utils/requestApi";
+import { TWSActions } from "../services/ws/action";
+import { TWSStoreActions } from "../services/ws/action";
 
-export const socketMiddleware = (): Middleware => {
-  return ((store: MiddlewareAPI<AppDispatch, RootState>) => {
+export const socketMiddleware = (wsActions: TWSStoreActions): Middleware => {
+  return (store: MiddlewareAPI<AppDispatch, RootState>) => {
     let socket: WebSocket | null = null;
+    let url = "";
+    let isConnected = false;
+    let reconnectTimerRef = 0;
 
-    return next => (action: TWSOrdersActions) => {
-      const { dispatch } = store;
+    return (next) => (action: TWSActions) => {
       const { type } = action;
+      const { dispatch } = store;
+      const {
+        wsConnect,
+        wsDisconnect,
+        wsConnecting,
+        wsOpen,
+        wsClose,
+        wsError,
+        wsMessage,
+      } = wsActions;
 
-      if (type === WS_CONNECTION_START) {
-        socket = new WebSocket(action.payload);
+      if ("WS_CONNECT" === type) {
+        console.log("Websocket connecting");
+        url = action.payload.url;
+        socket = new WebSocket(url);
+        isConnected = true;
+        window.clearTimeout(reconnectTimerRef);
+        reconnectTimerRef = 0;
+        dispatch(wsConnecting());
       }
-      console.log("socketMiddleware", socket)
 
-      if (socket) {
-        socket.onopen = event => {
-          dispatch({ type: WS_CONNECTION_SUCCESS,  payload: event });
+      if (socket && "WS_CONNECTING" === type) {
+        socket.onopen = () => {
+          console.log("open");
+          dispatch(wsOpen());
         };
 
-        socket.onerror = event => {
-          dispatch({ type: WS_CONNECTION_ERROR, payload: event  });
+        socket.onerror = (event: Event) => {
+          dispatch(wsError("Websocket error"));
         };
 
-        socket.onmessage = event => {
+        socket.onmessage = (event: MessageEvent) => {
           const { data } = event;
           const parsedData = JSON.parse(data);
-          const { success, ...restParsedData } = parsedData;
+          console.log(parsedData)
+          dispatch(wsMessage(parsedData));
+        };
 
-          dispatch({ type: WS_GET_MESSAGE, payload: restParsedData });
-          if(restParsedData.message === "Invalid or missing token"){
-            refreshToken()
+        socket.onclose = (event: CloseEvent) => {
+          if (event.code !== 1000) {
+            console.log("error");
+            dispatch(wsError(`Error: ${event.code.toString()}`));
           }
+          if (isConnected) {
+            dispatch(wsConnecting());
+            reconnectTimerRef = window.setTimeout(() => {
+              dispatch(wsConnect(url));
+            }, 3000);
+          }
+          console.log("close");
+          dispatch(wsClose());
         };
+      }
 
-        socket.onclose = event => {
-          dispatch({ type: WS_CONNECTION_CLOSED, payload: event });
-        };
+      if (socket && "WS_CONNECTION_DISCONNECT" === type) {
+        console.log("disconnect");
+        window.clearTimeout(reconnectTimerRef);
+        isConnected = false;
+        reconnectTimerRef = 0;
+        socket.close();
       }
 
       next(action);
     };
-  }) as Middleware;
-}
+  };
+};

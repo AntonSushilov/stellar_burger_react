@@ -8,13 +8,13 @@ import {
   ShowIcon,
   HideIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import styles from "./UserProfile.module.css";
+import styles from "./ProfileUser.module.css";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { updateUser } from "../../services/User/action";
 import { useRootSelector } from "../../hooks/UseRootSelector";
 import { useAppDispatch } from "../../hooks/UseAppDispatch";
 
-const UserProfile = () => {
+const ProfileUser = () => {
   const { user } = useRootSelector(
     (store) => ({
       user: store.userReducer.user,
@@ -99,4 +99,4 @@ const UserProfile = () => {
   );
 };
 
-export default UserProfile;
+export default ProfileUser;

@@ -1,49 +1,32 @@
-import React from "react";
+import { useEffect } from "react";
 import PropTypes from "prop-types";
 import { useMatch, Route, NavLink, Outlet } from "react-router-dom";
 import { logoutUser } from "../../services/User/action";
-import UserProfile from "../../components/UserProfile/UserProfile";
+import UserProfile from "../../components/ProfileUser/ProfileUser";
 import styles from "./ProfilePage.module.css";
 import { useDispatch } from "react-redux";
 import { useAppDispatch } from "../../hooks/UseAppDispatch";
+import { useLocation } from "react-router";
+import ProfileNav from "../../components/ProfileNav/ProfileNav";
+import { wsCloseAction, wsConnectAction } from "../../services/ws/action";
 
 const ProfilePage = (): JSX.Element => {
-  const dispath = useAppDispatch()
-  const logout = () => {
-    dispath(logoutUser())
-  }
+  const accessToken = localStorage.getItem("accessToken")?.split(" ")[1];
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(
+      wsConnectAction(`wss://norma.nomoreparties.space/orders?token=${accessToken}`)
+    );
+    return () => {
+      dispatch(wsCloseAction());
+    };
+  }, [dispatch, accessToken]);
   return (
-    <div>
-      <div className={styles.container}>
-        <div className={styles.nav_menu}>
-          <NavLink
-            to="/profile/"
-            className={({ isActive }) =>
-              isActive ? "" : "text_color_inactive"
-            }
-          >
-            <p className="text text_type_main-large">Профиль</p>
-          </NavLink>
-          <NavLink
-            to="/profile/orders"
-            className={({ isActive }) =>
-              isActive ? "" : "text_color_inactive"
-            }
-          >
-            <p className="text text_type_main-large">История заказов</p>
-          </NavLink>
+    <div className={styles.container}>
+      <ProfileNav />
 
-          <p className={`${"text text_type_main-large text_color_inactive"} ${styles.logout}`} onClick={logout}>Выход</p>
-          <div className={styles.info}>
-            <p className="text text_type_main-default text_color_inactive">
-              В этом разделе вы можете<br></br> изменить свои персональные
-              данные
-            </p>
-          </div>
-        </div>
-        <div className={styles.content}>
-          <Outlet />
-        </div>
+      <div className={styles.content}>
+        <Outlet />
       </div>
     </div>
   );

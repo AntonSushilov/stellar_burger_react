@@ -1,20 +1,29 @@
 .container{
   width: 100%;
-  margin-top: 180px;
-  display: flex;
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  column-gap: 68px;
+
+  /* display: flex;
   flex-direction: row;
   justify-content: space-between;
-  gap: 100px;
-  margin-bottom: 40px;
+  gap: 100px; */
+  /* margin-bottom: 40px; */
+
 }
 
 .content{
-  height: fit-content;
+  grid-column: 2;
+  width: 916px;
+  
+  /* overflow-y: auto;
+  overflow-x: hidden; */
+  /* height: fit-content;
   display: flex;
   flex-direction: column;
-  /* justify-content: center; */
+  justify-content: center;
   align-items: start;
-  flex-grow: 1;
+  flex-grow: 1; */
 }
 
 .login_form{
@@ -23,22 +32,4 @@
   align-items: center;
   gap: 24px;
 
-}
-
-.nav_menu{
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  gap: 20px;
-}
-
-.info{
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  margin-top: 100px;
-}
-
-.logout{
-  cursor: pointer;
 }

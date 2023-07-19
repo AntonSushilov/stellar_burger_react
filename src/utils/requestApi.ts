@@ -1,34 +1,31 @@
-type TReq = {
-  success: boolean,
-  // message?: string,
-  // refreshToken?: string,
-  // accessToken?: string
-  
-}
+import { IResponse, IAuthResponse } from "./types";
 
 const API_URL = "https://norma.nomoreparties.space/api";
 const checkResponse = <T>(res: Response): Promise<T> => {
+  console.log(res);
+
   return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
 };
 
-export const requestApi = <T extends TReq>(
+export const requestApi = <T extends IResponse>(
   url: string,
-  options: RequestInit
+  options?: RequestInit
 ): Promise<T> => {
   return fetch(API_URL + url, options)
-    .then((res) => checkResponse<T>(res))
+    .then((res) => {
+      console.log("res_tyt",res);
+
+      return checkResponse<T>(res);
+    })
     .then((data) => {
-      if (!data.success){
-        throw new Error(`${(data as any).message}`);
+      if (!data.success) {
+        return Promise.reject(`${data.message}`);
       }
-      return data
-      // if (data?.success) return data;
-      // return Promise.reject(data);
-      // return Promise.reject(data)
+      return data;
     });
 };
 
-export const refreshToken = <T extends TReq>(): Promise<T> => {
+export const refreshToken = (): Promise<IAuthResponse> => {
   const options = {
     method: "POST",
     headers: {
@@ -37,32 +34,33 @@ export const refreshToken = <T extends TReq>(): Promise<T> => {
     body: JSON.stringify({
       token: localStorage.getItem("refreshToken"),
     }),
-  }
-  return requestApi<T>(`${API_URL}/auth/token`, options);
+  };
+  return requestApi<IAuthResponse>(`/auth/token`, options);
 };
 
-export const fetchWithRefresh = async <T extends TReq>(url: string, options: RequestInit): Promise<T> => {
+export const fetchWithRefresh = async <T extends IAuthResponse>(
+  url: string,
+  options: RequestInit
+): Promise<T> => {
   try {
-    return await requestApi(API_URL + url, options);
+    const responce = await requestApi<T>(url, options);
+    console.log("responce_tyt", responce)
+    return responce
   } catch (err) {
-    if ((err as Error).message === "jwt expired") {
-      const refreshData = await refreshToken<T>(); //обновляем токен
+    if ((err as { message: string }).message === "jwt expired") {
+      const refreshData = await refreshToken(); //обновляем токен
       if (!refreshData.success) {
         return Promise.reject(refreshData);
       }
-      localStorage.setItem("refreshToken", (refreshData as any).refreshToken);
-      localStorage.setItem("accessToken", (refreshData as any).accessToken);
-      const optionsRefresh = {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json;charset=utf-8",
-          authorization: (refreshData as any).accessToken,
-        },
-      };
-      // options = {...options, headers: {...options.headers, authorization: refreshData.accessToken}}
-      // options.headers.authorization = refreshData.accessToken;
-      return await requestApi(API_URL + url, optionsRefresh); //повторяем запрос
-      // return res;
+      localStorage.setItem("refreshToken", refreshData.refreshToken);
+      localStorage.setItem("accessToken", refreshData.accessToken);
+
+      if (options.headers) {
+        (options.headers as { [key: string]: string }).authorization =
+          refreshData.accessToken;
+      }
+
+      return await requestApi<T>(url, options); //повторяем запрос
     } else {
       return Promise.reject(err);
     }

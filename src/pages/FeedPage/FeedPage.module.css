@@ -1,4 +1,4 @@
-.container{
+.container {
   height: 100%;
   width: 100%;
   display: flex;
@@ -7,9 +7,3 @@
   margin-top: 100px;
 }
 
-.content{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}

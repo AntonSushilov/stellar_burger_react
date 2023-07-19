@@ -17,6 +17,7 @@ import { XYCoord } from "react-dnd";
 
 type TIngredientCardProps = {
   data: TIngredientConstructor;
+  index: number;
   moveCard: (from: number, to: number) => void;
 };
 
@@ -24,37 +25,48 @@ type TDragItem = {
   index: number;
   id: string;
   type: string;
-  key: number;
-}
+  key: string;
+};
 
 const IngredientCard = ({
   data,
+  index,
   moveCard,
 }: TIngredientCardProps): JSX.Element => {
   const { ingredientsConstructorData } = useRootSelector(
     (store) => ({
       ingredientsConstructorData:
         store.ingredientsConstructorReducer.ingredientsConstructor,
-    }),
+    })
     // shallowEqual
   );
 
   const ref = useRef<HTMLDivElement | null>(null);
   const dispatch = useAppDispatch();
 
-  const handleClose = (key: number) => {
+  const handleClose = (key: string) => {
     dispatch(deleteIngredientConstructor(key));
   };
 
-  const [{ handlerId }, drop] = useDrop<TDragItem, void, { handlerId: Identifier | null }>({
+  const [{ handlerId }, drop] = useDrop<
+    TDragItem,
+    void,
+    { handlerId: Identifier | null }
+  >({
     accept: "ingredientCard",
     hover: (item: TDragItem, monitor) => {
-      const dragIndex = ingredientsConstructorData.indexOf(
-        ingredientsConstructorData.find((el: TIngredientConstructor) => el.key === item.key)
-      );
-      const hoverIndex = ingredientsConstructorData.indexOf(
-        ingredientsConstructorData.find((el: TIngredientConstructor) => el.key === data.key)
-      );
+      // const dragIndex = ingredientsConstructorData.indexOf(
+      //   ingredientsConstructorData.find(
+      //     (el: TIngredientConstructor) => el.key === item.key
+      //   )
+      // );
+      const dragIndex = item.index
+      // const hoverIndex = ingredientsConstructorData.indexOf(
+      //   ingredientsConstructorData.find(
+      //     (el: TIngredientConstructor) => el.key === data.key
+      //   )
+      // );
+      const hoverIndex = index
       if (dragIndex === hoverIndex) {
         return;
       }
@@ -62,35 +74,41 @@ const IngredientCard = ({
       // Determine rectangle on screen
       const hoverBoundingRect = ref.current?.getBoundingClientRect();
       // Get vertical middle
-      if(hoverBoundingRect){
-      const hoverMiddleY =
-        (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
-      // Determine mouse position
-      const clientOffset = monitor.getClientOffset();
-      // Get pixels to the top
-      const hoverClientY = (clientOffset as XYCoord).y - hoverBoundingRect.top;
-      // Only perform the move when the mouse has crossed half of the items height
-      // When dragging downwards, only move when the cursor is below 50%
-      // When dragging upwards, only move when the cursor is above 50%
-      // Dragging downwards
-      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
-        return;
-      }
-      // Dragging upwards
-      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
-        return;
-      }
+      if (hoverBoundingRect) {
+        const hoverMiddleY =
+          (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+        // Determine mouse position
+        const clientOffset = monitor.getClientOffset();
+        // Get pixels to the top
+        const hoverClientY =
+          (clientOffset as XYCoord).y - hoverBoundingRect.top;
+        // Only perform the move when the mouse has crossed half of the items height
+        // When dragging downwards, only move when the cursor is below 50%
+        // When dragging upwards, only move when the cursor is above 50%
+        // Dragging downwards
+        if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+          return;
+        }
+        // Dragging upwards
+        if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+          return;
+        }
 
-      moveCard(dragIndex, hoverIndex);
+        moveCard(dragIndex, hoverIndex);
 
-      item.index = hoverIndex;
-    }
+        item.index = hoverIndex;
+      }
     },
   });
   const { key } = data;
   const [{ isDragging }, drag] = useDrag({
     type: "ingredientCard",
-    item: { key },
+    item: () => {
+      return {
+        id: data.key,
+        index
+      }
+    },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),

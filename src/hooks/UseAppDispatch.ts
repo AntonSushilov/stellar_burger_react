@@ -1,3 +1,4 @@
+import { AppThunk } from './../index';
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../index";
 

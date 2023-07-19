@@ -1,0 +1,10 @@
+.content {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 60px 1fr;
+  grid-template-rows: calc(100vh - 196px - 88px);
+  /* display: flex;
+  flex-direction: row;
+  justify-content: space-between; */
+  /* gap: 60px; */
+}

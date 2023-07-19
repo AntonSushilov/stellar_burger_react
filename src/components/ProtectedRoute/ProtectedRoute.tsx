@@ -22,7 +22,7 @@ const ProtectedRoute = ({ onlyUnAuth = false, component }: TProtectedRoute) => {
     // Пользователь авторизован, но запрос предназначен только для неавторизованных пользователей
     // Нужно сделать редирект на главную страницу или на тот адрес, что записан в location.state.from
     const { from } = location.state || { from: { pathname: "/" } };
-    return <Navigate to={from} />;
+    return <Navigate to={from} state={location.state} replace/>;
   }
   if (!onlyUnAuth && !user) {
     // Сервер не ответил

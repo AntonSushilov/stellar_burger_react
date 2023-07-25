@@ -17,13 +17,24 @@ import {
 import IngredientCard from "./IngredientCard/IngredientCard";
 import PlaceHolderCard from "./PlaceHolderCard/PlaceHolderCard";
 import { useRootSelector } from "../../hooks/UseRootSelector";
-import { TIngredient, TIngredientConstructor, TIngredientConstructorList } from "../../utils/types";
+import {
+  TIngredient,
+  TIngredientConstructor,
+  TIngredientConstructorList,
+} from "../../utils/types";
 import { useAppDispatch } from "../../hooks/UseAppDispatch";
 const initialSummPrice = 0;
-const reducerSummPrice = (state: number, ingredients: TIngredientConstructorList): number => {
-  let score = ingredients.reduce(function (a: number, b: TIngredientConstructor) {
+const reducerSummPrice = (
+  state: number,
+  ingredients: TIngredientConstructorList
+): number => {
+  let score = ingredients.reduce(function (
+    a: number,
+    b: TIngredientConstructor
+  ) {
     return a + (b ? b.price : 0);
-  }, 0);
+  },
+  0);
   return score;
 };
 
@@ -40,20 +51,19 @@ const BurgerConstructor = (): JSX.Element => {
         ingredientsConstructorData:
           store.ingredientsConstructorReducer.ingredientsConstructor,
         bunConstructor: store.ingredientsConstructorReducer.bunConstructor,
-      }),
+      })
       // shallowEqual
     );
 
   const onDropHandler = (ingr: TIngredient) => {
     const el = ingredientsData.find((el: TIngredient) => el._id === ingr._id);
-    if (el){
+    if (el) {
       if (el.type === "bun") {
         dispatch(addBunConstructor({ ...el, key: uuid() }));
       } else {
-        dispatch(addIngredientConstructor({ ...el, key: uuid() } ));
+        dispatch(addIngredientConstructor({ ...el, key: uuid() }));
       }
     }
-    
   };
 
   const [, dropTarget] = useDrop({
@@ -69,21 +79,23 @@ const BurgerConstructor = (): JSX.Element => {
   );
 
   useEffect(() => {
-    let ingr = ingredientsConstructorData.map((el: TIngredientConstructor) => el);
-    if(bunConstructor){
+    let ingr = ingredientsConstructorData.map(
+      (el: TIngredientConstructor) => el
+    );
+    if (bunConstructor) {
       ingr.push(bunConstructor, bunConstructor);
     }
     setSummPrice(ingr);
   }, [ingredientsConstructorData, bunConstructor]);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const handleOpenModal = () => {
     // e.preventDefault();
     if (bunConstructor && ingredientsConstructorData.length) {
       // setModalVisible(true);
       // dispatch(openModal());
       // navigate("/order-details", {state:{background: location }})
-      navigate("/order-details", {state:{ background: location}})
+      navigate("/order-details", { state: { background: location } });
       // return <Navigate to="/order-details"/>
     } else {
       if (user) {
@@ -104,6 +116,7 @@ const BurgerConstructor = (): JSX.Element => {
       <div
         className={[styles.items, "text text_type_main-default"].join(" ")}
         ref={dropTarget}
+        data-cy="ingredients-constructor"
       >
         <div className={[styles.item, styles.item_bun].join(" ")}>
           {bunConstructor ? (
@@ -120,9 +133,16 @@ const BurgerConstructor = (): JSX.Element => {
         </div>
         <div className={styles.item_middle}>
           {ingredientsConstructorData.length ? (
-            ingredientsConstructorData.map((el: TIngredientConstructor, index: number) => (
-              <IngredientCard key={el.key} data={el} index={index} moveCard={moveCard} />
-            ))
+            ingredientsConstructorData.map(
+              (el: TIngredientConstructor, index: number) => (
+                <IngredientCard
+                  key={el.key}
+                  data={el}
+                  index={index}
+                  moveCard={moveCard}
+                />
+              )
+            )
           ) : (
             <PlaceHolderCard text="Перетащите ингредиент" />
           )}
@@ -151,14 +171,16 @@ const BurgerConstructor = (): JSX.Element => {
           <p className="text text_type_digits-medium mr-3">{summPrice}</p>
           <CurrencyIcon type="primary" />
         </div>
-        <Button
-          htmlType="button"
-          type="primary"
-          size="medium"
-          onClick={handleOpenModal}
-        >
-          Оформить заказ
-        </Button>
+        <div data-cy="create-order-btn">
+          <Button
+            htmlType="button"
+            type="primary"
+            size="medium"
+            onClick={handleOpenModal}
+          >
+            Оформить заказ
+          </Button>
+        </div>
       </div>
     </div>
   );

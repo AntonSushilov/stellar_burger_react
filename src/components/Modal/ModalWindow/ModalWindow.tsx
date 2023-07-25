@@ -17,8 +17,8 @@ const ModalWindow = ({
       <div className={styles.modal_content}>
         <div className={styles.modal_header}>
           <p className="text text_type_main-large">{title}</p>
-          <div style={{ cursor: "pointer" }}>
-            <CloseIcon type="primary" onClick={onClose} />
+          <div style={{ cursor: "pointer" }} data-cy="modal-close-icon">
+            <CloseIcon type="primary" onClick={onClose}/>
           </div>
         </div>
         <div className={styles.modal_body}>{children}</div>

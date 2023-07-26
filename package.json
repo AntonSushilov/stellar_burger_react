@@ -2,7 +2,7 @@
   "name": "react-burger",
   "version": "0.1.0",
   "private": true,
-  "homepage": "./", 
+  "homepage": "/", 
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -10,7 +10,8 @@
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
-    "cypress:open": "cypress open"
+    "cypress:open": "cypress open",
+    "deploy-server": "npm run build && scp -r ./build/* antonsushilov@51.250.86.207:/home/antonsushilov/stellar-burger-frontend" 
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.3",

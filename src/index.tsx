@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, HashRouter } from "react-router-dom";
 import { createStore, applyMiddleware, ActionCreator, Action } from "redux";
 import thunk, { ThunkAction } from "redux-thunk";
 import { Provider } from "react-redux";
@@ -43,13 +43,13 @@ export type AppDispatch = typeof store.dispatch;
 
 root.render(
   // <React.StrictMode>
-    <BrowserRouter>
+    <HashRouter>
       <Provider store={store}>
         <ErrorBoundary>
           <App />
         </ErrorBoundary>
       </Provider>
-    </BrowserRouter>
+    </HashRouter>
   // </React.StrictMode>
 );
 

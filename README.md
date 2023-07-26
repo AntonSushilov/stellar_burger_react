@@ -1,6 +1,8 @@
 # stellar_burger_react
 Stellar burger - веб приложение космической бургерной. (Yandex.practicum)
 
+Приложение развернуто на GitHub Pages [GitHub Pages](https://antonsushilov.github.io/stellar_burger_react/).
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

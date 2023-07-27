@@ -88,7 +88,7 @@ export type TWSStoreActions = {
   wsMessage: typeof wsMessageAction;
 };
 
-export const wsActions: TWSStoreActions = {
+export const wsActions = {
   wsConnect: wsConnectAction,
   wsDisconnect: wsDisconnectAction,
   wsConnecting: wsConnectingAction,

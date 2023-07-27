@@ -24,7 +24,7 @@ export const socketMiddleware = (wsActions: TWSStoreActions): Middleware => {
         wsError,
         wsMessage,
       } = wsActions;
-      if ("WS_CONNECT" === type) {
+      if (wsConnect(url).type === type) {
         console.log("Websocket connecting");
         url = action.payload.url;
         socket = new WebSocket(url);
@@ -34,7 +34,7 @@ export const socketMiddleware = (wsActions: TWSStoreActions): Middleware => {
         dispatch(wsConnecting());
       }
 
-      if (socket && "WS_CONNECTING" === type) {
+      if (socket && wsConnecting().type === type) {
         socket.onopen = () => {
           console.log("open");
           dispatch(wsOpen());
@@ -67,7 +67,7 @@ export const socketMiddleware = (wsActions: TWSStoreActions): Middleware => {
         };
       }
 
-      if (socket && "WS_CONNECTION_DISCONNECT" === type) {
+      if (socket && wsDisconnect().type === type) {
         console.log("disconnect");
         window.clearTimeout(reconnectTimerRef);
         isConnected = false;

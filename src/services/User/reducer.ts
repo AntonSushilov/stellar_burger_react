@@ -42,7 +42,7 @@ type TUserState = {
   resetPasswordSuccess: boolean;
 };
 
-const initialState: TUserState = {
+export const initialState: TUserState = {
   accessToken: null,
   refreshToken: null,
   user: null,

@@ -1,12 +1,6 @@
-import { ingredientsReducer } from "./reducer";
+import { ingredientsReducer, initialState } from "./reducer";
 import * as types from "./type"
 describe('order details reducer', () => {
-  const initialState = {
-    ingredients: [],
-    ingredientsRequest: true,
-    ingredientsFailed: false,
-    selectedIngredient: null,
-  }
   it('should return the initial state', () => {
     expect(ingredientsReducer(undefined, {})).toEqual(
       initialState

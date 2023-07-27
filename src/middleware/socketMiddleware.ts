@@ -24,7 +24,6 @@ export const socketMiddleware = (wsActions: TWSStoreActions): Middleware => {
         wsError,
         wsMessage,
       } = wsActions;
-
       if ("WS_CONNECT" === type) {
         console.log("Websocket connecting");
         url = action.payload.url;

@@ -1,10 +1,6 @@
-import { ingredientsConstructorReducer } from "./reducer";
+import { ingredientsConstructorReducer, initialState } from "./reducer";
 import * as types from "./type"
 describe('order details reducer', () => {
-  const initialState = {
-    ingredientsConstructor: [],
-    bunConstructor: null,
-  }
   const ingredient = {
     calories: 420,
     carbohydrates: 53,

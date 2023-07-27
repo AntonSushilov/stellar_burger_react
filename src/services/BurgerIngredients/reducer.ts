@@ -16,7 +16,7 @@ type TBurgerIngredientsState = {
   selectedIngredient: TIngredient | null;
 };
 
-const initialState: TBurgerIngredientsState = {
+export const initialState: TBurgerIngredientsState = {
   ingredients: [],
   ingredientsRequest: true,
   ingredientsFailed: false,

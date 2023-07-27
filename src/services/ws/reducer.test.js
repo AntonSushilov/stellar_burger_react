@@ -1,11 +1,6 @@
-import { wsOrdersReducer } from "./reducer";
+import { wsOrdersReducer, initialState } from "./reducer";
 import * as types from "./type"
 describe('order details reducer', () => {
-  const initialState = {
-    orders: null,
-    wsConnected: false,
-    payload: null,
-  }
   it('should return the initial state', () => {
     expect(wsOrdersReducer(undefined, {})).toEqual(
       initialState

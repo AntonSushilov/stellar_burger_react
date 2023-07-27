@@ -1,21 +1,7 @@
-import { userReducer } from "./reducer";
+import { userReducer, initialState } from "./reducer";
 import * as types from "./type"
 
 describe('user reducer', () => {
-  const initialState = {
-    accessToken: null,
-    refreshToken: null,
-    user: null,
-    isAuthChecked: false,
-
-    message: null,
-    userRequest: false,
-    userFailed: false,
-
-    userRegisterSuccess: false,
-    userLoginSuccess: false,
-    resetPasswordSuccess: false,
-  }
   const user = {
     "email": "test@yandex.ru",
     "password": "1234"

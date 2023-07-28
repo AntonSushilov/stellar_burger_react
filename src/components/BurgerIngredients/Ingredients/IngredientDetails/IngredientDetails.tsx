@@ -19,7 +19,7 @@ const IngredientDetails = () => {
             alt={selectedIngredient.name}
           />
 
-          <p className="text text_type_main-medium  mb-15">
+          <p className="text text_type_main-medium  mb-15" data-cy="ingredient-details-name">
             {selectedIngredient.name}
           </p>
           <div className={styles.compose}>

@@ -17,7 +17,7 @@ export interface IOrdersState {
   error?: boolean;
 }
 
-const initialState: IOrdersState = {
+export const initialState: IOrdersState = {
   orders: null,
   wsConnected: false,
   payload: null,

@@ -46,7 +46,7 @@ const CardIngredient = ({ data }: TCardIngredientProps): JSX.Element => {
   }, [ingredientsConstructorData, bunConstructor]);
 
   const dispatch = useAppDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   // const handleOpenModal = () => {
   //   // dispatch(openModal());
   //   navigate("/ingredients/")
@@ -56,9 +56,15 @@ const CardIngredient = ({ data }: TCardIngredientProps): JSX.Element => {
   const location = useLocation();
   return (
     <>
-      <Link to={`/ingredients/${_id}`} state={{ background: location }}>
+      <Link
+        data-cy={`ingredient-${data.type}`}
+        to={`/ingredients/${_id}`}
+        state={{ background: location }}
+      >
         <div className={styles.card} ref={dragRef}>
-          <Counter count={count} size="default" extraClass="m-1" />
+          <div data-cy="ingredient-counter">
+            <Counter count={count} size="default" extraClass="m-1" />
+          </div>
           <img src={data.image} alt={data.name} className="mb-1" />
           <div className={[styles.price, "mb-1"].join(" ")}>
             <CurrencyIcon type="primary" />

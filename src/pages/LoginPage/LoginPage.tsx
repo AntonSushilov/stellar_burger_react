@@ -62,7 +62,7 @@ const LoginPage = (): JSX.Element => {
           <PasswordInput
             onChange={onChangePass}
             value={valuePass}
-            name={"Пароль"}
+            name={"password"}
           />
           <Button htmlType="submit" type="primary" size="medium">
             Войти

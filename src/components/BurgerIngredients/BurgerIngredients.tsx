@@ -101,7 +101,11 @@ const BurgerIngredients = (): JSX.Element => {
             </Tab>
           </div>
           {ingredientsData && (
-            <div className={styles.content} onScroll={handleScroll}>
+            <div
+              data-cy="ingredients-container"
+              className={styles.content}
+              onScroll={handleScroll}
+            >
               <Ingredients
                 title="Булки"
                 titleId="buns"
